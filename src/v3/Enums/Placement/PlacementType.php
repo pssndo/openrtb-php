@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OpenRTB\v3\Enums\Placement;
+
+/**
+ * The following table lists the various placement types for display ads.
+ *
+ * @see https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list--placement-type-
+ */
+enum PlacementType: int
+{
+    case IN_FEED = 1;
+    case IN_ATOMIC_UNIT = 2;
+    case OUTSIDE_CORE_CONTENT = 3;
+    case RECOMMENDATION_WIDGET = 4;
+}
