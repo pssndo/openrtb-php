@@ -2,7 +2,7 @@
     "name": "passendo/openrtb-php",
     "description": "A modern, PSR-4 compliant PHP library for OpenRTB specifications 2.4, 2.6, and 3.0.",
     "type": "library",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Passendo",
