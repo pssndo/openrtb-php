@@ -1,7 +1,7 @@
 # OpenRTB for PHP
 
 [![Latest Version](https://img.shields.io/packagist/v/passendo/openrtb-php.svg)](https://packagist.org/packages/passendo/openrtb-php)
-[![Build Status](https://img.shields.io/travis/passendo/openrtb-php.svg)](https://travis-ci.org/passendo/openrtb-php)
+[![Run PHPUnit Tests](https://github.com/pssndo/openrtb-php/actions/workflows/ci.yml/badge.svg)](https://github.com/pssndo/openrtb-php/actions/workflows/ci.yml)
 [![Coverage Status](https://img.shields.io/coveralls/github/passendo/openrtb-php.svg)](https://coveralls.io/github/passendo/openrtb-php)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
