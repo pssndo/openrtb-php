@@ -1,3 +1,4 @@
 openRtb/coverage-report
 .php-cs-fixer.cache
 .phpunit.result.cache
+vendor
