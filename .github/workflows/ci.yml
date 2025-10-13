@@ -10,13 +10,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # This is the line you need to add
+    permissions:
+      contents: write
+
     strategy:
       matrix:
-        php-versions: [ '8.3' ]
+        php-versions: ['8.3']
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # ... the rest of your file is correct ...
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
