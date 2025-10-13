@@ -1,7 +1,10 @@
 # .github/workflows/ci.yml
 name: Run PHPUnit Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   test:
@@ -9,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.3']
+        php-versions: [ '8.3' ]
 
     steps:
       - name: Checkout code
@@ -20,10 +23,41 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, xml
-          coverage: none
+          coverage: xdebug
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Run tests
-        run: ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Generate and Commit Coverage Badge
+        run: |
+          # Create the directory for the badge if it doesn't exist
+          mkdir -p .github/badges
+          
+          # Extract the coverage percentage from the clover.xml file
+          COVERAGE=$(sed -n 's/.*"coveredelements"[^>]*>\([^<]*\)<.*"elements"[^>]*>\([^<]*\)<.*/\1 \2/p' build/logs/clover.xml | awk '{printf "%.0f", ($1/$2)*100}')
+          
+          # Define the color for the badge based on coverage percentage
+          if (( $(echo "$COVERAGE > 90" | bc -l) )); then
+            COLOR="brightgreen"
+          elif (( $(echo "$COVERAGE > 75" | bc -l) )); then
+            COLOR="green"
+          elif (( $(echo "$COVERAGE > 50" | bc -l) )); then
+            COLOR="yellow"
+          else
+            COLOR="red"
+          fi
+          
+          # Download the badge from shields.io
+          curl "https://img.shields.io/badge/coverage-$COVERAGE%25-$COLOR" > .github/badges/coverage.svg
+          
+          # Configure git for the commit
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          
+          # Add, commit, and push the new badge
+          git add .github/badges/coverage.svg
+          git commit -m "chore: Update coverage badge to $COVERAGE%" || echo "No changes to commit"
+          git push
