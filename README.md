@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/passendo/openrtb-php.svg)](https://packagist.org/packages/passendo/openrtb-php)
 [![Run PHPUnit Tests](https://github.com/pssndo/openrtb-php/actions/workflows/ci.yml/badge.svg)](https://github.com/pssndo/openrtb-php/actions/workflows/ci.yml)
-[![Coverage Status](https://img.shields.io/coveralls/github/passendo/openrtb-php.svg)](https://coveralls.io/github/passendo/openrtb-php)
+![Code Coverage](.github/badges/coverage.svg)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 A modern, PSR-4 compliant PHP library for the OpenRTB 2.4, 2.6, and 3.0 specifications. This library provides an intuitive, object-oriented interface for building and parsing OpenRTB requests and responses, complete with robust validation and a fluent API.
