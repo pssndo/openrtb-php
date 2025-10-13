@@ -4,16 +4,41 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\v3\BaseObject;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Enums\NoBidReason;
 use OpenRTB\v3\Request;
 use OpenRTB\v3\Response;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
+
+// Dummy class for testing primitive and unhandled type hydration
+class DummyObjectForHydration extends BaseObject
+{
+    protected static array $schema = [
+        'primitive' => 'string', // Not a class, should be returned as-is
+        'unhandled_array' => ['string'], // Not an array of enums/objects
+        'empty_array' => [], // An empty array in the schema
+    ];
+
+    public function getPrimitive(): ?string
+    {
+        return $this->get('primitive');
+    }
+
+    public function getUnhandledArray(): ?array
+    {
+        return $this->get('unhandled_array');
+    }
+
+    public function getEmptyArray(): ?array
+    {
+        return $this->get('empty_array');
+    }
+}
 
 /**
  * @covers \OpenRTB\v3\Util\Parser
- * @covers \OpenRTB\v3\Enums\HydrationType
  */
 class ParserTest extends TestCase
 {
@@ -86,5 +111,18 @@ JSON;
         $json = '{"id": "req-123",,}'; // Invalid JSON
         $response = Parser::parseResponse($json);
         $this->assertNull($response);
+    }
+
+    public function testHydrateValueWithUnhandledTypes(): void
+    {
+        $json = '{"primitive": "test_string", "unhandled_array": ["a", "b"], "empty_array": [1, 2]}';
+
+        /** @var DummyObjectForHydration $object */
+        $object = Parser::parse($json, DummyObjectForHydration::class);
+
+        $this->assertInstanceOf(DummyObjectForHydration::class, $object);
+        $this->assertEquals('test_string', $object->getPrimitive());
+        $this->assertEquals(['a', 'b'], $object->getUnhandledArray());
+        $this->assertEquals([1, 2], $object->getEmptyArray());
     }
 }
