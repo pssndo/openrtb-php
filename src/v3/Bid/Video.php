@@ -16,7 +16,12 @@ class Video implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'adm' => 'string',
+        'curl' => 'string',
         'api' => [ApiFramework::class],
+        'ctype' => 'string',
+        'mime' => 'string',
+        'dur' => 'int',
     ];
 
     public static function getSchema(): array

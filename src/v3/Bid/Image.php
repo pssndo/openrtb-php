@@ -11,7 +11,11 @@ class Image implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'url' => 'string',
+        'w' => 'int',
+        'h' => 'int',
+    ];
 
     public static function getSchema(): array
     {

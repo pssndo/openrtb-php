@@ -11,7 +11,11 @@ class Link implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'url' => 'string',
+        'trkr' => 'array',
+        'fallback' => 'string',
+    ];
 
     public static function getSchema(): array
     {

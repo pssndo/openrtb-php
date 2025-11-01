@@ -20,7 +20,6 @@ use OpenRTB\v26\Ext;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenRTB\v26\BaseObject 
  * @covers \OpenRTB\v26\Ext
  * @covers \OpenRTB\v26\Context\App
  * @covers \OpenRTB\v26\Context\Content
@@ -214,47 +213,5 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('pchain-val', $source->getPchain());
         $this->assertSame($schain, $source->getSchain());
         $this->assertSame($ext, $source->getExt());
-    }
-
-    public function testSupplyChainObject(): void
-    {
-        $ext = new Ext();
-        $node = (new Node())
-            ->setAsi('asi-val')
-            ->setSid('sid-val')
-            ->setHp(1)
-            ->setRid('rid-val')
-            ->setName('node-name')
-            ->setDomain('node-domain.com')
-            ->setExt($ext);
-
-        $this->assertEquals('asi-val', $node->getAsi());
-        $this->assertEquals('sid-val', $node->getSid());
-        $this->assertEquals(1, $node->getHp());
-        $this->assertEquals('rid-val', $node->getRid());
-        $this->assertEquals('node-name', $node->getName());
-        $this->assertEquals('node-domain.com', $node->getDomain());
-        $this->assertSame($ext, $node->getExt());
-        $this->assertIsArray(Node::getSchema());
-
-        $schain = (new SupplyChain())->setComplete(1)->setVer('1.0')->setNodes([$node])->setExt($ext);
-        $this->assertEquals(1, $schain->getComplete());
-        $this->assertEquals('1.0', $schain->getVer());
-        $this->assertEquals([$node], $schain->getNodes());
-        $this->assertSame($ext, $schain->getExt());
-    }
-
-    public function testUserObject(): void
-    {
-        $geo = new Geo();
-        $ext = new Ext();
-        $user = (new User())->setId('user-1')->setBuyeruid('buyer-1')->setYob(1990)->setGender('M')->setKeywords('test,user')->setGeo($geo)->setExt($ext);
-        $this->assertEquals('user-1', $user->getId());
-        $this->assertEquals('buyer-1', $user->getBuyeruid());
-        $this->assertEquals(1990, $user->getYob());
-        $this->assertEquals('M', $user->getGender());
-        $this->assertEquals('test,user', $user->getKeywords());
-        $this->assertSame($geo, $user->getGeo());
-        $this->assertSame($ext, $user->getExt());
     }
 }

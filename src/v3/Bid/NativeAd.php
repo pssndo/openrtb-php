@@ -15,6 +15,7 @@ class NativeAd implements ObjectInterface
         'link' => Link::class,
         'asset' => [Asset::class],
         'event' => [Event::class],
+        'privacy' => 'string',
     ];
 
     public static function getSchema(): array

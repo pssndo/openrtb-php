@@ -11,7 +11,13 @@ class Deal implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'id' => 'string',
+        'price' => 'float',
+        'wseat' => 'array',
+        'wadomain' => 'array',
+        'at' => 'int',
+    ];
 
     public static function getSchema(): array
     {

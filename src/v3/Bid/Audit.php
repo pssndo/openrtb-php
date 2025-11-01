@@ -14,6 +14,10 @@ class Audit implements ObjectInterface
 
     protected static array $schema = [
         'status' => AuditStatus::class,
+        'feedback' => 'array',
+        'init' => 'int',
+        'lastmod' => 'int',
+        'corr' => 'array',
     ];
 
     public static function getSchema(): array

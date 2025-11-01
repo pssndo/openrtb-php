@@ -36,6 +36,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \OpenRTB\v3\Placement\AssetFormat
  * @covers \OpenRTB\v3\Placement\EventSpec
  * @covers \OpenRTB\v3\Placement\ImageFormat
+ * @covers \OpenRTB\v3\Bid\NativeAd
  */
 class NativeAdsTest extends TestCase
 {

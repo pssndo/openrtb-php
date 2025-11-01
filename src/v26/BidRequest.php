@@ -32,6 +32,18 @@ class BidRequest implements ObjectInterface
         'source' => Source::class,
         'at' => AuctionType::class,
         'ext' => Ext::class,
+        'id' => 'string',
+        'test' => 'int',
+        'tmax' => 'int',
+        'wseat' => 'array',
+        'bseat' => 'array',
+        'allimps' => 'int',
+        'cur' => 'array',
+        'wlang' => 'array',
+        'wlangb' => 'array',
+        'bcat' => 'array',
+        'badv' => 'array',
+        'bapp' => 'array',
     ];
 
     public static function getSchema(): array

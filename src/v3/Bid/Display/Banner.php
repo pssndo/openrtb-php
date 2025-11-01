@@ -13,6 +13,9 @@ class Banner implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'img' => 'string',
+        'w' => 'int',
+        'h' => 'int',
         'link' => Link::class,
     ];
 

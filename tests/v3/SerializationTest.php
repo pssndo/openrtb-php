@@ -17,7 +17,6 @@ use OpenRTB\v3\Request;
 
 /**
  * @covers \OpenRTB\v3\Request
- * @covers \OpenRTB\Common\BaseObject 
  */
 class SerializationTest extends TestCase
 {

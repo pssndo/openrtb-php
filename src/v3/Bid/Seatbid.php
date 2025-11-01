@@ -13,6 +13,8 @@ class Seatbid implements ObjectInterface
 
     /** @var array<string, array<class-string>> */
     protected static array $schema = [
+        'seat' => 'string',
+        'package' => 'int',
         'bid' => [Bid::class],
     ];
 

@@ -16,6 +16,11 @@ class User implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'buyeruid' => 'string',
+        'yob' => 'int',
+        'gender' => 'string',
+        'keywords' => 'string',
         'geo' => Geo::class,
         'ext' => Ext::class,
     ];

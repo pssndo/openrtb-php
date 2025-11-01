@@ -16,6 +16,11 @@ class Site implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'name' => 'string',
+        'domain' => 'string',
+        'page' => 'string',
+        'ref' => 'string',
         'publisher' => Publisher::class,
         'content' => Content::class,
         'ext' => Ext::class,

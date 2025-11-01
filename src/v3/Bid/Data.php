@@ -11,7 +11,9 @@ class Data implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'value' => 'string',
+    ];
 
     public static function getSchema(): array
     {

@@ -12,6 +12,8 @@ class Bid implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'price' => 'float',
         'media' => Media::class,
         'deal' => Deal::class,
         'macro' => [Macro::class],

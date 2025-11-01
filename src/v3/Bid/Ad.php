@@ -13,10 +13,20 @@ class Ad implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'adomain' => 'array',
+        'bundle' => 'array',
+        'cat' => 'array',
+        'cattax' => 'int',
+        'lang' => 'string',
         'attr' => [CreativeAttribute::class],
+        'secure' => 'int',
+        'init' => 'int',
+        'lastmod' => 'int',
         'display' => Display::class,
         'video' => Video::class,
         'audio' => Audio::class,
+        'native' => NativeAd::class,
         'audit' => Audit::class,
     ];
 

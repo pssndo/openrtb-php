@@ -14,6 +14,7 @@ class Native implements ObjectInterface
 
     protected static array $schema = [
         'link' => Link::class,
+        'asset' => 'array',
     ];
 
     public static function getSchema(): array

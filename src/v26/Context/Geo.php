@@ -16,6 +16,14 @@ class Geo implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'lat' => 'float',
+        'lon' => 'float',
+        'type' => 'int',
+        'country' => 'string',
+        'region' => 'string',
+        'city' => 'string',
+        'zip' => 'string',
+        'utcoffset' => 'int',
         'ext' => Ext::class,
     ];
 

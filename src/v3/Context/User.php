@@ -13,7 +13,16 @@ class User implements ObjectInterface
 
     /** @var array<string, class-string> */
     protected static array $schema = [
+        'id' => 'string',
+        'buyeruid' => 'string',
+        'yob' => 'int',
+        'gender' => 'string',
+        'keywords' => 'string',
+        'kwarray' => 'array',
+        'consent' => 'string',
         'geo' => Geo::class,
+        'data' => 'array',
+        'eids' => 'array',
     ];
 
     public static function getSchema(): array

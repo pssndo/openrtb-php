@@ -12,6 +12,8 @@ class Asset implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'int',
+        'req' => 'int',
         'title' => Title::class,
         'img' => Image::class,
         'data' => Data::class,

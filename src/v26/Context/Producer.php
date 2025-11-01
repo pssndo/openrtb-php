@@ -16,6 +16,10 @@ class Producer implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'name' => 'string',
+        'cat' => 'array',
+        'domain' => 'string',
         'ext' => Ext::class,
     ];
 

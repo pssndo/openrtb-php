@@ -11,7 +11,10 @@ class Macro implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'key' => 'string',
+        'value' => 'string',
+    ];
 
     public static function getSchema(): array
     {

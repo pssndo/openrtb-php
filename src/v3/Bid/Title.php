@@ -11,7 +11,9 @@ class Title implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    protected static array $schema = [
+        'text' => 'string',
+    ];
 
     public static function getSchema(): array
     {

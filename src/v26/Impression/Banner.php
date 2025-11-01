@@ -17,6 +17,14 @@ class Banner implements ObjectInterface
 
     protected static array $schema = [
         'format' => [Format::class],
+        'w' => 'int',
+        'h' => 'int',
+        'pos' => 'int',
+        'btype' => 'array',
+        'battr' => 'array',
+        'api' => 'array',
+        'id' => 'string',
+        'vcm' => 'int',
         'ext' => Ext::class,
     ];
 

@@ -14,6 +14,8 @@ class Event implements ObjectInterface
 
     protected static array $schema = [
         'type' => EventType::class,
+        'method' => 'int',
+        'url' => 'string',
     ];
 
     public static function getSchema(): array

@@ -13,6 +13,12 @@ class Node implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'asi' => 'string',
+        'sid' => 'string',
+        'hp' => 'int',
+        'rid' => 'string',
+        'name' => 'string',
+        'domain' => 'string',
         'ext' => Ext::class,
     ];
 

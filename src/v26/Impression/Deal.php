@@ -16,6 +16,12 @@ class Deal implements ObjectInterface
     use HasData;
 
     protected static array $schema = [
+        'id' => 'string',
+        'bidfloor' => 'float',
+        'bidfloorcur' => 'string',
+        'at' => 'int',
+        'wseat' => 'array',
+        'wadv' => 'array',
         'ext' => Ext::class,
     ];
 
