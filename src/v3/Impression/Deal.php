@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\AuctionType;
 
-class Deal extends BaseObject
+class Deal implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string> */
     protected static array $schema = [
         'at' => AuctionType::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {

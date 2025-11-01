@@ -4,10 +4,20 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Source extends BaseObject
+class Source implements ObjectInterface
 {
+    use HasData;
+
+    protected static array $schema = [];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
     public function setTid(string $tid): self
     {
         return $this->set('tid', $tid);

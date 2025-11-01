@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 
-class Item extends BaseObject
+class Item implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'dlvy' => DeliveryMethod::class,
@@ -16,6 +19,11 @@ class Item extends BaseObject
         'deal' => [Deal::class],
         'spec' => Spec::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {

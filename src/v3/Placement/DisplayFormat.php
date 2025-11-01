@@ -4,10 +4,20 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class DisplayFormat extends BaseObject
+class DisplayFormat implements ObjectInterface
 {
+    use HasData;
+
+    protected static array $schema = [];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
     public function setW(int $w): static
     {
         return $this->set('w', $w);

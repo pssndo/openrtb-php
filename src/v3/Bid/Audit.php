@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\AuditStatus;
 
-class Audit extends BaseObject
+class Audit implements ObjectInterface
 {
-    /** @var array<string, class-string> */
+    use HasData;
+
     protected static array $schema = [
         'status' => AuditStatus::class,
     ];
 
-    public function setStatus(AuditStatus $status): static
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setStatus(AuditStatus $status): self
     {
         return $this->set('status', $status);
     }
@@ -25,7 +32,7 @@ class Audit extends BaseObject
     }
 
     /** @param list<string> $feedback */
-    public function setFeedback(array $feedback): static
+    public function setFeedback(array $feedback): self
     {
         return $this->set('feedback', $feedback);
     }
@@ -36,7 +43,7 @@ class Audit extends BaseObject
         return $this->get('feedback');
     }
 
-    public function setInit(int $init): static
+    public function setInit(int $init): self
     {
         return $this->set('init', $init);
     }
@@ -46,7 +53,7 @@ class Audit extends BaseObject
         return $this->get('init');
     }
 
-    public function setLastmod(int $lastmod): static
+    public function setLastmod(int $lastmod): self
     {
         return $this->set('lastmod', $lastmod);
     }
@@ -57,7 +64,7 @@ class Audit extends BaseObject
     }
 
     /** @param array<string, string> $corr */
-    public function setCorr(array $corr): static
+    public function setCorr(array $corr): self
     {
         return $this->set('corr', $corr);
     }

@@ -4,18 +4,36 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class NativeAd extends BaseObject
+class NativeAd implements ObjectInterface
 {
-    /** @var array<string, class-string|array<class-string>> */
+    use HasData;
+
     protected static array $schema = [
-        'asset' => [Asset::class],
         'link' => Link::class,
+        'asset' => [Asset::class],
+        'event' => [Event::class],
     ];
 
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setLink(Link $link): self
+    {
+        return $this->set('link', $link);
+    }
+
+    public function getLink(): ?Link
+    {
+        return $this->get('link');
+    }
+
     /** @param list<Asset> $asset */
-    public function setAsset(array $asset): static
+    public function setAsset(array $asset): self
     {
         return $this->set('asset', $asset);
     }
@@ -26,45 +44,25 @@ class NativeAd extends BaseObject
         return $this->get('asset');
     }
 
-    public function setLink(Link $link): static
+    /** @param list<Event> $event */
+    public function setEvent(array $event): self
     {
-        return $this->set('link', $link);
+        return $this->set('event', $event);
     }
 
-    public function getLink(): ?Link
+    /** @return list<Event>|null */
+    public function getEvent(): ?array
     {
-        return $this->get('link');
+        return $this->get('event');
     }
 
-    public function setJstracker(string $jstracker): static
+    public function setPrivacy(string $privacy): self
     {
-        return $this->set('jstracker', $jstracker);
+        return $this->set('privacy', $privacy);
     }
 
-    public function getJstracker(): ?string
+    public function getPrivacy(): ?string
     {
-        return $this->get('jstracker');
-    }
-
-    /** @param list<string> $imptrackers */
-    public function setImptrackers(array $imptrackers): static
-    {
-        return $this->set('imptrackers', $imptrackers);
-    }
-
-    /** @return list<string>|null */
-    public function getImptrackers(): ?array
-    {
-        return $this->get('imptrackers');
-    }
-
-    public function setVer(string $ver): static
-    {
-        return $this->set('ver', $ver);
-    }
-
-    public function getVer(): ?string
-    {
-        return $this->get('ver');
+        return $this->get('privacy');
     }
 }

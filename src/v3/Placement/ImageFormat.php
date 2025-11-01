@@ -4,43 +4,27 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class ImageFormat extends BaseObject
+class ImageFormat implements ObjectInterface
 {
-    public function setType(int $type): static
+    use \OpenRTB\Common\HasData;
+
+    protected static array $schema = [];
+
+    public static function getSchema(): array
     {
-        return $this->set('type', $type);
+        return static::$schema;
     }
 
-    public function getType(): ?int
-    {
-        return $this->get('type');
-    }
-
-    public function setW(int $w): static
-    {
-        return $this->set('w', $w);
-    }
-
-    public function getW(): ?int
-    {
-        return $this->get('w');
-    }
-
-    public function setWmin(int $wmin): static
-    {
-        return $this->set('wmin', $wmin);
-    }
-
-    public function getWmin(): ?int
-    {
-        return $this->get('wmin');
-    }
-
-    public function setH(int $h): static
+    public function setH(int $h): self
     {
         return $this->set('h', $h);
+    }
+
+    public function setW(int $w): self
+    {
+        return $this->set('w', $w);
     }
 
     public function getH(): ?int
@@ -48,7 +32,12 @@ class ImageFormat extends BaseObject
         return $this->get('h');
     }
 
-    public function setHmin(int $hmin): static
+    public function getW(): ?int
+    {
+        return $this->get('w');
+    }
+
+    public function setHmin(int $hmin): self
     {
         return $this->set('hmin', $hmin);
     }
@@ -58,13 +47,31 @@ class ImageFormat extends BaseObject
         return $this->get('hmin');
     }
 
-    /** @param list<string> $mimes */
-    public function setMimes(array $mimes): static
+    public function setWmin(int $wmin): self
+    {
+        return $this->set('wmin', $wmin);
+    }
+
+    public function getWmin(): ?int
+    {
+        return $this->get('wmin');
+    }
+
+    public function setType(int $type): self
+    {
+        return $this->set('type', $type);
+    }
+
+    public function getType(): ?int
+    {
+        return $this->get('type');
+    }
+
+    public function setMimes(array $mimes): self
     {
         return $this->set('mimes', $mimes);
     }
 
-    /** @return list<string>|null */
     public function getMimes(): ?array
     {
         return $this->get('mimes');

@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Impression\MetricType;
 
-class Metric extends BaseObject
+class Metric implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'type' => MetricType::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setType(MetricType $type): self
     {

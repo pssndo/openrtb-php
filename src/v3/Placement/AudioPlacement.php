@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 use OpenRTB\v3\Enums\Placement\ApiFramework;
@@ -14,8 +15,10 @@ use OpenRTB\v3\Enums\Placement\PlaybackCessationMode;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\VolumeNormalizationMode;
 
-class AudioPlacement extends BaseObject
+class AudioPlacement implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'playmethod' => [PlaybackMethod::class],
@@ -28,6 +31,11 @@ class AudioPlacement extends BaseObject
         'comp' => [DisplayPlacement::class],
         'comptype' => [CompanionType::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setDelay(int $delay): static
     {

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Context extends BaseObject
+class Context implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'site' => Site::class,
         'app' => App::class,
@@ -17,6 +20,11 @@ class Context extends BaseObject
         'restrictions' => Restrictions::class,
         'dooh' => Dooh::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setSite(Site $site): self
     {

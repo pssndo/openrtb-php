@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\CreativeAttribute;
-use OpenRTB\v3\Enums\Placement\ApiFramework;
 
-class Ad extends BaseObject
+class Ad implements ObjectInterface
 {
-    /** @var array<string, class-string|array<class-string>> */
+    use HasData;
+
     protected static array $schema = [
         'attr' => [CreativeAttribute::class],
-        'apis' => [ApiFramework::class],
-        'display' => DisplayAd::class,
-        'video' => VideoAd::class,
-        'audio' => AudioAd::class,
-        'native' => NativeAd::class,
+        'display' => Display::class,
+        'video' => Video::class,
+        'audio' => Audio::class,
         'audit' => Audit::class,
     ];
 
-    public function setId(string $id): static
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setId(string $id): self
     {
         return $this->set('id', $id);
     }
@@ -31,28 +35,8 @@ class Ad extends BaseObject
         return $this->get('id');
     }
 
-    public function setAname(string $aname): static
-    {
-        return $this->set('aname', $aname);
-    }
-
-    public function getAname(): ?string
-    {
-        return $this->get('aname');
-    }
-
-    public function setCrid(string $crid): static
-    {
-        return $this->set('crid', $crid);
-    }
-
-    public function getCrid(): ?string
-    {
-        return $this->get('crid');
-    }
-
     /** @param list<string> $adomain */
-    public function setAdomain(array $adomain): static
+    public function setAdomain(array $adomain): self
     {
         return $this->set('adomain', $adomain);
     }
@@ -64,7 +48,7 @@ class Ad extends BaseObject
     }
 
     /** @param list<string> $bundle */
-    public function setBundle(array $bundle): static
+    public function setBundle(array $bundle): self
     {
         return $this->set('bundle', $bundle);
     }
@@ -75,18 +59,8 @@ class Ad extends BaseObject
         return $this->get('bundle');
     }
 
-    public function setIurl(string $iurl): static
-    {
-        return $this->set('iurl', $iurl);
-    }
-
-    public function getIurl(): ?string
-    {
-        return $this->get('iurl');
-    }
-
     /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    public function setCat(array $cat): self
     {
         return $this->set('cat', $cat);
     }
@@ -97,7 +71,7 @@ class Ad extends BaseObject
         return $this->get('cat');
     }
 
-    public function setCattax(int $cattax): static
+    public function setCattax(int $cattax): self
     {
         return $this->set('cattax', $cattax);
     }
@@ -107,7 +81,7 @@ class Ad extends BaseObject
         return $this->get('cattax');
     }
 
-    public function setLang(string $lang): static
+    public function setLang(string $lang): self
     {
         return $this->set('lang', $lang);
     }
@@ -118,7 +92,7 @@ class Ad extends BaseObject
     }
 
     /** @param list<CreativeAttribute> $attr */
-    public function setAttr(array $attr): static
+    public function setAttr(array $attr): self
     {
         return $this->set('attr', $attr);
     }
@@ -129,7 +103,7 @@ class Ad extends BaseObject
         return $this->get('attr');
     }
 
-    public function setSecure(int $secure): static
+    public function setSecure(int $secure): self
     {
         return $this->set('secure', $secure);
     }
@@ -139,17 +113,7 @@ class Ad extends BaseObject
         return $this->get('secure');
     }
 
-    public function setMrating(int $mrating): static
-    {
-        return $this->set('mrating', $mrating);
-    }
-
-    public function getMrating(): ?int
-    {
-        return $this->get('mrating');
-    }
-
-    public function setInit(int $init): static
+    public function setInit(int $init): self
     {
         return $this->set('init', $init);
     }
@@ -159,7 +123,7 @@ class Ad extends BaseObject
         return $this->get('init');
     }
 
-    public function setLastmod(int $lastmod): static
+    public function setLastmod(int $lastmod): self
     {
         return $this->set('lastmod', $lastmod);
     }
@@ -169,79 +133,37 @@ class Ad extends BaseObject
         return $this->get('lastmod');
     }
 
-    public function setW(int $w): static
-    {
-        return $this->set('w', $w);
-    }
-
-    public function getW(): ?int
-    {
-        return $this->get('w');
-    }
-
-    public function setH(int $h): static
-    {
-        return $this->set('h', $h);
-    }
-
-    public function getH(): ?int
-    {
-        return $this->get('h');
-    }
-
-    public function setDur(int $dur): static
-    {
-        return $this->set('dur', $dur);
-    }
-
-    public function getDur(): ?int
-    {
-        return $this->get('dur');
-    }
-
-    /** @param list<ApiFramework> $apis */
-    public function setApis(array $apis): static
-    {
-        return $this->set('apis', $apis);
-    }
-
-    /** @return list<ApiFramework>|null */
-    public function getApis(): ?array
-    {
-        return $this->get('apis');
-    }
-
-    public function setDisplay(DisplayAd $display): static
+    public function setDisplay(Display $display): self
     {
         return $this->set('display', $display);
     }
 
-    public function getDisplay(): ?DisplayAd
+    public function getDisplay(): ?Display
     {
         return $this->get('display');
     }
 
-    public function setVideo(VideoAd $video): static
+    public function setVideo(Video $video): self
     {
         return $this->set('video', $video);
     }
 
-    public function getVideo(): ?VideoAd
+    public function getVideo(): ?Video
     {
         return $this->get('video');
     }
 
-    public function setAudio(AudioAd $audio): static
+    public function setAudio(Audio $audio): self
     {
         return $this->set('audio', $audio);
     }
 
-    public function getAudio(): ?AudioAd
+    public function getAudio(): ?Audio
     {
         return $this->get('audio');
     }
 
-    public function setNative(NativeAd $native): static
+    public function setNative(NativeAd $native): self
     {
         return $this->set('native', $native);
     }
@@ -251,7 +173,7 @@ class Ad extends BaseObject
         return $this->get('native');
     }
 
-    public function setAudit(Audit $audit): static
+    public function setAudit(Audit $audit): self
     {
         return $this->set('audit', $audit);
     }

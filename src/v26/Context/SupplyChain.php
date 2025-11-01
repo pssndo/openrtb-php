@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OpenRTB\v26\Context;
+
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v26\Ext;
+
+class SupplyChain implements ObjectInterface
+{
+    use HasData;
+
+    protected static array $schema = [
+        'nodes' => [SupplyChainNode::class],
+        'ext' => Ext::class,
+    ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setComplete(int $complete): static
+    {
+        return $this->set('complete', $complete);
+    }
+
+    public function getComplete(): ?int
+    {
+        return $this->get('complete');
+    }
+
+    public function setVer(string $ver): static
+    {
+        return $this->set('ver', $ver);
+    }
+
+    public function getVer(): ?string
+    {
+        return $this->get('ver');
+    }
+
+    /** @param list<SupplyChainNode> $nodes */
+    public function setNodes(array $nodes): static
+    {
+        return $this->set('nodes', $nodes);
+    }
+
+    /** @return list<SupplyChainNode>|null */
+    public function getNodes(): ?array
+    {
+        return $this->get('nodes');
+    }
+
+    public function setExt(Ext $ext): static
+    {
+        return $this->set('ext', $ext);
+    }
+
+    public function getExt(): ?Ext
+    {
+        return $this->get('ext');
+    }
+}

@@ -4,20 +4,27 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3;
 
-use OpenRTB\v3\Context\Context;
-use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Impression\Item;
 
-class Request extends BaseObject
+class Request implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'at' => AuctionType::class,
-        'source' => Source::class,
-        'context' => Context::class,
-        'item' => [Item::class],
+        'source' => Context\Source::class,
+        'context' => Context\Context::class,
+        'item' => [Impression\Item::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {
@@ -103,22 +110,22 @@ class Request extends BaseObject
         return $this->get('cdata');
     }
 
-    public function setSource(Source $source): static
+    public function setSource(Context\Source $source): static
     {
         return $this->set('source', $source);
     }
 
-    public function getSource(): ?Source
+    public function getSource(): ?Context\Source
     {
         return $this->get('source');
     }
 
-    public function setContext(Context $context): static
+    public function setContext(Context\Context $context): static
     {
         return $this->set('context', $context);
     }
 
-    public function getContext(): ?Context
+    public function getContext(): ?Context\Context
     {
         return $this->get('context');
     }
@@ -130,7 +137,7 @@ class Request extends BaseObject
         return $this->set('item', $items);
     }
 
-    /** @return list<Item>|null */
+    /** @return list<Impression\Item>|null */
     public function getItem(): ?array
     {
         return $this->get('item');

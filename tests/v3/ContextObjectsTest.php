@@ -67,6 +67,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('501', $geo->getMetro());
         $this->assertEquals('10001', $geo->getZip());
         $this->assertEquals(300, $geo->getUtcoffset());
+        $this->assertIsArray(Geo::getSchema());
     }
 
     public function testSuaObject(): void
@@ -77,6 +78,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals([['brand' => 'Chrome', 'version' => '108']], $sua->getBrowsers());
         $this->assertEquals([['brand' => 'Android', 'version' => '13']], $sua->getPlatform());
         $this->assertEquals(1, $sua->getMobile());
+        $this->assertIsArray(Sua::getSchema());
     }
 
     public function testDeviceObject(): void
@@ -114,6 +116,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('310-410', $device->getMccmnc());
         $this->assertSame($geo, $device->getGeo());
         $this->assertSame($sua, $device->getSua());
+        $this->assertIsArray(Device::getSchema());
     }
 
     public function testUserObject(): void
@@ -149,6 +152,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('Producer A', $producer->getName());
         $this->assertEquals('producer.com', $producer->getDomain());
         $this->assertEquals(['cat'], $producer->getCat());
+        $this->assertIsArray(Producer::getSchema());
     }
 
     public function testContentObject(): void
@@ -185,6 +189,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $content->getEmbeddable());
         $this->assertEquals([['name' => 'data']], $content->getData());
         $this->assertSame($producer, $content->getProducer());
+        $this->assertIsArray(Content::getSchema());
     }
 
     public function testPublisherObject(): void
@@ -194,6 +199,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('Publisher A', $publisher->getName());
         $this->assertEquals('publisher.com', $publisher->getDomain());
         $this->assertEquals(['cat'], $publisher->getCat());
+        $this->assertIsArray(Publisher::getSchema());
     }
 
     public function testSiteObject(): void
@@ -250,6 +256,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(['kw1'], $app->getKwarray());
         $this->assertSame($publisher, $app->getPublisher());
         $this->assertSame($content, $app->getContent());
+        $this->assertIsArray(App::getSchema());
     }
 
     public function testRegsObject(): void
@@ -259,6 +266,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('gpp-string', $regs->getGpp());
         $this->assertEquals(1, $regs->getCoppa());
         $this->assertEquals([1,2], $regs->getGppSid());
+        $this->assertIsArray(Regs::getSchema());
     }
 
     public function testRestrictionsObject(): void
@@ -274,6 +282,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(['adv.com'], $restrictions->getBadv());
         $this->assertEquals(['com.app.banned'], $restrictions->getBapp());
         $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr());
+        $this->assertIsArray(Restrictions::getSchema());
     }
 
     public function testDoohObject(): void
@@ -285,6 +294,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
         $this->assertEquals(1, $dooh->getCattax());
+        $this->assertIsArray(Dooh::getSchema());
     }
 
     public function testSourceObject(): void

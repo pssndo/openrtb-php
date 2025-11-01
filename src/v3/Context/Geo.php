@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Context\IpLocationService;
 use OpenRTB\v3\Enums\Context\LocationType;
 
-class Geo extends BaseObject
+class Geo implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'type' => LocationType::class,
         'ipservice' => IpLocationService::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setLat(float $lat): self
     {

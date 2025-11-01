@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 use OpenRTB\v3\Enums\Placement\AdPosition;
@@ -18,8 +19,10 @@ use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 use OpenRTB\v3\Enums\Placement\VideoPlacementType;
 
-class VideoPlacement extends BaseObject
+class VideoPlacement implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'ptype' => VideoPlacementType::class,
@@ -36,6 +39,11 @@ class VideoPlacement extends BaseObject
         'comp' => [DisplayPlacement::class],
         'comptype' => [CompanionType::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setPtype(VideoPlacementType $ptype): static
     {

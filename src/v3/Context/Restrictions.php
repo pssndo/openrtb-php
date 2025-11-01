@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\CreativeAttribute;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class Restrictions extends BaseObject
+class Restrictions implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'cattax' => ContentTaxonomy::class,
         'battr' => [CreativeAttribute::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     /** @param list<string> $bcat */
     public function setBcat(array $bcat): static

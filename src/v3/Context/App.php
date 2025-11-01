@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class App extends BaseObject
+class App implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string> */
     protected static array $schema = [
         'cattax' => ContentTaxonomy::class,
         'publisher' => Publisher::class,
         'content' => Content::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {

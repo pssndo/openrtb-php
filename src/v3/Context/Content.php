@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Content extends BaseObject
+class Content implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'producer' => Producer::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {

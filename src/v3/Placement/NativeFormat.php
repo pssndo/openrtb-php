@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class NativeFormat extends BaseObject
+class NativeFormat implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, array<class-string>> */
     protected static array $schema = [
         'asset' => [AssetFormat::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     /** @param list<AssetFormat> $asset */
     public function setAsset(array $asset): static

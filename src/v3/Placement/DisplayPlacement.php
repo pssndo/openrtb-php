@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
 use OpenRTB\v3\Enums\Placement\AdPosition;
 use OpenRTB\v3\Enums\Placement\ApiFramework;
@@ -13,8 +14,10 @@ use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\PlacementType;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 
-class DisplayPlacement extends BaseObject
+class DisplayPlacement implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'pos' => AdPosition::class,
@@ -28,6 +31,11 @@ class DisplayPlacement extends BaseObject
         'nativefmt' => NativeFormat::class,
         'event' => [Event::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setPos(AdPosition $pos): static
     {

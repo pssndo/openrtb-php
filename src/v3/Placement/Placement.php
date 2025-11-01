@@ -4,23 +4,31 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 
-class Placement extends BaseObject
+class Placement implements ObjectInterface
 {
-    /** @var array<string, class-string|array<class-string>> */
+    use HasData;
+
     protected static array $schema = [
-        'unit' => SizeUnit::class,
         'display' => DisplayPlacement::class,
         'video' => VideoPlacement::class,
         'audio' => AudioPlacement::class,
+        'native' => NativePlacement::class,
         'displayfmt' => [DisplayFormat::class],
-        'nativefmt' => NativeFormat::class,
         'event' => [Event::class],
+        'nativefmt' => NativeFormat::class,
+        'unit' => SizeUnit::class,
     ];
 
-    public function setTagid(string $tagid): static
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setTagid(string $tagid): self
     {
         return $this->set('tagid', $tagid);
     }
@@ -30,47 +38,7 @@ class Placement extends BaseObject
         return $this->get('tagid');
     }
 
-    public function setSsai(int $ssai): static
-    {
-        return $this->set('ssai', $ssai);
-    }
-
-    public function getSsai(): ?int
-    {
-        return $this->get('ssai');
-    }
-
-    public function setSdk(string $sdk): static
-    {
-        return $this->set('sdk', $sdk);
-    }
-
-    public function getSdk(): ?string
-    {
-        return $this->get('sdk');
-    }
-
-    public function setSdkver(string $sdkver): static
-    {
-        return $this->set('sdkver', $sdkver);
-    }
-
-    public function getSdkver(): ?string
-    {
-        return $this->get('sdkver');
-    }
-
-    public function setReward(int $reward): static
-    {
-        return $this->set('reward', $reward);
-    }
-
-    public function getReward(): ?int
-    {
-        return $this->get('reward');
-    }
-
-    public function setW(int $w): static
+    public function setW(int $w): self
     {
         return $this->set('w', $w);
     }
@@ -80,7 +48,7 @@ class Placement extends BaseObject
         return $this->get('w');
     }
 
-    public function setH(int $h): static
+    public function setH(int $h): self
     {
         return $this->set('h', $h);
     }
@@ -90,7 +58,47 @@ class Placement extends BaseObject
         return $this->get('h');
     }
 
-    public function setUnit(SizeUnit $unit): static
+    public function setReward(int $reward): self
+    {
+        return $this->set('reward', $reward);
+    }
+
+    public function getReward(): ?int
+    {
+        return $this->get('reward');
+    }
+
+    public function setSsai(int $ssai): self
+    {
+        return $this->set('ssai', $ssai);
+    }
+
+    public function getSsai(): ?int
+    {
+        return $this->get('ssai');
+    }
+
+    public function setSdk(string $sdk): self
+    {
+        return $this->set('sdk', $sdk);
+    }
+
+    public function getSdk(): ?string
+    {
+        return $this->get('sdk');
+    }
+
+    public function setSdkver(string $sdkver): self
+    {
+        return $this->set('sdkver', $sdkver);
+    }
+
+    public function getSdkver(): ?string
+    {
+        return $this->get('sdkver');
+    }
+
+    public function setUnit(SizeUnit $unit): self
     {
         return $this->set('unit', $unit);
     }
@@ -100,7 +108,7 @@ class Placement extends BaseObject
         return $this->get('unit');
     }
 
-    public function setPriv(int $priv): static
+    public function setPriv(int $priv): self
     {
         return $this->set('priv', $priv);
     }
@@ -110,7 +118,17 @@ class Placement extends BaseObject
         return $this->get('priv');
     }
 
-    public function setDisplay(DisplayPlacement $display): static
+    public function setNative(NativePlacement $native): self
+    {
+        return $this->set('native', $native);
+    }
+
+    public function getNative(): ?NativePlacement
+    {
+        return $this->get('native');
+    }
+
+    public function setDisplay(DisplayPlacement $display): self
     {
         return $this->set('display', $display);
     }
@@ -120,7 +138,7 @@ class Placement extends BaseObject
         return $this->get('display');
     }
 
-    public function setVideo(VideoPlacement $video): static
+    public function setVideo(VideoPlacement $video): self
     {
         return $this->set('video', $video);
     }
@@ -130,7 +148,7 @@ class Placement extends BaseObject
         return $this->get('video');
     }
 
-    public function setAudio(AudioPlacement $audio): static
+    public function setAudio(AudioPlacement $audio): self
     {
         return $this->set('audio', $audio);
     }
@@ -140,19 +158,7 @@ class Placement extends BaseObject
         return $this->get('audio');
     }
 
-    /** @param list<DisplayFormat> $displayfmt */
-    public function setDisplayfmt(array $displayfmt): static
-    {
-        return $this->set('displayfmt', $displayfmt);
-    }
-
-    /** @return list<DisplayFormat>|null */
-    public function getDisplayfmt(): ?array
-    {
-        return $this->get('displayfmt');
-    }
-
-    public function setNativefmt(NativeFormat $nativefmt): static
+    public function setNativefmt(NativeFormat $nativefmt): self
     {
         return $this->set('nativefmt', $nativefmt);
     }
@@ -162,13 +168,33 @@ class Placement extends BaseObject
         return $this->get('nativefmt');
     }
 
-    /** @param list<Event> $event */
-    public function setEvent(array $event): static
+    /**
+     * @param list<DisplayFormat> $displayfmt
+     */
+    public function setDisplayfmt(array $displayfmt): self
+    {
+        return $this->set('displayfmt', $displayfmt);
+    }
+
+    /**
+     * @return list<DisplayFormat>|null
+     */
+    public function getDisplayfmt(): ?array
+    {
+        return $this->get('displayfmt');
+    }
+
+    /**
+     * @param list<Event> $event
+     */
+    public function setEvent(array $event): self
     {
         return $this->set('event', $event);
     }
 
-    /** @return list<Event>|null */
+    /**
+     * @return list<Event>|null
+     */
     public function getEvent(): ?array
     {
         return $this->get('event');

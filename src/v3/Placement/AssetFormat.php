@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class AssetFormat extends BaseObject
+class AssetFormat implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'title' => TitleFormat::class,
         'img' => ImageFormat::class,
+        'video' => VideoPlacement::class,
         'data' => DataFormat::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(int $id): self
     {
@@ -52,6 +61,16 @@ class AssetFormat extends BaseObject
     public function getImg(): ?ImageFormat
     {
         return $this->get('img');
+    }
+
+    public function setVideo(VideoPlacement $video): self
+    {
+        return $this->set('video', $video);
+    }
+
+    public function getVideo(): ?VideoPlacement
+    {
+        return $this->get('video');
     }
 
     public function setData(DataFormat $data): self

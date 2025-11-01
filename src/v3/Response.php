@@ -4,16 +4,25 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3;
 
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
 
-class Response extends BaseObject
+class Response implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'nbr' => NoBidReason::class,
         'seatbid' => [Seatbid::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {

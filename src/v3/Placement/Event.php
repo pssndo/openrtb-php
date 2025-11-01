@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\EventType;
 
-class Event extends BaseObject
+class Event implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'type' => EventType::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setType(EventType $type): static
     {

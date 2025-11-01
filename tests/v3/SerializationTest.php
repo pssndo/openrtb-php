@@ -16,7 +16,8 @@ use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Request;
 
 /**
- * @covers \OpenRTB\v3\BaseObject
+ * @covers \OpenRTB\v3\Request
+ * @covers \OpenRTB\Common\BaseObject 
  */
 class SerializationTest extends TestCase
 {
@@ -25,6 +26,7 @@ class SerializationTest extends TestCase
         // 1. Create a complex object graph
         $request = new Request();
         $request->setId('test-req');
+        $request->setTest(1);
         $request->setAt(AuctionType::SECOND_PRICE);
 
         $item = new Item();
@@ -54,6 +56,7 @@ class SerializationTest extends TestCase
 
         // Assert top-level properties
         $this->assertEquals('test-req', $result['id']);
+        $this->assertEquals(1, $result['test']);
         $this->assertEquals(2, $result['at']); // Check enum value
 
         // Assert nested item and placement

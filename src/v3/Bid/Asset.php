@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Asset extends BaseObject
+class Asset implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'title' => Title::class,
         'img' => Image::class,
         'data' => Data::class,
         'link' => Link::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(int $id): self
     {

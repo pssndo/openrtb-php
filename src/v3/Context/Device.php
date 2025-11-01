@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Context\ConnectionType;
 use OpenRTB\v3\Enums\Context\DeviceType;
 
-class Device extends BaseObject
+class Device implements ObjectInterface
 {
+    use HasData;
+
     protected static array $schema = [
         'type' => DeviceType::class,
         'conntype' => ConnectionType::class,
         'geo' => Geo::class,
         'sua' => Sua::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setType(DeviceType $type): self
     {

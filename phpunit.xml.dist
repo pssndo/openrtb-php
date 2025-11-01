@@ -5,6 +5,9 @@
         <testsuite name="OpenRTB v3 Test Suite">
             <directory suffix="Test.php">./tests/v3</directory>
         </testsuite>
+        <testsuite name="OpenRTB v2.6 Test Suite">
+            <directory suffix="Test.php">./tests/v26</directory>
+        </testsuite>
     </testsuites>
 
     <coverage>
@@ -13,6 +16,7 @@
         </include>
         <exclude>
             <directory suffix=".php">./src/v3/Enums</directory>
+            <directory suffix=".php">./src/v26/Enums</directory>
         </exclude>
         <report>
             <clover outputFile="build/logs/clover.xml"/>

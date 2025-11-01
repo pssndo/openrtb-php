@@ -2,36 +2,19 @@
 
 declare(strict_types=1);
 
-namespace OpenRTB\v3;
+namespace OpenRTB\Common;
 
-abstract class BaseObject
+use OpenRTB\Interfaces\ObjectInterface;
+
+trait HasData
 {
-    /** @var array<string, class-string|array<class-string>> */
-    protected static array $schema = [];
-
-    /** @var array<string, mixed> */
     protected array $data = [];
 
-    /**
-     * @param array<string, mixed> $data
-     */
     public function __construct(array $data = [])
     {
         $this->data = $data;
     }
 
-    /**
-     * @return array<string, class-string|array<class-string>>
-     */
-    public static function getSchema(): array
-    {
-        return static::$schema;
-    }
-
-    /**
-     * @param mixed $value
-     * @return static
-     */
     public function set(string $key, mixed $value): static
     {
         $this->data[$key] = $value;
@@ -43,28 +26,35 @@ abstract class BaseObject
         return $this->data[$key] ?? null;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public function toArray(): array
     {
         $result = [];
         foreach ($this->data as $key => $value) {
-            if ($value instanceof \BackedEnum) {
-                $result[$key] = $value->value;
-            } elseif ($value instanceof BaseObject) {
-                $result[$key] = $value->toArray();
+            if ($value instanceof ObjectInterface) {
+                $arrayValue = $value->toArray();
+
+                if (empty($arrayValue) && property_exists($value, 'data') && empty($value->data)) {
+                    $result[$key] = (object) [];
+                } else {
+                    $result[$key] = $arrayValue;
+                }
             } elseif (is_array($value)) {
                 $result[$key] = array_map(function ($item) {
-                    if ($item instanceof \BackedEnum) {
+                    if ($item instanceof ObjectInterface) {
+                        return $item->toArray();
+                    }
+                    if ($item instanceof \BackedEnum) { // Handles arrays of enums
                         return $item->value;
                     }
-                    return $item instanceof BaseObject ? $item->toArray() : $item;
+                    return $item;
                 }, $value);
+            } elseif ($value instanceof \BackedEnum) { // Handles single enums
+                $result[$key] = $value->value;
             } else {
                 $result[$key] = $value;
             }
         }
+
         return $result;
     }
 

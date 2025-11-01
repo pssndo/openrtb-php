@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Seatbid extends BaseObject
+class Seatbid implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, array<class-string>> */
     protected static array $schema = [
         'bid' => [Bid::class],
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setSeat(string $seat): static
     {
