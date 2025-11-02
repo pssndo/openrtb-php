@@ -9,7 +9,7 @@ use OpenRTB\v26\Util\RequestBuilder;
 
 class Factory
 {
-    public function createRequestBuilder(): RequestBuilderInterface
+    public function __invoke(): RequestBuilderInterface
     {
         return new RequestBuilder();
     }

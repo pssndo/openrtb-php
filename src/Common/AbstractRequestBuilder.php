@@ -30,7 +30,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
         return $this;
     }
 
-    public function build(): ObjectInterface
+    public function __invoke(): ObjectInterface
     {
         return $this->request;
     }

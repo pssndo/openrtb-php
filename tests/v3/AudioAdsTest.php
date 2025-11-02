@@ -11,7 +11,7 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\AudioPlacement;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
 
 /**
@@ -62,7 +62,7 @@ class AudioAdsTest extends TestCase
 }
 JSON;
 
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
         $this->assertInstanceOf(Request::class, $request);
 
         $items = $request->getItem();

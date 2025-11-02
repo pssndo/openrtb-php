@@ -15,8 +15,7 @@ class FactoryTest extends TestCase
 {
     public function testCreateRequestBuilder(): void
     {
-        $factory = new Factory();
-        $builder = $factory->createRequestBuilder();
+        $builder = (new Factory())();
 
         $this->assertInstanceOf(RequestBuilder::class, $builder);
     }

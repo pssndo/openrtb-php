@@ -31,7 +31,7 @@ JSON;
 
 
 // 1. Parse the request
-$request = Parser::parseRequest($jsonRequest);
+$request = Parser::parseBidRequest($jsonRequest);
 
 if ($request === null) {
     echo "Failed to parse request\n";

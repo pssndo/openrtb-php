@@ -25,8 +25,8 @@ use OpenRTB\v3\Placement\NativePlacement;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\TitleFormat;
 use OpenRTB\v3\Placement\VideoPlacement;
-use OpenRTB\v3\Request;
-use OpenRTB\v3\Response;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Util\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -99,7 +99,7 @@ class NativeAdsTest extends TestCase
         $json = $request->toJson();
         $this->assertIsString($json);
 
-        $parsedRequest = Parser::parseRequest($json);
+        $parsedRequest = Parser::parseBidRequest($json);
         $this->assertInstanceOf(Request::class, $parsedRequest);
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());
     }
@@ -140,7 +140,7 @@ class NativeAdsTest extends TestCase
         $json = $response->toJson();
         $this->assertIsString($json);
 
-        $parsedResponse = Parser::parseResponse($json);
+        $parsedResponse = Parser::parseBidResponse($json);
         $this->assertInstanceOf(Response::class, $parsedResponse);
         $this->assertEquals($response->toArray(), $parsedResponse->toArray());
 

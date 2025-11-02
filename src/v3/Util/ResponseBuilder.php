@@ -8,7 +8,7 @@ use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\Interfaces\ResponseBuilderInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\v3\Response;
+use OpenRTB\v3\BidResponse as Response;
 
 class ResponseBuilder implements ResponseBuilderInterface
 {
@@ -50,7 +50,7 @@ class ResponseBuilder implements ResponseBuilderInterface
         return $this;
     }
 
-    public function build(): ObjectInterface
+    public function __invoke(): ObjectInterface
     {
         return $this->response;
     }

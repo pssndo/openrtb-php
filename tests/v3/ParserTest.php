@@ -6,7 +6,7 @@ namespace OpenRTB\Tests\v3;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -18,19 +18,19 @@ class ParserTest extends TestCase
     public function testParseRequestWithEmptyJson(): void
     {
         $this->expectException(\JsonException::class);
-        Parser::parseRequest('');
+        Parser::parseBidRequest('');
     }
 
     public function testParseRequestWithInvalidJson(): void
     {
         $this->expectException(\JsonException::class);
-        Parser::parseRequest('{ "id": "123"');
+        Parser::parseBidRequest('{ "id": "123"');
     }
 
     public function testParseRequestWithValidJson(): void
     {
         $json = '{ "id": "123", "test": 1 }';
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
 
         $this->assertInstanceOf(Request::class, $request);
         $this->assertEquals('123', $request->getId());
@@ -71,7 +71,7 @@ class ParserTest extends TestCase
 }
 JSON;
 
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
 
         $this->assertInstanceOf(Request::class, $request);
         $this->assertEquals('req-123', $request->getId());
@@ -100,7 +100,7 @@ JSON;
   }
 }
 JSON;
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
 
         // Assert that the parser correctly passed through the unhandled array value
         $this->assertEquals([1, 2, 3], $request->getContext()->get('unhandled_array'));
@@ -122,7 +122,7 @@ JSON;
   }
 }
 JSON;
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
 
         // This covers the `!is_array($value)` check.
         // The parser should return the raw string value.

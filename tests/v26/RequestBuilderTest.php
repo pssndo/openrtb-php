@@ -68,7 +68,7 @@ class RequestBuilderTest extends TestCase
             ->setSource($source)
             ->setTest(true)
             ->setExt($ext)
-            ->build();
+        ();
 
         $this->assertInstanceOf(BidRequest::class, $request);
         $this->assertEquals('req-123', $request->getId());

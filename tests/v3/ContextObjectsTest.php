@@ -25,7 +25,7 @@ use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 use OpenRTB\v3\Enums\Context\DeviceType;
 use OpenRTB\v3\Enums\Context\IpLocationService;
 use OpenRTB\v3\Enums\Context\LocationType;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
 
 /**
@@ -343,7 +343,7 @@ class ContextObjectsTest extends TestCase
 
         $json = $request->toJson();
         $this->assertIsString($json);
-        $parsedRequest = Parser::parseRequest($json);
+        $parsedRequest = Parser::parseBidRequest($json);
 
         $this->assertInstanceOf(Request::class, $parsedRequest);
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());

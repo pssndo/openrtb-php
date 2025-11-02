@@ -21,13 +21,24 @@ class AudioPlacement implements ObjectInterface
 
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
+        'delay' => 'int',
+        'skip' => 'int',
+        'skipmin' => 'int',
+        'skipafter' => 'int',
         'playmethod' => [PlaybackMethod::class],
         'playend' => PlaybackCessationMode::class,
         'feed' => FeedType::class,
         'nvol' => VolumeNormalizationMode::class,
+        'mime' => ['string'],
         'api' => [ApiFramework::class],
         'ctype' => [CreativeType::class],
+        'mindur' => 'int',
+        'maxdur' => 'int',
+        'maxext' => 'int',
+        'minbitr' => 'int',
+        'maxbitr' => 'int',
         'delivery' => [DeliveryMethod::class],
+        'maxseq' => 'int',
         'comp' => [DisplayPlacement::class],
         'comptype' => [CompanionType::class],
     ];
@@ -35,6 +46,44 @@ class AudioPlacement implements ObjectInterface
     public static function getSchema(): array
     {
         return static::$schema;
+    }
+
+    public function toArray(): array
+    {
+        $array = $this->data;
+        if (isset($array['playmethod'])) {
+            $array['playmethod'] = array_map(fn($pm) => $pm->value, $array['playmethod']);
+        }
+        if (isset($array['playend'])) {
+            $array['playend'] = $array['playend']->value;
+        }
+        if (isset($array['feed'])) {
+            $array['feed'] = $array['feed']->value;
+        }
+        if (isset($array['nvol'])) {
+            $array['nvol'] = $array['nvol']->value;
+        }
+        if (isset($array['api'])) {
+            $array['api'] = array_map(fn($api) => $api->value, $array['api']);
+        }
+        if (isset($array['ctype'])) {
+            $array['ctype'] = array_map(fn($ct) => $ct->value, $array['ctype']);
+        }
+        if (isset($array['delivery'])) {
+            $array['delivery'] = array_map(fn($dm) => $dm->value, $array['delivery']);
+        }
+        if (isset($array['comp'])) {
+            $array['comp'] = array_map(fn($comp) => $comp->toArray(), $array['comp']);
+        }
+        if (isset($array['comptype'])) {
+            $array['comptype'] = array_map(fn($ct) => $ct->value, $array['comptype']);
+        }
+        return $array;
+    }
+
+    public function toJson(int $flags = JSON_UNESCAPED_SLASHES): string|false
+    {
+        return json_encode($this->toArray(), $flags);
     }
 
     public function setDelay(int $delay): static

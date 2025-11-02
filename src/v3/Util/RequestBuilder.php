@@ -9,7 +9,8 @@ use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\Ext;
 
 class RequestBuilder extends AbstractRequestBuilder
 {
@@ -38,16 +39,38 @@ class RequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
-    /** @param list<string> $seat */
-    public function setSeat(array $seat): static
+    /** @param list<string> $wseat */
+    public function setWseat(array $wseat): static
     {
-        $this->request->setSeat($seat);
+        $this->request->setWseat($wseat);
         return $this;
     }
 
-    public function setWseat(int $wseat): static
+    /** @param list<string> $bseat */
+    public function setBseat(array $bseat): static
     {
-        $this->request->setWseat($wseat);
+        $this->request->setBseat($bseat);
+        return $this;
+    }
+
+    /** @param list<string> $badv */
+    public function setBadv(array $badv): static
+    {
+        $this->request->setBadv($badv);
+        return $this;
+    }
+
+    /** @param list<string> $bapp */
+    public function setBapp(array $bapp): static
+    {
+        $this->request->setBapp($bapp);
+        return $this;
+    }
+
+    /** @param list<string> $bcat */
+    public function setBcat(array $bcat): static
+    {
+        $this->request->setBcat($bcat);
         return $this;
     }
 
@@ -72,6 +95,12 @@ class RequestBuilder extends AbstractRequestBuilder
     public function addItem(Item $item): static
     {
         $this->request->addItem($item);
+        return $this;
+    }
+
+    public function setExt(Ext $ext): static
+    {
+        $this->request->setExt($ext);
         return $this;
     }
 }

@@ -35,17 +35,7 @@ abstract class AbstractParser
     {
         if (is_array($type)) { // It's an array of objects or enums
             $class = $type[0];
-            return array_map(function ($itemData) use ($class) {
-                // If the class is an enum, create it from the value
-                if (is_subclass_of($class, \BackedEnum::class)) {
-                    return $class::from($itemData);
-                }
-                // Otherwise, it's a complex object that needs full hydration
-                if (is_array($itemData)) {
-                    return $this->hydrate($itemData, $class);
-                }
-                return $itemData;
-            }, $value);
+            return array_map(fn($itemData) => $this->hydrateArrayItem($itemData, $class), $value);
         }
 
         // It's a single object or an enum
@@ -60,5 +50,20 @@ abstract class AbstractParser
         }
 
         return $value;
+    }
+
+    private function hydrateArrayItem(mixed $itemData, string $class): mixed
+    {
+        // If the class is an enum, create it from the value
+        if (is_subclass_of($class, \BackedEnum::class)) {
+            return $class::from($itemData);
+        }
+        // Otherwise, it's a complex object that needs full hydration
+        if (is_array($itemData)) {
+            return $this->hydrate($itemData, $class);
+        }
+        // This line is covered when $type is an array of ObjectInterface and $itemData is not an array.
+        // See AbstractParserTest::testHydrateValueWithArrayOfMixedItemsInObjectArray.
+        return $itemData;
     }
 }

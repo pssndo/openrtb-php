@@ -14,21 +14,21 @@ use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Context\User;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\RequestBuilder;
 use PHPUnit\Framework\TestCase;
+use OpenRTB\v3\Ext;
 
 /**
  * @covers \OpenRTB\v3\Util\RequestBuilder
  * @covers \OpenRTB\Common\AbstractRequestBuilder
- * @covers \OpenRTB\v3\Request
+ * @covers \OpenRTB\v3\BidRequest
  */
 class BuilderTest extends TestCase
 {
     public function testMinimalRequestBuild(): void
     {
-        $builder = new RequestBuilder();
-        $request = $builder->build();
+        $request = (new RequestBuilder())();
 
         $this->assertInstanceOf(Request::class, $request);
         $this->assertNotNull($request->getId());
@@ -56,6 +56,7 @@ class BuilderTest extends TestCase
 
         $source = new Source();
         $item = new Item();
+        $ext = new Ext();
 
         $request = $builder
             ->setId('req-123')
@@ -63,13 +64,18 @@ class BuilderTest extends TestCase
             ->setTmax(200)
             ->setAt(AuctionType::SECOND_PRICE)
             ->setCur(['USD'])
-            ->setSeat(['seat-1'])
-            ->setWseat(1)
+            ->setBseat(['seat-1'])
+            ->setWseat(['seat-w-1'])
+            ->setBadv(['badv1', 'badv2'])
+            ->setBapp(['bapp1', 'bapp2'])
+            ->setBcat(['bcat1', 'bcat2'])
             ->setCdata('cdata-val')
             ->setSource($source)
             ->setContext($context)
             ->addItem($item)
-            ->build();
+            ->setExt($ext)
+        ();
+
 
         $this->assertInstanceOf(Request::class, $request);
         $this->assertEquals('req-123', $request->getId());
@@ -77,13 +83,17 @@ class BuilderTest extends TestCase
         $this->assertEquals(200, $request->getTmax());
         $this->assertEquals(AuctionType::SECOND_PRICE, $request->getAt());
         $this->assertEquals(['USD'], $request->getCur());
-        $this->assertEquals(['seat-1'], $request->getSeat());
-        $this->assertEquals(1, $request->getWseat());
+        $this->assertEquals(['seat-1'], $request->getBseat());
+        $this->assertEquals(['seat-w-1'], $request->getWseat());
+        $this->assertEquals(['badv1', 'badv2'], $request->getBadv());
+        $this->assertEquals(['bapp1', 'bapp2'], $request->getBapp());
+        $this->assertEquals(['bcat1', 'bcat2'], $request->getBcat());
         $this->assertEquals('cdata-val', $request->getCdata());
         $this->assertSame($source, $request->getSource());
         $this->assertSame($context, $request->getContext());
         $this->assertCount(1, $request->getItem());
         $this->assertSame($item, $request->getItem()[0]);
+        $this->assertSame($ext, $request->getExt());
 
         // Fix: Call toJson() on the built object, not the builder
         $json = $request->toJson();

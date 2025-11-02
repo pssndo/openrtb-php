@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Util;
 
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v3\Request;
-use OpenRTB\v3\Response;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\BidResponse as Response;
 
 class Parser
 {
-    public static function parseRequest(string $json): Request
+    public static function parseBidRequest(string $json): Request
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         $parser = new self();
@@ -19,12 +19,14 @@ class Parser
         return $request;
     }
 
-    public static function parseResponse(string $json): Response
+    public static function parseBidResponse(string $json): Response
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         $parser = new self();
         /** @var Response $response */
+
         $response = $parser->hydrate($data, Response::class);
+
         return $response;
     }
 

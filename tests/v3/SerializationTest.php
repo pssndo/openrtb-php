@@ -13,10 +13,10 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\DisplayPlacement;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 
 /**
- * @covers \OpenRTB\v3\Request
+ * @covers \OpenRTB\v3\BidRequest
  */
 class SerializationTest extends TestCase
 {

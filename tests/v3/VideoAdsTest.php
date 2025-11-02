@@ -12,14 +12,14 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\VideoPlacement;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
 
 class VideoAdsTest extends TestCase
 {
-    public function testVideoRequestSerialization(): void
+    public function testVideoBidRequestSerialization(): void
     {
-        $request = new Request();
+        $BidRequest = new Request();
         $item = new Item();
         $spec = new Spec();
         $placement = new Placement();
@@ -33,9 +33,9 @@ class VideoAdsTest extends TestCase
         $placement->setVideo($video);
         $spec->setPlacement($placement);
         $item->setSpec($spec);
-        $request->addItem($item);
+        $BidRequest->addItem($item);
 
-        $result = $request->toArray();
+        $result = $BidRequest->toArray();
 
         $videoArray = $result['item'][0]['spec']['placement']['video'];
         $this->assertEquals(1, $videoArray['ptype']);
@@ -43,7 +43,7 @@ class VideoAdsTest extends TestCase
         $this->assertEquals([3], $videoArray['playmethod']);
     }
 
-    public function testVideoRequestDeserialization(): void
+    public function testVideoBidRequestDeserialization(): void
     {
         $json = <<<'JSON'
 {
@@ -63,10 +63,10 @@ class VideoAdsTest extends TestCase
 }
 JSON;
 
-        $request = Parser::parseRequest($json);
-        $this->assertInstanceOf(Request::class, $request);
+        $BidRequest = Parser::parseBidRequest($json);
+        $this->assertInstanceOf(Request::class, $BidRequest);
 
-        $items = $request->getItem();
+        $items = $BidRequest->getItem();
         $this->assertIsArray($items);
         $this->assertCount(1, $items);
         $item = $items[0];

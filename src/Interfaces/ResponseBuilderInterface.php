@@ -8,5 +8,5 @@ interface ResponseBuilderInterface
 {
     public function setBidId(string $bidId): static;
 
-    public function build(): ObjectInterface;
+    public function __invoke(): ObjectInterface;
 }

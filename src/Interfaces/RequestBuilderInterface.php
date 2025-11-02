@@ -8,5 +8,5 @@ interface RequestBuilderInterface
 {
     public function setId(string $id): static;
 
-    public function build(): ObjectInterface;
+    public function __invoke(): ObjectInterface;
 }

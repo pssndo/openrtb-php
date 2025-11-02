@@ -6,8 +6,8 @@ namespace OpenRTB\v3\Util;
 
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
-use OpenRTB\v3\Request;
-use OpenRTB\v3\Response;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\BidResponse as Response;
 
 /**
  * Validator - Validates OpenRTB objects

@@ -32,7 +32,7 @@ class SSPIntegration
     public function handleBidRequest(string $jsonRequest): string
     {
         // 1. Parse the incoming JSON into a Request object.
-        $request = Parser::parseRequest($jsonRequest);
+        $request = Parser::parseBidRequest($jsonRequest);
 
         if ($request === null) {
             // In a real SSP, you would log this error and return a specific HTTP status.

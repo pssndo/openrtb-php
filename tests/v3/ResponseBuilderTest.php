@@ -13,7 +13,7 @@ use OpenRTB\v3\Bid\NativeAd;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Bid\Title;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\v3\Response;
+use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Util\Parser;
 use OpenRTB\v3\Util\ResponseBuilder;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \OpenRTB\v3\Util\ResponseBuilder
  * @covers \OpenRTB\v3\Util\Parser
- * @covers \OpenRTB\v3\Response
+ * @covers \OpenRTB\v3\BidResponse
  */
 class ResponseBuilderTest extends TestCase
 {
@@ -33,7 +33,7 @@ class ResponseBuilderTest extends TestCase
             ->setBidId('bid-456')
             ->setNoBidReason(NoBidReason::TECHNICAL_ERROR)
             ->setCurrency('USD')
-            ->build();
+            ();
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('req-123', $response->getId());
@@ -67,7 +67,7 @@ class ResponseBuilderTest extends TestCase
             ->setCurrency('EUR')
             ->setCdata('custom-data')
             ->addSeatbid($seatbid)
-            ->build();
+        ();
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('req-abc', $response->getId());
@@ -86,7 +86,7 @@ class ResponseBuilderTest extends TestCase
         $decoded = json_decode($json, true);
 
         // Complete the cycle by parsing the response back.
-        $parsedResponse = Parser::parseResponse($json);
+        $parsedResponse = Parser::parseBidResponse($json);
         $this->assertInstanceOf(Response::class, $parsedResponse);
         $this->assertEquals($response->toArray(), $parsedResponse->toArray());
     }

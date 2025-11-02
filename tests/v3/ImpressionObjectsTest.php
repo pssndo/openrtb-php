@@ -13,7 +13,7 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Metric;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\Request;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
 
 /**
@@ -83,7 +83,7 @@ class ImpressionObjectsTest extends TestCase
         // 2. Serialize to JSON and back to test the Parser and schema.
         $json = $request->toJson();
         $this->assertIsString($json);
-        $parsedRequest = Parser::parseRequest($json);
+        $parsedRequest = Parser::parseBidRequest($json);
 
         // 3. Assert deep equality on the deserialized object.
         $this->assertInstanceOf(Request::class, $parsedRequest);
