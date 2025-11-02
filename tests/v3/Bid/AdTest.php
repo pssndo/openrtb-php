@@ -22,7 +22,6 @@ final class AdTest extends TestCase
     {
         $schema = Ad::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('adomain', $schema);

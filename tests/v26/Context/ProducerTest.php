@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\Producer;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Producer as CommonProducer;
 
 /**
  * @covers \OpenRTB\v26\Context\Producer
@@ -17,7 +18,7 @@ final class ProducerTest extends TestCase
     {
         $schema = Producer::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonProducer
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('name', $schema);
@@ -26,6 +27,8 @@ final class ProducerTest extends TestCase
         $this->assertEquals('array', $schema['cat']);
         $this->assertArrayHasKey('domain', $schema);
         $this->assertEquals('string', $schema['domain']);
+
+        // Assertions for properties unique to v26 Producer
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }

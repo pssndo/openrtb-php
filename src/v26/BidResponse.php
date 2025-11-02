@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace OpenRTB\v26;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\Response\SeatBid;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=43
@@ -15,6 +17,9 @@ class BidResponse implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|array<class-string>>
+     */
     protected static array $schema = [
         'seatbid' => [SeatBid::class],
         'ext' => Ext::class,
@@ -35,16 +40,20 @@ class BidResponse implements ObjectInterface
         return $this->get('id');
     }
 
-    /** @param list<SeatBid> $seatbid */
-    public function setSeatbid(array $seatbid): static
+    /** @param Collection<SeatBid>|array<SeatBid> $seatbid */
+    public function setSeatbid(Collection|array $seatbid): static
     {
-        return $this->set('seatbid', $seatbid);
+        return $this->set('seatbid', (array)$seatbid);
     }
 
-    /** @return list<SeatBid>|null */
-    public function getSeatbid(): ?array
+    /** @return Collection<SeatBid>|null */
+    public function getSeatbid(): ?Collection
     {
-        return $this->get('seatbid');
+        $seatbid = $this->get('seatbid');
+        if (is_array($seatbid)) {
+            return new Collection($seatbid, SeatBid::class);
+        }
+        return $seatbid;
     }
 
     public function setBidid(string $bidid): static

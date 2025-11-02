@@ -43,8 +43,8 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(AuctionType::FIRST_PRICE, $deal->getAt());
         $this->assertEquals(2.50, $deal->getFlr());
         $this->assertEquals('USD', $deal->getFlrcur());
-        $this->assertEquals(['seat-1'], $deal->getWseat());
-        $this->assertEquals(['adv-1'], $deal->getWadv());
+        $this->assertEquals(['seat-1'], $deal->getWseat()->toArray());
+        $this->assertEquals(['adv-1'], $deal->getWadv()->toArray());
 
         $spec = (new Spec())->setPlacement((new Placement())->setTagid('p1'));
         $this->assertNotNull($spec->getPlacement());
@@ -71,9 +71,9 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(300, $item->getExp());
         $this->assertEquals(12345, $item->getDt());
         $this->assertEquals(DeliveryMethod::TAG, $item->getDlvy());
-        $this->assertIsArray($item->getMetric());
+        $this->assertIsArray($item->getMetric()->toArray());
         $this->assertCount(1, $item->getMetric());
-        $this->assertIsArray($item->getDeal());
+        $this->assertIsArray($item->getDeal()->toArray());
         $this->assertCount(1, $item->getDeal());
         $this->assertEquals(1, $item->getPrivate());
         $this->assertSame($spec, $item->getSpec());
@@ -90,20 +90,20 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());
 
         $parsedItems = $parsedRequest->getItem();
-        $this->assertIsArray($parsedItems);
+        $this->assertIsArray($parsedItems->toArray());
         $this->assertCount(1, $parsedItems);
-        $parsedItem = $parsedItems[0];
+        $parsedItem = $parsedItems->offsetGet(0);
         $this->assertInstanceOf(Item::class, $parsedItem);
 
         $parsedMetrics = $parsedItem->getMetric();
-        $this->assertIsArray($parsedMetrics);
+        $this->assertIsArray($parsedMetrics->toArray());
         $this->assertCount(1, $parsedMetrics);
-        $this->assertEquals(MetricType::CLICKS, $parsedMetrics[0]->getType());
+        $this->assertEquals(MetricType::CLICKS, $parsedMetrics->offsetGet(0)->getType());
 
         $parsedDeals = $parsedItem->getDeal();
-        $this->assertIsArray($parsedDeals);
+        $this->assertIsArray($parsedDeals->toArray());
         $this->assertCount(1, $parsedDeals);
-        $this->assertEquals(AuctionType::FIRST_PRICE, $parsedDeals[0]->getAt());
+        $this->assertEquals(AuctionType::FIRST_PRICE, $parsedDeals->offsetGet(0)->getAt());
 
         $parsedSpec = $parsedItem->getSpec();
         $this->assertInstanceOf(Spec::class, $parsedSpec);

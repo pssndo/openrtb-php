@@ -17,7 +17,6 @@ final class VideoTest extends TestCase
     {
         $schema = Video::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('adm', $schema);
         $this->assertEquals('string', $schema['adm']);
         $this->assertArrayHasKey('curl', $schema);

@@ -17,7 +17,6 @@ final class MediaTest extends TestCase
     {
         $schema = Media::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('ad', $schema);
         $this->assertEquals(Ad::class, $schema['ad']);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26;
 
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\App;
 use OpenRTB\v26\Context\Content;
 use OpenRTB\v26\Context\Device;
@@ -14,13 +15,10 @@ use OpenRTB\v26\Context\Regs;
 use OpenRTB\v26\Context\Site;
 use OpenRTB\v26\Context\Source;
 use OpenRTB\v26\Context\SupplyChain;
-use OpenRTB\v26\Context\SupplyChain\Node;
-use OpenRTB\v26\Context\User;
-use OpenRTB\v26\Ext;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenRTB\v26\Ext
+ * @covers \OpenRTB\Common\Resources\Ext
  * @covers \OpenRTB\v26\Context\App
  * @covers \OpenRTB\v26\Context\Content
  * @covers \OpenRTB\v26\Context\Device
@@ -59,8 +57,6 @@ class ContextObjectsTest extends TestCase
         $this->assertSame($publisher, $app->getPublisher());
         $this->assertSame($content, $app->getContent());
         $this->assertSame($ext, $app->getExt());
-        $this->assertIsArray(Ext::getSchema());
-        $this->assertIsArray(App::getSchema());
     }
 
     public function testContentObject(): void
@@ -89,7 +85,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('PG', $content->getContentrating());
         $this->assertEquals('test,content', $content->getKeywords());
         $this->assertSame($ext, $content->getExt());
-        $this->assertIsArray(Content::getSchema());
     }
 
     public function testDeviceObject(): void

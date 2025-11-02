@@ -13,6 +13,7 @@ use OpenRTB\v3\Placement\AudioPlacement;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
+use OpenRTB\Common\Collection;
 
 /**
  * @covers \OpenRTB\v3\Placement\AudioPlacement
@@ -66,7 +67,7 @@ JSON;
         $this->assertInstanceOf(Request::class, $request);
 
         $items = $request->getItem();
-        $this->assertIsArray($items);
+        $this->assertInstanceOf(Collection::class, $items);
         $this->assertCount(1, $items);
         $item = $items[0];
         $this->assertInstanceOf(Item::class, $item);

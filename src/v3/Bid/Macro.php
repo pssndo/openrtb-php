@@ -11,22 +11,28 @@ class Macro implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string>
+     */
     protected static array $schema = [
         'key' => 'string',
         'value' => 'string',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setKey(string $key): self
+    public function setKey(string $key): static
     {
         return $this->set('key', $key);
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value): static
     {
         return $this->set('value', $value);
     }

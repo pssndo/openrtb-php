@@ -12,6 +12,9 @@ class Banner implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|int|class-string>
+     */
     protected static array $schema = [
         'img' => 'string',
         'w' => 'int',
@@ -19,12 +22,15 @@ class Banner implements ObjectInterface
         'link' => Link::class,
     ];
 
+    /**
+     * @return array<string, string|int|class-string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setImg(string $img): self
+    public function setImg(string $img): static
     {
         return $this->set('img', $img);
     }
@@ -34,7 +40,7 @@ class Banner implements ObjectInterface
         return $this->get('img');
     }
 
-    public function setW(int $w): self
+    public function setW(int $w): static
     {
         return $this->set('w', $w);
     }
@@ -44,7 +50,7 @@ class Banner implements ObjectInterface
         return $this->get('w');
     }
 
-    public function setH(int $h): self
+    public function setH(int $h): static
     {
         return $this->set('h', $h);
     }
@@ -54,7 +60,7 @@ class Banner implements ObjectInterface
         return $this->get('h');
     }
 
-    public function setLink(Link $link): self
+    public function setLink(Link $link): static
     {
         return $this->set('link', $link);
     }

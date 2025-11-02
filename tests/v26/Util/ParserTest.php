@@ -60,11 +60,24 @@ final class ParserTest extends TestCase
 
         $this->assertInstanceOf(BidRequest::class, $request);
         $this->assertEquals('123', $request->getId());
-        $this->assertCount(1, $request->getImp());
-        $this->assertEquals('1', $request->getImp()[0]->getId());
-        $this->assertEquals(300, $request->getImp()[0]->getBanner()->getW());
-        $this->assertEquals('testsite', $request->getSite()->getName());
-        $this->assertEquals(1980, $request->getUser()->getYob());
+
+        $imp = $request->getImp();
+        $this->assertNotNull($imp);
+        $this->assertCount(1, $imp);
+        $this->assertEquals('1', $imp[0]->getId());
+
+        $banner = $imp[0]->getBanner();
+        $this->assertNotNull($banner);
+        $this->assertEquals(300, $banner->getW());
+
+        $site = $request->getSite();
+        $this->assertNotNull($site);
+        $this->assertEquals('testsite', $site->getName());
+
+        $user = $request->getUser();
+        $this->assertNotNull($user);
+        $this->assertEquals(1980, $user->getYob());
+
         $this->assertEquals(AuctionType::FIRST_PRICE, $request->getAt());
     }
 
@@ -89,17 +102,24 @@ final class ParserTest extends TestCase
 
         $this->assertInstanceOf(BidResponse::class, $response);
         $this->assertEquals('response1', $response->getId());
-        $this->assertCount(1, $response->getSeatbid());
-        $this->assertEquals('seat1', $response->getSeatbid()[0]->getSeat());
-        $this->assertCount(1, $response->getSeatbid()[0]->getBid());
-        $this->assertEquals('bid1', $response->getSeatbid()[0]->getBid()[0]->getId());
-        $this->assertEquals(1.23, $response->getSeatbid()[0]->getBid()[0]->getPrice());
+
+        $seatbid = $response->getSeatbid();
+        $this->assertNotNull($seatbid);
+        $this->assertCount(1, $seatbid);
+        $this->assertEquals('seat1', $seatbid[0]->getSeat());
+
+        $bid = $seatbid[0]->getBid();
+        $this->assertNotNull($bid);
+        $this->assertCount(1, $bid);
+        $this->assertEquals('bid1', $bid[0]->getId());
+        $this->assertEquals(1.23, $bid[0]->getPrice());
     }
 
     public function testHydrateScalarValue(): void
     {
         $json = '{"id":"scalar_test"}';
         $request = $this->parser->parseBidRequest($json);
+        $this->assertNotNull($request);
         $this->assertEquals('scalar_test', $request->getId());
     }
 
@@ -107,6 +127,7 @@ final class ParserTest extends TestCase
     {
         $json = '{"id":"array_scalar_test","wseat":["seat1","seat2"]}';
         $request = $this->parser->parseBidRequest($json);
-        $this->assertEquals(['seat1', 'seat2'], $request->getWseat());
+        $this->assertNotNull($request);
+        $this->assertEquals(['seat1', 'seat2'], $request->getWseat()->toArray());
     }
 }

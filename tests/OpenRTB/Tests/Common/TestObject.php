@@ -11,6 +11,9 @@ class TestObject implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|array<string>>
+     */
     protected static array $schema = [
         'id' => 'string',
         'tags' => ['string'], // Array of scalar strings

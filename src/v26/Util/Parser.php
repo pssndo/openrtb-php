@@ -21,7 +21,7 @@ class Parser extends AbstractParser
     public function parseBidResponse(string $json): ?BidResponse
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        /** @var BidResponse|null $response */
+        /** @var BidResponse $response */
         $response = $this->hydrate($data, BidResponse::class);
         return $response;
     }

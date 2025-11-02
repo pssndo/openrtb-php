@@ -4,50 +4,38 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Metric as CommonMetric;
 use OpenRTB\v3\Enums\Impression\MetricType;
 
-class Metric implements ObjectInterface
+class Metric extends CommonMetric
 {
-    use HasData;
-
-    protected static array $schema = [
-        'type' => MetricType::class,
-    ];
+    /**
+     * @return array<string, class-string|string|float>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'type' => MetricType::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(CommonMetric::getBaseSchema(), static::getBaseSchema());
     }
 
-    public function setType(MetricType $type): self
+    public function setType(MetricType $type): static
     {
-        return $this->set('type', $type);
+        return $this->set('type', $type->value);
     }
 
     public function getType(): ?MetricType
     {
-        return $this->get('type');
-    }
+        $type = $this->get('type');
+        if ($type instanceof MetricType) {
+            return $type;
+        }
 
-    public function setValue(float $value): self
-    {
-        return $this->set('value', $value);
-    }
-
-    public function getValue(): ?float
-    {
-        return $this->get('value');
-    }
-
-    public function setVendor(string $vendor): self
-    {
-        return $this->set('vendor', $vendor);
-    }
-
-    public function getVendor(): ?string
-    {
-        return $this->get('vendor');
+        return MetricType::tryFrom($type);
     }
 }

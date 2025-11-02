@@ -9,6 +9,7 @@ use OpenRTB\v3\Bid\Bid;
 use OpenRTB\v3\Bid\Media;
 use OpenRTB\v3\Bid\Deal;
 use OpenRTB\v3\Bid\Macro;
+use OpenRTB\Common\Resources\Bid as CommonBid;
 
 /**
  * @covers \OpenRTB\v3\Bid\Bid
@@ -19,11 +20,13 @@ final class BidTest extends TestCase
     {
         $schema = Bid::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonBid
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('price', $schema);
         $this->assertEquals('float', $schema['price']);
+
+        // Assertions for properties unique to v3 Bid
         $this->assertArrayHasKey('media', $schema);
         $this->assertEquals(Media::class, $schema['media']);
         $this->assertArrayHasKey('deal', $schema);

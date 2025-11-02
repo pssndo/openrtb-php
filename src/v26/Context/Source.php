@@ -4,25 +4,30 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Source as CommonSource;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=42
  */
-class Source implements ObjectInterface
+class Source extends CommonSource
 {
-    use HasData;
-
-    protected static array $schema = [
-        'schain' => SupplyChain::class,
-        'ext' => Ext::class,
-    ];
+    /**
+     * @return array<string, class-string|string>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'fd' => 'int',
+            'pchain' => 'string',
+            'schain' => SupplyChain::class,
+            'ext' => Ext::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(CommonSource::getBaseSchema(), static::getBaseSchema());
     }
 
     public function setFd(int $fd): static
@@ -33,16 +38,6 @@ class Source implements ObjectInterface
     public function getFd(): ?int
     {
         return $this->get('fd');
-    }
-
-    public function setTid(string $tid): static
-    {
-        return $this->set('tid', $tid);
-    }
-
-    public function getTid(): ?string
-    {
-        return $this->get('tid');
     }
 
     public function setPchain(string $pchain): static

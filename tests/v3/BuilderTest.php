@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\App;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Device;
@@ -14,10 +16,10 @@ use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Context\User;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\RequestBuilder;
+use OpenRTB\v3\Util\Parser;
+use OpenRTB\Common\Collection;
 use PHPUnit\Framework\TestCase;
-use OpenRTB\v3\Ext;
 
 /**
  * @covers \OpenRTB\v3\Util\RequestBuilder
@@ -81,28 +83,40 @@ class BuilderTest extends TestCase
         $this->assertEquals(1, $request->getTest());
         $this->assertEquals(200, $request->getTmax());
         $this->assertEquals(AuctionType::SECOND_PRICE, $request->getAt());
-        $this->assertEquals(['USD'], $request->getCur());
-        $this->assertEquals(['seat-1'], $request->getBseat());
-        $this->assertEquals(['seat-w-1'], $request->getWseat());
-        $this->assertEquals(['badv1', 'badv2'], $request->getBadv());
-        $this->assertEquals(['bapp1', 'bapp2'], $request->getBapp());
-        $this->assertEquals(['bcat1', 'bcat2'], $request->getBcat());
+        $this->assertEquals(['USD'], $request->getCur()->toArray());
+        $this->assertEquals(['seat-1'], $request->getBseat()->toArray());
+        $this->assertEquals(['seat-w-1'], $request->getWseat()->toArray());
+        $this->assertEquals(['badv1', 'badv2'], $request->getBadv()->toArray());
+        $this->assertEquals(['bapp1', 'bapp2'], $request->getBapp()->toArray());
+        $this->assertEquals(['bcat1', 'bcat2'], $request->getBcat()->toArray());
         $this->assertEquals('cdata-val', $request->getCdata());
         $this->assertSame($source, $request->getSource());
         $this->assertSame($context, $request->getContext());
+        $this->assertNotNull($request->getItem());
         $this->assertCount(1, $request->getItem());
         $this->assertSame($item, $request->getItem()[0]);
         $this->assertSame($ext, $request->getExt());
 
         // Fix: Call toJson() on the built object, not the builder
         $json = $request->toJson();
+        $this->assertIsString($json);
         $this->assertJson($json);
 
         $decoded = json_decode($json, true);
+        $this->assertIsArray($decoded);
         $this->assertEquals('req-123', $decoded['id']);
         $this->assertEquals(2, $decoded['at']); // Check enum value
 
-        // Cover the static schema method
-        $this->assertIsArray(Request::getSchema());
+        // Parse the request back to trigger lazy-loading getters
+        $parsedRequest = Parser::parseBidRequest($json);
+        $this->assertInstanceOf(Request::class, $parsedRequest);
+
+        // These assertions will trigger the previously uncovered `is_array()` branches
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getWseat());
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getBseat());
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getBadv());
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getBapp());
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getBcat());
+        $this->assertInstanceOf(Collection::class, $parsedRequest->getCur());
     }
 }

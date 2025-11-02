@@ -14,7 +14,9 @@ interface ObjectInterface
     public function toJson(int $flags = JSON_UNESCAPED_SLASHES): string|false;
 
     /**
-     * @return array<string, class-string|array<class-string>>
+     * @return array<string, class-string|array<class-string>|string|int|array<string>|array<int>|float>
      */
     public static function getSchema(): array;
+
+    public function set(string $key, mixed $value): static;
 }

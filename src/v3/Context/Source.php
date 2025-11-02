@@ -4,36 +4,28 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Source as CommonSource;
 
-class Source implements ObjectInterface
+class Source extends CommonSource
 {
-    use HasData;
-
-    protected static array $schema = [
-        'tid' => 'string',
-        'ts' => 'int',
-        'ds' => 'string',
-        'dsmap' => 'string',
-    ];
+    /**
+     * @return array<string, string|int>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'ts' => 'int',
+            'ds' => 'string',
+            'dsmap' => 'string',
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(CommonSource::getBaseSchema(), static::getBaseSchema());
     }
 
-    public function setTid(string $tid): self
-    {
-        return $this->set('tid', $tid);
-    }
-
-    public function getTid(): ?string
-    {
-        return $this->get('tid');
-    }
-
-    public function setTs(int $ts): self
+    public function setTs(int $ts): static
     {
         return $this->set('ts', $ts);
     }
@@ -43,7 +35,7 @@ class Source implements ObjectInterface
         return $this->get('ts');
     }
 
-    public function setDs(string $ds): self
+    public function setDs(string $ds): static
     {
         return $this->set('ds', $ds);
     }
@@ -53,7 +45,7 @@ class Source implements ObjectInterface
         return $this->get('ds');
     }
 
-    public function setDsmap(string $dsmap): self
+    public function setDsmap(string $dsmap): static
     {
         return $this->set('dsmap', $dsmap);
     }

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Context;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
 use OpenRTB\v26\Context\SupplyChain\Node as SupplyChainNode;
 
 class SupplyChain implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string|array<class-string>>
+     */
     protected static array $schema = [
         'complete' => 'int',
         'ver' => 'string',

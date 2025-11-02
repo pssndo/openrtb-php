@@ -11,6 +11,9 @@ class Dooh implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|array<string>>
+     */
     protected static array $schema = [];
 
     public static function getSchema(): array

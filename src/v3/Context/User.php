@@ -4,80 +4,26 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\User as CommonUser;
 
-class User implements ObjectInterface
+class User extends CommonUser
 {
-    use HasData;
-
-    /** @var array<string, class-string> */
-    protected static array $schema = [
-        'id' => 'string',
-        'buyeruid' => 'string',
-        'yob' => 'int',
-        'gender' => 'string',
-        'keywords' => 'string',
-        'kwarray' => 'array',
-        'consent' => 'string',
-        'geo' => Geo::class,
-        'data' => 'array',
-        'eids' => 'array',
-    ];
+    /**
+     * @return array<string, string|array<string>|array<array<string, mixed>>>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'kwarray' => 'array',
+            'consent' => 'string',
+            'data' => 'array',
+            'eids' => 'array',
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
-    }
-
-    public function setId(string $id): static
-    {
-        return $this->set('id', $id);
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
-    }
-
-    public function setBuyeruid(string $buyeruid): static
-    {
-        return $this->set('buyeruid', $buyeruid);
-    }
-
-    public function getBuyeruid(): ?string
-    {
-        return $this->get('buyeruid');
-    }
-
-    public function setYob(int $yob): static
-    {
-        return $this->set('yob', $yob);
-    }
-
-    public function getYob(): ?int
-    {
-        return $this->get('yob');
-    }
-
-    public function setGender(string $gender): static
-    {
-        return $this->set('gender', $gender);
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->get('gender');
-    }
-
-    public function setKeywords(string $keywords): static
-    {
-        return $this->set('keywords', $keywords);
-    }
-
-    public function getKeywords(): ?string
-    {
-        return $this->get('keywords');
+        return array_merge(CommonUser::getBaseSchema(), static::getBaseSchema());
     }
 
     /** @param list<string> $kwarray */
@@ -100,16 +46,6 @@ class User implements ObjectInterface
     public function getConsent(): ?string
     {
         return $this->get('consent');
-    }
-
-    public function setGeo(Geo $geo): static
-    {
-        return $this->set('geo', $geo);
-    }
-
-    public function getGeo(): ?Geo
-    {
-        return $this->get('geo');
     }
 
     /** @param list<array<string, mixed>> $data */

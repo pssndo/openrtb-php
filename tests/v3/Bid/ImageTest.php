@@ -16,7 +16,6 @@ final class ImageTest extends TestCase
     {
         $schema = Image::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('url', $schema);
         $this->assertEquals('string', $schema['url']);
         $this->assertArrayHasKey('w', $schema);

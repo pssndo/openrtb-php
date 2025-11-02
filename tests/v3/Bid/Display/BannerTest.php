@@ -17,7 +17,6 @@ final class BannerTest extends TestCase
     {
         $schema = Banner::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('img', $schema);
         $this->assertEquals('string', $schema['img']);
         $this->assertArrayHasKey('w', $schema);

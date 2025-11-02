@@ -10,19 +10,32 @@ class ImageFormat implements ObjectInterface
 {
     use \OpenRTB\Common\HasData;
 
-    protected static array $schema = [];
+    /**
+     * @var array<string, string|int|array<string>>
+     */
+    protected static array $schema = [
+        'h' => 'int',
+        'w' => 'int',
+        'hmin' => 'int',
+        'wmin' => 'int',
+        'type' => 'int',
+        'mimes' => ['string'],
+    ];
 
+    /**
+     * @return array<string, string|int|array<string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setH(int $h): self
+    public function setH(int $h): static
     {
         return $this->set('h', $h);
     }
 
-    public function setW(int $w): self
+    public function setW(int $w): static
     {
         return $this->set('w', $w);
     }
@@ -37,7 +50,7 @@ class ImageFormat implements ObjectInterface
         return $this->get('w');
     }
 
-    public function setHmin(int $hmin): self
+    public function setHmin(int $hmin): static
     {
         return $this->set('hmin', $hmin);
     }
@@ -47,7 +60,7 @@ class ImageFormat implements ObjectInterface
         return $this->get('hmin');
     }
 
-    public function setWmin(int $wmin): self
+    public function setWmin(int $wmin): static
     {
         return $this->set('wmin', $wmin);
     }
@@ -57,7 +70,7 @@ class ImageFormat implements ObjectInterface
         return $this->get('wmin');
     }
 
-    public function setType(int $type): self
+    public function setType(int $type): static
     {
         return $this->set('type', $type);
     }
@@ -67,11 +80,13 @@ class ImageFormat implements ObjectInterface
         return $this->get('type');
     }
 
-    public function setMimes(array $mimes): self
+    /** @param list<string> $mimes */
+    public function setMimes(array $mimes): static
     {
         return $this->set('mimes', $mimes);
     }
 
+    /** @return list<string>|null */
     public function getMimes(): ?array
     {
         return $this->get('mimes');

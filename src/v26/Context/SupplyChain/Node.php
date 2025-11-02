@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Context\SupplyChain;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
 
 class Node implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string>
+     */
     protected static array $schema = [
         'asi' => 'string',
         'sid' => 'string',

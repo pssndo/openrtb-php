@@ -4,38 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Regs as CommonRegs;
 
-class Regs implements ObjectInterface
+class Regs extends CommonRegs
 {
-    use HasData;
-
-    protected static array $schema = [];
+    /**
+     * @return array<string, string|array<string>>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'gpp' => 'string',
+            'gpp_sid' => ['int'],
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
-    }
-
-    public function setCoppa(int $coppa): static
-    {
-        return $this->set('coppa', $coppa);
-    }
-
-    public function getCoppa(): ?int
-    {
-        return $this->get('coppa');
-    }
-
-    public function setGdpr(int $gdpr): static
-    {
-        return $this->set('gdpr', $gdpr);
-    }
-
-    public function getGdpr(): ?int
-    {
-        return $this->get('gdpr');
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
     public function setGpp(string $gpp): static

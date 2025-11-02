@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Impression;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Impression\Deal;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v26\Impression\Deal
@@ -17,19 +17,18 @@ final class DealTest extends TestCase
     {
         $schema = Deal::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
-        $this->assertArrayHasKey('bidfloor', $schema);
-        $this->assertEquals('float', $schema['bidfloor']);
-        $this->assertArrayHasKey('bidfloorcur', $schema);
-        $this->assertEquals('string', $schema['bidfloorcur']);
+        $this->assertArrayHasKey('flr', $schema);
+        $this->assertEquals('float', $schema['flr']);
+        $this->assertArrayHasKey('flrcur', $schema);
+        $this->assertEquals('string', $schema['flrcur']);
         $this->assertArrayHasKey('at', $schema);
         $this->assertEquals('int', $schema['at']);
         $this->assertArrayHasKey('wseat', $schema);
-        $this->assertEquals('array', $schema['wseat']);
+        $this->assertEquals(['string'], $schema['wseat']);
         $this->assertArrayHasKey('wadv', $schema);
-        $this->assertEquals('array', $schema['wadv']);
+        $this->assertEquals(['string'], $schema['wadv']);
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }
@@ -84,14 +83,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $at = 1;
         $deal->setAt($at);
-        $this->assertEquals($at, $deal->getAt());
+        $this->assertEquals($at, $deal->getAt()->value);
     }
 
     public function testGetAt(): void
     {
         $deal = new Deal();
         $deal->setAt(2);
-        $this->assertEquals(2, $deal->getAt());
+        $this->assertEquals(2, $deal->getAt()->value);
     }
 
     public function testSetWseat(): void
@@ -99,14 +98,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wseat = ['seat1', 'seat2'];
         $deal->setWseat($wseat);
-        $this->assertEquals($wseat, $deal->getWseat());
+        $this->assertEquals($wseat, $deal->getWseat()->toArray());
     }
 
     public function testGetWseat(): void
     {
         $deal = new Deal();
         $deal->setWseat(['seat3']);
-        $this->assertEquals(['seat3'], $deal->getWseat());
+        $this->assertEquals(['seat3'], $deal->getWseat()->toArray());
     }
 
     public function testSetWadv(): void
@@ -114,14 +113,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wadv = ['adv1', 'adv2'];
         $deal->setWadv($wadv);
-        $this->assertEquals($wadv, $deal->getWadv());
+        $this->assertEquals($wadv, $deal->getWadv()->toArray());
     }
 
     public function testGetWadv(): void
     {
         $deal = new Deal();
         $deal->setWadv(['adv3']);
-        $this->assertEquals(['adv3'], $deal->getWadv());
+        $this->assertEquals(['adv3'], $deal->getWadv()->toArray());
     }
 
     public function testSetExt(): void

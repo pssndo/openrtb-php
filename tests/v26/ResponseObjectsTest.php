@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26;
 
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Response\Bid;
 use OpenRTB\v26\Response\SeatBid;
 use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
 
 /**
  * @covers \OpenRTB\v26\Response\Bid
@@ -46,7 +47,6 @@ class ResponseObjectsTest extends TestCase
         $this->assertEquals(300, $bid->getW());
         $this->assertEquals(250, $bid->getH());
         $this->assertSame($ext, $bid->getExt());
-        $this->assertIsArray(Bid::getSchema());
     }
 
     public function testSeatBidObject(): void
@@ -54,15 +54,16 @@ class ResponseObjectsTest extends TestCase
         $bid = new Bid();
         $ext = new Ext();
         $seatBid = (new SeatBid())
-            ->setBid([$bid])
+            ->setBid(new Collection([$bid], Bid::class))
             ->setSeat('seat-1')
             ->setGroup(1)
             ->setExt($ext);
 
-        $this->assertEquals([$bid], $seatBid->getBid());
+        $this->assertInstanceOf(Collection::class, $seatBid->getBid());
+        $this->assertCount(1, $seatBid->getBid());
+        $this->assertSame($bid, $seatBid->getBid()[0]);
         $this->assertEquals('seat-1', $seatBid->getSeat());
         $this->assertEquals(1, $seatBid->getGroup());
         $this->assertSame($ext, $seatBid->getExt());
-        $this->assertIsArray(SeatBid::getSchema());
     }
 }

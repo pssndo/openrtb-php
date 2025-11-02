@@ -4,47 +4,28 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Bid as CommonBid;
 
-class Bid implements ObjectInterface
+class Bid extends CommonBid
 {
-    use HasData;
-
-    protected static array $schema = [
-        'id' => 'string',
-        'price' => 'float',
-        'media' => Media::class,
-        'deal' => Deal::class,
-        'macro' => [Macro::class],
-    ];
+    /**
+     * @return array<string, string|class-string|array<class-string>>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'media' => Media::class,
+            'deal' => Deal::class,
+            'macro' => [Macro::class],
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(CommonBid::getBaseSchema(), static::getBaseSchema());
     }
 
-    public function setId(string $id): self
-    {
-        return $this->set('id', $id);
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
-    }
-
-    public function setPrice(float $price): self
-    {
-        return $this->set('price', $price);
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->get('price');
-    }
-
-    public function setMedia(Media $media): self
+    public function setMedia(Media $media): static
     {
         return $this->set('media', $media);
     }
@@ -54,7 +35,7 @@ class Bid implements ObjectInterface
         return $this->get('media');
     }
 
-    public function setDeal(Deal $deal): self
+    public function setDeal(Deal $deal): static
     {
         return $this->set('deal', $deal);
     }
@@ -65,7 +46,7 @@ class Bid implements ObjectInterface
     }
 
     /** @param list<Macro> $macro */
-    public function setMacro(array $macro): self
+    public function setMacro(array $macro): static
     {
         return $this->set('macro', $macro);
     }

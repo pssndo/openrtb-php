@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26;
 
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Impression\Audio;
 use OpenRTB\v26\Impression\Banner;
 use OpenRTB\v26\Impression\Deal;
@@ -65,7 +65,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(1, $imp->getSecure());
         $this->assertEquals(30, $imp->getExp());
         $this->assertSame($ext, $imp->getExt());
-        $this->assertIsArray(Imp::getSchema());
     }
 
     public function testAudioObject(): void
@@ -87,7 +86,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(2, $audio->getMaxseq());
         $this->assertEquals([3, 5], $audio->getApi());
         $this->assertSame($ext, $audio->getExt());
-        $this->assertIsArray(Audio::getSchema());
     }
 
     public function testBannerObject(): void
@@ -110,7 +108,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals([3], $banner->getApi());
         $this->assertEquals(1, $banner->getVcm());
         $this->assertSame($ext, $banner->getExt());
-        $this->assertIsArray(Banner::getSchema());
     }
 
     public function testDealObject(): void
@@ -127,10 +124,9 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals('deal-1', $deal->getId());
         $this->assertEquals(1.5, $deal->getBidfloor());
         $this->assertEquals('USD', $deal->getBidfloorcur());
-        $this->assertEquals(2, $deal->getAt());
-        $this->assertEquals(['seat-1'], $deal->getWseat());
+        $this->assertEquals(2, $deal->getAt()->value);
+        $this->assertEquals(['seat-1'], $deal->getWseat()->toArray());
         $this->assertSame($ext, $deal->getExt());
-        $this->assertIsArray(Deal::getSchema());
     }
 
     public function testFormatObject(): void
@@ -138,7 +134,6 @@ class ImpressionObjectsTest extends TestCase
         $format = (new Format())->setW(300)->setH(250);
         $this->assertEquals(300, $format->getW());
         $this->assertEquals(250, $format->getH());
-        $this->assertIsArray(Format::getSchema());
     }
 
     public function testMetricObject(): void
@@ -154,7 +149,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(0.8, $metric->getValue());
         $this->assertEquals('MOAT', $metric->getVendor());
         $this->assertSame($ext, $metric->getExt());
-        $this->assertIsArray(Metric::getSchema());
     }
 
     public function testNativeObject(): void
@@ -172,7 +166,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals([3, 5], $native->getApi());
         $this->assertEquals([1, 2], $native->getBattr());
         $this->assertSame($ext, $native->getExt());
-        $this->assertIsArray(Native::getSchema());
     }
 
     public function testPmpObject(): void
@@ -187,7 +180,6 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(1, $pmp->getPrivateAuction());
         $this->assertEquals([$deal], $pmp->getDeals());
         $this->assertSame($ext, $pmp->getExt());
-        $this->assertIsArray(Pmp::getSchema());
     }
 
     public function testVideoObject(): void
@@ -215,6 +207,5 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(1, $video->getPlacement());
         $this->assertEquals([3, 5], $video->getApi());
         $this->assertSame($ext, $video->getExt());
-        $this->assertIsArray(Video::getSchema());
     }
 }

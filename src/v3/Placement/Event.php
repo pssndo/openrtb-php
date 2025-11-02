@@ -6,14 +6,20 @@ namespace OpenRTB\v3\Placement;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v3\Enums\Placement\EventType;
+use OpenRTB\v3\Enums\EventType;
 
 class Event implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|string|int|array<string, mixed>>
+     */
     protected static array $schema = [
         'type' => EventType::class,
+        'method' => 'int',
+        'url' => 'string',
+        'cdata' => 'array',
     ];
 
     public static function getSchema(): array

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Impression;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=23
@@ -15,6 +15,9 @@ class Banner implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string|array<class-string>|array<int>>
+     */
     protected static array $schema = [
         'format' => [Format::class],
         'w' => 'int',
@@ -28,6 +31,9 @@ class Banner implements ObjectInterface
         'ext' => Ext::class,
     ];
 
+    /**
+     * @return array<string, string|class-string|array<class-string>|array<int>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;

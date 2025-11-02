@@ -2,20 +2,35 @@
 
 declare(strict_types=1);
 
-namespace OpenRTB\v3\Context;
+namespace OpenRTB\Common\Resources;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 
-class Publisher implements ObjectInterface
+/**
+ * Base class for entities with common properties (id, name, domain, cat).
+ * Used by Publisher and Producer which have identical schemas.
+ */
+abstract class EntityBase implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    /**
+     * @return array<string, string|array<string>>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'id' => 'string',
+            'name' => 'string',
+            'domain' => 'string',
+            'cat' => 'array',
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return static::getBaseSchema();
     }
 
     public function setId(string $id): static

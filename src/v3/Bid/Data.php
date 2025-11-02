@@ -11,16 +11,22 @@ class Data implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string>
+     */
     protected static array $schema = [
         'value' => 'string',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value): static
     {
         return $this->set('value', $value);
     }

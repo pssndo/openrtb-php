@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace OpenRTB\v3;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\BidRequestInterface;
-use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
+use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
+use OpenRTB\Common\Collection;
 
 class BidRequest implements BidRequestInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string|array<class-string>|array<string>|int>
+     */
     protected static array $schema = [
         'id' => 'string',
         'at' => AuctionType::class,
@@ -33,6 +38,9 @@ class BidRequest implements BidRequestInterface
         'cdata' => 'string',
     ];
 
+    /**
+     * @return array<string, string|class-string|array<class-string>|array<string>|int>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
@@ -79,75 +87,75 @@ class BidRequest implements BidRequestInterface
     }
 
     /** @param list<string> $cur */
-    public function setCur(array $cur): static
+    public function setCur(Collection|array $cur): static
     {
-        return $this->set('cur', $cur);
+        return $this->set('cur', is_array($cur) ? $cur : $cur->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getCur(): ?array
+    /** @return Collection<string>|null */
+    public function getCur(): ?Collection
     {
-        return $this->get('cur');
+        return new Collection($this->get('cur') ?? [], 'string');
     }
 
     /** @param list<string> $wseat */
-    public function setWseat(array $wseat): static
+    public function setWseat(Collection|array $wseat): static
     {
-        return $this->set('wseat', $wseat);
+        return $this->set('wseat', is_array($wseat) ? $wseat : $wseat->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getWseat(): ?array
+    /** @return Collection<string>|null */
+    public function getWseat(): ?Collection
     {
-        return $this->get('wseat');
+        return new Collection($this->get('wseat') ?? [], 'string');
     }
 
     /** @param list<string> $bseat */
-    public function setBseat(array $bseat): static
+    public function setBseat(Collection|array $bseat): static
     {
-        return $this->set('bseat', $bseat);
+        return $this->set('bseat', is_array($bseat) ? $bseat : $bseat->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBseat(): ?array
+    /** @return Collection<string>|null */
+    public function getBseat(): ?Collection
     {
-        return $this->get('bseat');
+        return new Collection($this->get('bseat') ?? [], 'string');
     }
 
     /** @param list<string> $badv */
-    public function setBadv(array $badv): static
+    public function setBadv(Collection|array $badv): static
     {
-        return $this->set('badv', $badv);
+        return $this->set('badv', is_array($badv) ? $badv : $badv->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBadv(): ?array
+    /** @return Collection<string>|null */
+    public function getBadv(): ?Collection
     {
-        return $this->get('badv');
+        return new Collection($this->get('badv') ?? [], 'string');
     }
 
     /** @param list<string> $bapp */
-    public function setBapp(array $bapp): static
+    public function setBapp(Collection|array $bapp): static
     {
-        return $this->set('bapp', $bapp);
+        return $this->set('bapp', is_array($bapp) ? $bapp : $bapp->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBapp(): ?array
+    /** @return Collection<string>|null */
+    public function getBapp(): ?Collection
     {
-        return $this->get('bapp');
+        return new Collection($this->get('bapp') ?? [], 'string');
     }
 
     /** @param list<string> $bcat */
-    public function setBcat(array $bcat): static
+    public function setBcat(Collection|array $bcat): static
     {
-        return $this->set('bcat', $bcat);
+        return $this->set('bcat', is_array($bcat) ? $bcat : $bcat->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBcat(): ?array
+    /** @return Collection<string>|null */
+    public function getBcat(): ?Collection
     {
-        return $this->get('bcat');
+        return new Collection($this->get('bcat') ?? [], 'string');
     }
 
     public function setContext(Context $context): static
@@ -170,22 +178,30 @@ class BidRequest implements BidRequestInterface
         return $this->get('source');
     }
 
-    /** @param list<Item> $item */
-    public function setItem(array $item): static
+    /** @param Collection<Item> $item */
+    public function setItem(Collection $item): static
     {
         return $this->set('item', $item);
     }
 
-    /** @return list<Item>|null */
-    public function getItem(): ?array
+    /** @return Collection<Item>|null */
+    public function getItem(): ?Collection
     {
-        return $this->get('item');
+        $value = $this->get('item');
+        if ($value instanceof Collection) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return new Collection($value, Item::class);
+        }
+        return null;
     }
 
     public function addItem(Item $item): static
     {
-        $items = $this->getItem() ?? [];
-        $items[] = $item;
+        $items = $this->getItem() ?: new Collection([], Item::class);
+        $items->add($item);
+
         return $this->setItem($items);
     }
 

@@ -11,14 +11,20 @@ class TitleFormat implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|array<class-string>>
+     */
     protected static array $schema = [];
 
+    /**
+     * @return array<string, class-string|array<class-string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setLen(int $len): self
+    public function setLen(int $len): static
     {
         return $this->set('len', $len);
     }

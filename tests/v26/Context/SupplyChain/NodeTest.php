@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context\SupplyChain;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\SupplyChain\Node;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v26\Context\SupplyChain\Node
@@ -17,7 +17,6 @@ final class NodeTest extends TestCase
     {
         $schema = Node::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('asi', $schema);
         $this->assertEquals('string', $schema['asi']);
         $this->assertArrayHasKey('sid', $schema);

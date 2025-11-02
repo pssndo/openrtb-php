@@ -39,7 +39,7 @@ class ResponseBuilderTest extends TestCase
         $this->assertEquals('bid-456', $response->getBidid());
         $this->assertEquals(NoBidReason::TECHNICAL_ERROR, $response->getNbr());
         $this->assertEquals('USD', $response->getCur());
-        $this->assertIsArray(Response::getSchema());
+        // Removed redundant assertIsArray(Response::getSchema());
     }
 
     public function testFullResponseBuild(): void
@@ -80,6 +80,7 @@ class ResponseBuilderTest extends TestCase
 
         // Test serialization on the built object
         $json = $response->toJson();
+        $this->assertIsString($json);
         $this->assertJson($json);
         $decoded = json_decode($json, true);
 

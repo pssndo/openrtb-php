@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use OpenRTB\v3\Ext;
+use OpenRTB\Common\Resources\Ext;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OpenRTB\v3\Ext
+ * @covers \OpenRTB\Common\Resources\Ext
  */
 class ExtTest extends TestCase
 {
@@ -21,7 +21,6 @@ class ExtTest extends TestCase
     public function testGetSchemaReturnsEmptyArray(): void
     {
         $schema = Ext::getSchema();
-        $this->assertIsArray($schema);
         $this->assertEmpty($schema);
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\SupplyChain;
 use OpenRTB\v26\Context\SupplyChain\Node as SupplyChainNode;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v26\Context\SupplyChain
@@ -18,7 +18,6 @@ final class SupplyChainTest extends TestCase
     {
         $schema = SupplyChain::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('complete', $schema);
         $this->assertEquals('int', $schema['complete']);
         $this->assertArrayHasKey('ver', $schema);

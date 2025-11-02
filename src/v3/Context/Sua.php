@@ -11,8 +11,20 @@ class Sua implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    /**
+     * @var array<string, int|string|array<array<string, string>>>
+     */
+    protected static array $schema = [
+        'browsers' => 'array',
+        'platform' => 'array',
+        'source' => 'int',
+        'model' => 'string',
+        'mobile' => 'int',
+    ];
 
+    /**
+     * @return array<string, int|string|array<array<string, string>>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;

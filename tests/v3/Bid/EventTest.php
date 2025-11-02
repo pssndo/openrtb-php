@@ -6,7 +6,7 @@ namespace OpenRTB\Tests\v3\Bid;
 
 use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Event;
-use OpenRTB\v3\Enums\Bid\EventType;
+use OpenRTB\v3\Enums\EventType;
 
 /**
  * @covers \OpenRTB\v3\Bid\Event
@@ -17,7 +17,6 @@ final class EventTest extends TestCase
     {
         $schema = Event::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('type', $schema);
         $this->assertEquals(EventType::class, $schema['type']);
         $this->assertArrayHasKey('method', $schema);

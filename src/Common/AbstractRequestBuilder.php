@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace OpenRTB\Common;
 
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\Interfaces\RequestBuilderInterface;
 
+/**
+ * @template T of ObjectInterface
+ */
 abstract class AbstractRequestBuilder implements RequestBuilderInterface
 {
+    /** @var T */
     protected ObjectInterface $request;
 
     public function setId(string $id): static
@@ -27,6 +32,12 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
         }
 
         $this->request->set('test', (int) $test);
+        return $this;
+    }
+
+    public function setExt(Ext $ext): static
+    {
+        $this->request->set('ext', $ext);
         return $this;
     }
 

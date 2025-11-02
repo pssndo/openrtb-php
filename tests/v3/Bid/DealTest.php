@@ -16,7 +16,6 @@ final class DealTest extends TestCase
     {
         $schema = Deal::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('price', $schema);
@@ -64,14 +63,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wseat = ['seat1', 'seat2'];
         $deal->setWseat($wseat);
-        $this->assertEquals($wseat, $deal->getWseat());
+        $this->assertEquals($wseat, $deal->getWseat()->toArray());
     }
 
     public function testGetWseat(): void
     {
         $deal = new Deal();
         $deal->setWseat(['seat3']);
-        $this->assertEquals(['seat3'], $deal->getWseat());
+        $this->assertEquals(['seat3'], $deal->getWseat()->toArray());
     }
 
     public function testSetWadomain(): void
@@ -79,14 +78,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wadomain = ['domain1', 'domain2'];
         $deal->setWadomain($wadomain);
-        $this->assertEquals($wadomain, $deal->getWadomain());
+        $this->assertEquals($wadomain, $deal->getWadomain()->toArray());
     }
 
     public function testGetWadomain(): void
     {
         $deal = new Deal();
         $deal->setWadomain(['domain3']);
-        $this->assertEquals(['domain3'], $deal->getWadomain());
+        $this->assertEquals(['domain3'], $deal->getWadomain()->toArray());
     }
 
     public function testSetAt(): void
@@ -94,13 +93,13 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $at = 1;
         $deal->setAt($at);
-        $this->assertEquals($at, $deal->getAt());
+        $this->assertEquals($at, $deal->getAt()->value);
     }
 
     public function testGetAt(): void
     {
         $deal = new Deal();
         $deal->setAt(2);
-        $this->assertEquals(2, $deal->getAt());
+        $this->assertEquals(2, $deal->getAt()->value);
     }
 }

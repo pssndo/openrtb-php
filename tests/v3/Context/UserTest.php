@@ -6,7 +6,7 @@ namespace OpenRTB\Tests\v3\Context;
 
 use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Context\User;
-use OpenRTB\v3\Context\Geo;
+use OpenRTB\Common\Resources\Geo as CommonGeo;
 
 /**
  * @covers \OpenRTB\v3\Context\User
@@ -17,7 +17,7 @@ final class UserTest extends TestCase
     {
         $schema = User::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonUser
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('buyeruid', $schema);
@@ -28,12 +28,14 @@ final class UserTest extends TestCase
         $this->assertEquals('string', $schema['gender']);
         $this->assertArrayHasKey('keywords', $schema);
         $this->assertEquals('string', $schema['keywords']);
+        $this->assertArrayHasKey('geo', $schema);
+        $this->assertEquals(CommonGeo::class, $schema['geo']);
+
+        // Assertions for properties unique to v3 User
         $this->assertArrayHasKey('kwarray', $schema);
         $this->assertEquals('array', $schema['kwarray']);
         $this->assertArrayHasKey('consent', $schema);
         $this->assertEquals('string', $schema['consent']);
-        $this->assertArrayHasKey('geo', $schema);
-        $this->assertEquals(Geo::class, $schema['geo']);
         $this->assertArrayHasKey('data', $schema);
         $this->assertEquals('array', $schema['data']);
         $this->assertArrayHasKey('eids', $schema);
@@ -99,7 +101,7 @@ final class UserTest extends TestCase
     public function testSetGeo(): void
     {
         $user = new User();
-        $geo = new Geo();
+        $geo = new CommonGeo();
         $user->setGeo($geo);
         $this->assertSame($geo, $user->getGeo());
     }

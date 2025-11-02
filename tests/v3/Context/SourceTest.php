@@ -6,6 +6,7 @@ namespace OpenRTB\Tests\v3\Context;
 
 use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Context\Source;
+use OpenRTB\Common\Resources\Source as CommonSource;
 
 /**
  * @covers \OpenRTB\v3\Context\Source
@@ -16,9 +17,11 @@ final class SourceTest extends TestCase
     {
         $schema = Source::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonSource
         $this->assertArrayHasKey('tid', $schema);
         $this->assertEquals('string', $schema['tid']);
+
+        // Assertions for properties unique to v3 Source
         $this->assertArrayHasKey('ts', $schema);
         $this->assertEquals('int', $schema['ts']);
         $this->assertArrayHasKey('ds', $schema);

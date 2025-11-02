@@ -12,6 +12,9 @@ class Spec implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'placement' => Placement::class,
     ];
@@ -21,7 +24,7 @@ class Spec implements ObjectInterface
         return static::$schema;
     }
 
-    public function setPlacement(Placement $placement): self
+    public function setPlacement(Placement $placement): static
     {
         return $this->set('placement', $placement);
     }

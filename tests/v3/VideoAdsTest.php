@@ -14,6 +14,7 @@ use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\VideoPlacement;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
+use OpenRTB\Common\Collection;
 
 class VideoAdsTest extends TestCase
 {
@@ -67,7 +68,7 @@ JSON;
         $this->assertInstanceOf(Request::class, $BidRequest);
 
         $items = $BidRequest->getItem();
-        $this->assertIsArray($items);
+        $this->assertInstanceOf(Collection::class, $items);
         $this->assertCount(1, $items);
         $item = $items[0];
         $this->assertInstanceOf(Item::class, $item);
@@ -83,7 +84,7 @@ JSON;
 
         $this->assertEquals(VideoPlacementType::INSTREAM, $video->getPtype());
         $this->assertEquals(Linearity::LINEAR, $video->getLinear());
-        $this->assertIsArray($video->getPlaymethod());
+        $this->assertInstanceOf(Collection::class, $video->getPlaymethod());
         $this->assertEquals(PlaybackMethod::ON_CLICK_SOUND_ON, $video->getPlaymethod()[0]);
     }
 }

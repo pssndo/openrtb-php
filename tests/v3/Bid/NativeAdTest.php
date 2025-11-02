@@ -19,7 +19,6 @@ final class NativeAdTest extends TestCase
     {
         $schema = NativeAd::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('link', $schema);
         $this->assertEquals(Link::class, $schema['link']);
         $this->assertArrayHasKey('asset', $schema);
@@ -51,7 +50,7 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $asset = [new Asset()];
         $nativeAd->setAsset($asset);
-        $this->assertEquals($asset, $nativeAd->getAsset());
+        $this->assertEquals($asset, $nativeAd->getAsset()->all());
     }
 
     public function testGetAsset(): void
@@ -59,7 +58,7 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $asset = [new Asset()];
         $nativeAd->setAsset($asset);
-        $this->assertEquals($asset, $nativeAd->getAsset());
+        $this->assertEquals($asset, $nativeAd->getAsset()->all());
     }
 
     public function testSetEvent(): void
@@ -67,7 +66,7 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $event = [new Event()];
         $nativeAd->setEvent($event);
-        $this->assertEquals($event, $nativeAd->getEvent());
+        $this->assertEquals($event, $nativeAd->getEvent()->all());
     }
 
     public function testGetEvent(): void
@@ -75,7 +74,7 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $event = [new Event()];
         $nativeAd->setEvent($event);
-        $this->assertEquals($event, $nativeAd->getEvent());
+        $this->assertEquals($event, $nativeAd->getEvent()->all());
     }
 
     public function testSetPrivacy(): void

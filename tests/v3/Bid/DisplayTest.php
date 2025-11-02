@@ -18,7 +18,6 @@ final class DisplayTest extends TestCase
     {
         $schema = Display::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('banner', $schema);
         $this->assertEquals(Banner::class, $schema['banner']);
         $this->assertArrayHasKey('native', $schema);

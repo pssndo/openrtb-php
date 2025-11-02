@@ -14,6 +14,7 @@ use OpenRTB\v3\Placement\DisplayPlacement;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
+use OpenRTB\Common\Collection;
 
 /**
  * @covers \OpenRTB\v3\Placement\DisplayPlacement
@@ -80,7 +81,7 @@ JSON;
         $this->assertInstanceOf(Request::class, $request);
 
         $items = $request->getItem();
-        $this->assertIsArray($items);
+        $this->assertInstanceOf(Collection::class, $items);
         $this->assertCount(1, $items);
         $item = $items[0];
         $this->assertInstanceOf(Item::class, $item);
@@ -95,11 +96,11 @@ JSON;
         $this->assertInstanceOf(DisplayPlacement::class, $display);
 
         $this->assertEquals(AdPosition::ABOVE_FOLD, $display->getPos());
-        $this->assertIsArray($display->getApi());
+        $this->assertInstanceOf(Collection::class, $display->getApi());
         $this->assertEquals(ApiFramework::MRAID_2, $display->getApi()[0]);
 
         $displayFmts = $display->getDisplayfmt();
-        $this->assertIsArray($displayFmts);
+        $this->assertInstanceOf(Collection::class, $displayFmts);
         $this->assertCount(1, $displayFmts);
         $this->assertInstanceOf(DisplayFormat::class, $displayFmts[0]);
         $this->assertEquals(300, $displayFmts[0]->getW());

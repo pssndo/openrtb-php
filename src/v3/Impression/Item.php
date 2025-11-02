@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
@@ -112,9 +113,15 @@ class Item implements ObjectInterface
     }
 
     /** @return list<Metric>|null */
-    public function getMetric(): ?array
+    public function getMetric(): ?Collection
     {
-        return $this->get('metric');
+        $metric = $this->get('metric');
+
+        if (is_array($metric)) {
+            return new Collection($metric);
+        }
+
+        return $metric;
     }
 
     /** @param list<Deal> $deal */
@@ -124,9 +131,15 @@ class Item implements ObjectInterface
     }
 
     /** @return list<Deal>|null */
-    public function getDeal(): ?array
+    public function getDeal(): ?Collection
     {
-        return $this->get('deal');
+        $deal = $this->get('deal');
+
+        if (is_array($deal)) {
+            return new Collection($deal);
+        }
+
+        return $deal;
     }
 
     public function setPrivate(int $private): static

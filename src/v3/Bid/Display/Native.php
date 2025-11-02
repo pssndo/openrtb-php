@@ -12,17 +12,23 @@ class Native implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|string>
+     */
     protected static array $schema = [
         'link' => Link::class,
         'asset' => 'array',
     ];
 
+    /**
+     * @return array<string, class-string|string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setLink(Link $link): self
+    public function setLink(Link $link): static
     {
         return $this->set('link', $link);
     }
@@ -33,7 +39,7 @@ class Native implements ObjectInterface
     }
 
     /** @param list<string> $asset */
-    public function setAsset(array $asset): self
+    public function setAsset(array $asset): static
     {
         return $this->set('asset', $asset);
     }

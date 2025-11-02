@@ -13,7 +13,7 @@ use OpenRTB\v3\Bid\NativeAd;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Bid\Title;
 use OpenRTB\v3\Enums\Placement\ContextType;
-use OpenRTB\v3\Enums\Placement\EventType;
+use OpenRTB\v3\Enums\EventType;
 use OpenRTB\v3\Enums\Placement\NativeAdUnit;
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
@@ -77,8 +77,7 @@ class NativeAdsTest extends TestCase
         $event->setType(EventType::IMPRESSION);
         $event->setMethod([1, 2]);
         $this->assertEquals(EventType::IMPRESSION, $event->getType());
-        $this->assertEquals([1, 2], $event->getMethod());
-        $this->assertIsArray(EventSpec::getSchema());
+        $this->assertEquals([1, 2], $event->getMethod()->toArray());
 
         $native
             ->setContext(ContextType::SOCIAL_CENTRIC_FEED)
@@ -143,7 +142,5 @@ class NativeAdsTest extends TestCase
         $parsedResponse = Parser::parseBidResponse($json);
         $this->assertInstanceOf(Response::class, $parsedResponse);
         $this->assertEquals($response->toArray(), $parsedResponse->toArray());
-
-        $this->assertIsArray(NativeAd::getSchema());
     }
 }

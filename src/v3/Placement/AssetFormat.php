@@ -11,6 +11,9 @@ class AssetFormat implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'title' => TitleFormat::class,
         'img' => ImageFormat::class,
@@ -23,7 +26,7 @@ class AssetFormat implements ObjectInterface
         return static::$schema;
     }
 
-    public function setId(int $id): self
+    public function setId(int $id): static
     {
         return $this->set('id', $id);
     }
@@ -33,7 +36,7 @@ class AssetFormat implements ObjectInterface
         return $this->get('id');
     }
 
-    public function setReq(int $req): self
+    public function setReq(int $req): static
     {
         return $this->set('req', $req);
     }
@@ -43,7 +46,7 @@ class AssetFormat implements ObjectInterface
         return $this->get('req');
     }
 
-    public function setTitle(TitleFormat $title): self
+    public function setTitle(TitleFormat $title): static
     {
         return $this->set('title', $title);
     }
@@ -53,7 +56,7 @@ class AssetFormat implements ObjectInterface
         return $this->get('title');
     }
 
-    public function setImg(ImageFormat $img): self
+    public function setImg(ImageFormat $img): static
     {
         return $this->set('img', $img);
     }
@@ -63,7 +66,7 @@ class AssetFormat implements ObjectInterface
         return $this->get('img');
     }
 
-    public function setVideo(VideoPlacement $video): self
+    public function setVideo(VideoPlacement $video): static
     {
         return $this->set('video', $video);
     }
@@ -73,7 +76,7 @@ class AssetFormat implements ObjectInterface
         return $this->get('video');
     }
 
-    public function setData(DataFormat $data): self
+    public function setData(DataFormat $data): static
     {
         return $this->set('data', $data);
     }

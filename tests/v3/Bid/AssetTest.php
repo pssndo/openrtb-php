@@ -20,7 +20,6 @@ final class AssetTest extends TestCase
     {
         $schema = Asset::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('int', $schema['id']);
         $this->assertArrayHasKey('req', $schema);

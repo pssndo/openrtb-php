@@ -11,18 +11,24 @@ class Image implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|int>
+     */
     protected static array $schema = [
         'url' => 'string',
         'w' => 'int',
         'h' => 'int',
     ];
 
+    /**
+     * @return array<string, string|int>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(string $url): static
     {
         return $this->set('url', $url);
     }
@@ -32,7 +38,7 @@ class Image implements ObjectInterface
         return $this->get('url');
     }
 
-    public function setW(int $w): self
+    public function setW(int $w): static
     {
         return $this->set('w', $w);
     }
@@ -42,7 +48,7 @@ class Image implements ObjectInterface
         return $this->get('w');
     }
 
-    public function setH(int $h): self
+    public function setH(int $h): static
     {
         return $this->set('h', $h);
     }

@@ -4,28 +4,40 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Device as CommonDevice;
 use OpenRTB\v3\Enums\Context\ConnectionType;
 use OpenRTB\v3\Enums\Context\DeviceType;
 
-class Device implements ObjectInterface
+class Device extends CommonDevice
 {
-    use HasData;
-
-    protected static array $schema = [
-        'type' => DeviceType::class,
-        'conntype' => ConnectionType::class,
-        'geo' => Geo::class,
-        'sua' => Sua::class,
-    ];
+    /**
+     * @return array<string, class-string|string>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'type' => DeviceType::class,
+            'conntype' => ConnectionType::class,
+            'ifa' => 'string',
+            'dnt' => 'int',
+            'lmt' => 'int',
+            'ppi' => 'int',
+            'pxratio' => 'float',
+            'geofetch' => 'int',
+            'lang' => 'string',
+            'ipv6' => 'string',
+            'xff' => 'string',
+            'mccmnc' => 'string',
+            'sua' => Sua::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
-    public function setType(DeviceType $type): self
+    public function setType(DeviceType $type): static
     {
         return $this->set('type', $type);
     }
@@ -35,17 +47,7 @@ class Device implements ObjectInterface
         return $this->get('type');
     }
 
-    public function setUa(string $ua): self
-    {
-        return $this->set('ua', $ua);
-    }
-
-    public function getUa(): ?string
-    {
-        return $this->get('ua');
-    }
-
-    public function setIfa(string $ifa): self
+    public function setIfa(string $ifa): static
     {
         return $this->set('ifa', $ifa);
     }
@@ -55,7 +57,7 @@ class Device implements ObjectInterface
         return $this->get('ifa');
     }
 
-    public function setDnt(int $dnt): self
+    public function setDnt(int $dnt): static
     {
         return $this->set('dnt', $dnt);
     }
@@ -65,7 +67,7 @@ class Device implements ObjectInterface
         return $this->get('dnt');
     }
 
-    public function setLmt(int $lmt): self
+    public function setLmt(int $lmt): static
     {
         return $this->set('lmt', $lmt);
     }
@@ -75,77 +77,7 @@ class Device implements ObjectInterface
         return $this->get('lmt');
     }
 
-    public function setMake(string $make): self
-    {
-        return $this->set('make', $make);
-    }
-
-    public function getMake(): ?string
-    {
-        return $this->get('make');
-    }
-
-    public function setModel(string $model): self
-    {
-        return $this->set('model', $model);
-    }
-
-    public function getModel(): ?string
-    {
-        return $this->get('model');
-    }
-
-    public function setOs(string $os): self
-    {
-        return $this->set('os', $os);
-    }
-
-    public function getOs(): ?string
-    {
-        return $this->get('os');
-    }
-
-    public function setOsv(string $osv): self
-    {
-        return $this->set('osv', $osv);
-    }
-
-    public function getOsv(): ?string
-    {
-        return $this->get('osv');
-    }
-
-    public function setHwv(string $hwv): self
-    {
-        return $this->set('hwv', $hwv);
-    }
-
-    public function getHwv(): ?string
-    {
-        return $this->get('hwv');
-    }
-
-    public function setH(int $h): self
-    {
-        return $this->set('h', $h);
-    }
-
-    public function getH(): ?int
-    {
-        return $this->get('h');
-    }
-
-    public function setW(int $w): self
-    {
-        return $this->set('w', $w);
-    }
-
-    public function getW(): ?int
-    {
-        return $this->get('w');
-    }
-
-    public function setPpi(int $ppi): self
+    public function setPpi(int $ppi): static
     {
         return $this->set('ppi', $ppi);
     }
@@ -155,7 +87,7 @@ class Device implements ObjectInterface
         return $this->get('ppi');
     }
 
-    public function setPxratio(float $pxratio): self
+    public function setPxratio(float $pxratio): static
     {
         return $this->set('pxratio', $pxratio);
     }
@@ -165,17 +97,7 @@ class Device implements ObjectInterface
         return $this->get('pxratio');
     }
 
-    public function setJs(int $js): self
-    {
-        return $this->set('js', $js);
-    }
-
-    public function getJs(): ?int
-    {
-        return $this->get('js');
-    }
-
-    public function setGeofetch(int $geofetch): self
+    public function setGeofetch(int $geofetch): static
     {
         return $this->set('geofetch', $geofetch);
     }
@@ -185,7 +107,7 @@ class Device implements ObjectInterface
         return $this->get('geofetch');
     }
 
-    public function setLang(string $lang): self
+    public function setLang(string $lang): static
     {
         return $this->set('lang', $lang);
     }
@@ -195,17 +117,7 @@ class Device implements ObjectInterface
         return $this->get('lang');
     }
 
-    public function setIp(string $ip): self
-    {
-        return $this->set('ip', $ip);
-    }
-
-    public function getIp(): ?string
-    {
-        return $this->get('ip');
-    }
-
-    public function setIpv6(string $ipv6): self
+    public function setIpv6(string $ipv6): static
     {
         return $this->set('ipv6', $ipv6);
     }
@@ -215,7 +127,7 @@ class Device implements ObjectInterface
         return $this->get('ipv6');
     }
 
-    public function setXff(string $xff): self
+    public function setXff(string $xff): static
     {
         return $this->set('xff', $xff);
     }
@@ -225,7 +137,7 @@ class Device implements ObjectInterface
         return $this->get('xff');
     }
 
-    public function setConntype(ConnectionType $conntype): self
+    public function setConntype(ConnectionType $conntype): static
     {
         return $this->set('conntype', $conntype);
     }
@@ -235,7 +147,7 @@ class Device implements ObjectInterface
         return $this->get('conntype');
     }
 
-    public function setMccmnc(string $mccmnc): self
+    public function setMccmnc(string $mccmnc): static
     {
         return $this->set('mccmnc', $mccmnc);
     }
@@ -245,17 +157,7 @@ class Device implements ObjectInterface
         return $this->get('mccmnc');
     }
 
-    public function setGeo(Geo $geo): self
-    {
-        return $this->set('geo', $geo);
-    }
-
-    public function getGeo(): ?Geo
-    {
-        return $this->get('geo');
-    }
-
-    public function setSua(Sua $sua): self
+    public function setSua(Sua $sua): static
     {
         return $this->set('sua', $sua);
     }

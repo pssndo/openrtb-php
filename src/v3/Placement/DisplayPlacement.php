@@ -13,12 +13,13 @@ use OpenRTB\v3\Enums\Placement\ClickType;
 use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\PlacementType;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
+use OpenRTB\Common\Collection;
 
 class DisplayPlacement implements ObjectInterface
 {
     use HasData;
 
-    /** @var array<string, class-string|array<class-string>> */
+    /** @var array<string, class-string|array<class-string>|string|int> */
     protected static array $schema = [
         'pos' => AdPosition::class,
         'clktype' => ClickType::class,
@@ -67,14 +68,17 @@ class DisplayPlacement implements ObjectInterface
         return $this->get('topframe');
     }
 
-    /** @param list<string> $ifrbust */
-    public function setIfrbust(array $ifrbust): static
+    /** @param Collection<string>|array<string> $ifrbust */
+    public function setIfrbust(Collection|array $ifrbust): static
     {
+        if (is_array($ifrbust)) {
+            $ifrbust = new Collection($ifrbust);
+        }
         return $this->set('ifrbust', $ifrbust);
     }
 
-    /** @return list<string>|null */
-    public function getIfrbust(): ?array
+    /** @return Collection<string>|null */
+    public function getIfrbust(): ?Collection
     {
         return $this->get('ifrbust');
     }
@@ -119,38 +123,47 @@ class DisplayPlacement implements ObjectInterface
         return $this->get('context');
     }
 
-    /** @param list<string> $mime */
-    public function setMime(array $mime): static
+    /** @param Collection<string>|array<string> $mime */
+    public function setMime(Collection|array $mime): static
     {
+        if (is_array($mime)) {
+            $mime = new Collection($mime);
+        }
         return $this->set('mime', $mime);
     }
 
-    /** @return list<string>|null */
-    public function getMime(): ?array
+    /** @return Collection<string>|null */
+    public function getMime(): ?Collection
     {
         return $this->get('mime');
     }
 
-    /** @param list<ApiFramework> $api */
-    public function setApi(array $api): static
+    /** @param Collection<ApiFramework>|array<ApiFramework> $api */
+    public function setApi(Collection|array $api): static
     {
+        if (is_array($api)) {
+            $api = new Collection($api, ApiFramework::class);
+        }
         return $this->set('api', $api);
     }
 
-    /** @return list<ApiFramework>|null */
-    public function getApi(): ?array
+    /** @return Collection<ApiFramework>|null */
+    public function getApi(): ?Collection
     {
         return $this->get('api');
     }
 
-    /** @param list<CreativeType> $ctype */
-    public function setCtype(array $ctype): static
+    /** @param Collection<CreativeType>|array<CreativeType> $ctype */
+    public function setCtype(Collection|array $ctype): static
     {
+        if (is_array($ctype)) {
+            $ctype = new Collection($ctype, CreativeType::class);
+        }
         return $this->set('ctype', $ctype);
     }
 
-    /** @return list<CreativeType>|null */
-    public function getCtype(): ?array
+    /** @return Collection<CreativeType>|null */
+    public function getCtype(): ?Collection
     {
         return $this->get('ctype');
     }
@@ -195,14 +208,17 @@ class DisplayPlacement implements ObjectInterface
         return $this->get('priv');
     }
 
-    /** @param list<DisplayFormat> $displayfmt */
-    public function setDisplayfmt(array $displayfmt): static
+    /** @param Collection<DisplayFormat>|array<DisplayFormat> $displayfmt */
+    public function setDisplayfmt(Collection|array $displayfmt): static
     {
+        if (is_array($displayfmt)) {
+            $displayfmt = new Collection($displayfmt, DisplayFormat::class);
+        }
         return $this->set('displayfmt', $displayfmt);
     }
 
-    /** @return list<DisplayFormat>|null */
-    public function getDisplayfmt(): ?array
+    /** @return Collection<DisplayFormat>|null */
+    public function getDisplayfmt(): ?Collection
     {
         return $this->get('displayfmt');
     }
@@ -217,14 +233,17 @@ class DisplayPlacement implements ObjectInterface
         return $this->get('nativefmt');
     }
 
-    /** @param list<Event> $event */
-    public function setEvent(array $event): static
+    /** @param Collection<Event>|array<Event> $event */
+    public function setEvent(Collection|array $event): static
     {
+        if (is_array($event)) {
+            $event = new Collection($event, Event::class);
+        }
         return $this->set('event', $event);
     }
 
-    /** @return list<Event>|null */
-    public function getEvent(): ?array
+    /** @return Collection<Event>|null */
+    public function getEvent(): ?Collection
     {
         return $this->get('event');
     }

@@ -4,55 +4,50 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Util;
 
+use OpenRTB\Common\Util\AbstractResponseBuilder;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\BidResponse;
-use OpenRTB\v26\Ext;
 use OpenRTB\v26\Response\SeatBid;
 
-class BidResponseBuilder
+class BidResponseBuilder extends AbstractResponseBuilder
 {
-    private BidResponse $bidResponse;
 
     public function __construct(string $requestId)
     {
-        $this->bidResponse = new BidResponse();
-        $this->bidResponse->setId($requestId);
-        $this->bidResponse->setBidid(uniqid('resp_', true));
+        $this->response = new BidResponse();
+        $this->response->setId($requestId);
+        $this->response->setBidid(uniqid('resp_', true));
     }
 
-    public function setBidId(string $bidId): self
+    public function setBidId(string $bidId): static
     {
-        $this->bidResponse->setBidid($bidId);
+        $this->response->setBidid($bidId);
         return $this;
     }
 
-    public function setCur(string $cur): self
+    public function setCur(string $cur): static
     {
-        $this->bidResponse->setCur($cur);
+        $this->response->setCur($cur);
         return $this;
     }
 
-    public function setNbr(int $nbr): self
+    public function setNbr(int $nbr): static
     {
-        $this->bidResponse->setNbr($nbr);
+        $this->response->setNbr($nbr);
         return $this;
     }
 
-    public function setExt(Ext $ext): self
+    public function setExt(Ext $ext): static
     {
-        $this->bidResponse->setExt($ext);
+        $this->response->setExt($ext);
         return $this;
     }
 
-    public function addSeatBid(SeatBid $seatBid): self
+    public function addSeatBid(SeatBid $seatBid): static
     {
-        $seatBids = $this->bidResponse->getSeatbid() ?? [];
+        $seatBids = $this->response->getSeatbid() ?? [];
         $seatBids[] = $seatBid;
-        $this->bidResponse->setSeatbid($seatBids);
+        $this->response->setSeatbid($seatBids);
         return $this;
-    }
-
-    public function build(): BidResponse
-    {
-        return $this->bidResponse;
     }
 }

@@ -11,16 +11,22 @@ class Title implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string>
+     */
     protected static array $schema = [
         'text' => 'string',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setText(string $text): self
+    public function setText(string $text): static
     {
         return $this->set('text', $text);
     }

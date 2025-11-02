@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Util;
 
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Interfaces\ResponseBuilderInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
 use OpenRTB\v3\BidResponse as Response;
 
-class ResponseBuilder implements ResponseBuilderInterface
+class ResponseBuilder extends AbstractResponseBuilder implements ResponseBuilderInterface
 {
-    private Response $response;
-
     public function __construct(string $requestId)
     {
         $this->response = new Response();
@@ -48,10 +46,5 @@ class ResponseBuilder implements ResponseBuilderInterface
     {
         $this->response->addSeatbid($seatbid);
         return $this;
-    }
-
-    public function __invoke(): ObjectInterface
-    {
-        return $this->response;
     }
 }

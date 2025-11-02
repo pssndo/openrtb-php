@@ -12,6 +12,9 @@ class Audit implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|string|array<class-string>>
+     */
     protected static array $schema = [
         'status' => AuditStatus::class,
         'feedback' => 'array',
@@ -20,12 +23,15 @@ class Audit implements ObjectInterface
         'corr' => 'array',
     ];
 
+    /**
+     * @return array<string, class-string|string|array<class-string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setStatus(AuditStatus $status): self
+    public function setStatus(AuditStatus $status): static
     {
         return $this->set('status', $status);
     }
@@ -36,7 +42,7 @@ class Audit implements ObjectInterface
     }
 
     /** @param list<string> $feedback */
-    public function setFeedback(array $feedback): self
+    public function setFeedback(array $feedback): static
     {
         return $this->set('feedback', $feedback);
     }
@@ -47,7 +53,7 @@ class Audit implements ObjectInterface
         return $this->get('feedback');
     }
 
-    public function setInit(int $init): self
+    public function setInit(int $init): static
     {
         return $this->set('init', $init);
     }
@@ -57,7 +63,7 @@ class Audit implements ObjectInterface
         return $this->get('init');
     }
 
-    public function setLastmod(int $lastmod): self
+    public function setLastmod(int $lastmod): static
     {
         return $this->set('lastmod', $lastmod);
     }
@@ -68,7 +74,7 @@ class Audit implements ObjectInterface
     }
 
     /** @param array<string, string> $corr */
-    public function setCorr(array $corr): self
+    public function setCorr(array $corr): static
     {
         return $this->set('corr', $corr);
     }

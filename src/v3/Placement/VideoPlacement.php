@@ -18,6 +18,7 @@ use OpenRTB\v3\Enums\Placement\PlaybackCessationMode;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 use OpenRTB\v3\Enums\Placement\VideoPlacementType;
+use OpenRTB\Common\Collection;
 
 class VideoPlacement implements ObjectInterface
 {
@@ -105,16 +106,16 @@ class VideoPlacement implements ObjectInterface
         return $this->get('skipafter');
     }
 
-    /** @param list<PlaybackMethod> $playmethod */
-    public function setPlaymethod(array $playmethod): static
+    /** @param Collection<PlaybackMethod>|array<PlaybackMethod> $playmethod */
+    public function setPlaymethod(Collection|array $playmethod): static
     {
-        return $this->set('playmethod', $playmethod);
+        return $this->set('playmethod', is_array($playmethod) ? $playmethod : $playmethod->toArray());
     }
 
-    /** @return list<PlaybackMethod>|null */
-    public function getPlaymethod(): ?array
+    /** @return Collection<PlaybackMethod>|null */
+    public function getPlaymethod(): ?Collection
     {
-        return $this->get('playmethod');
+        return new Collection($this->get('playmethod') ?? [], PlaybackMethod::class);
     }
 
     public function setPlayend(PlaybackCessationMode $playend): static
@@ -137,40 +138,40 @@ class VideoPlacement implements ObjectInterface
         return $this->get('clktype');
     }
 
-    /** @param list<string> $mime */
-    public function setMime(array $mime): static
+    /** @param Collection<string>|array<string> $mime */
+    public function setMime(Collection|array $mime): static
     {
-        return $this->set('mime', $mime);
+        return $this->set('mime',  (array)$mime);
     }
 
-    /** @return list<string>|null */
-    public function getMime(): ?array
+    /** @return Collection<string>|null */
+    public function getMime(): ?Collection
     {
-        return $this->get('mime');
+        return new Collection($this->get('mime') ?? [], 'string');
     }
 
-    /** @param list<ApiFramework> $api */
-    public function setApi(array $api): static
+    /** @param Collection<ApiFramework>|array<ApiFramework> $api */
+    public function setApi(Collection|array $api): static
     {
-        return $this->set('api', $api);
+        return $this->set('api', (array)$api);
     }
 
-    /** @return list<ApiFramework>|null */
-    public function getApi(): ?array
+    /** @return Collection<ApiFramework>|null */
+    public function getApi(): ?Collection
     {
-        return $this->get('api');
+        return new Collection($this->get('api') ?? [], ApiFramework::class);
     }
 
-    /** @param list<CreativeType> $ctype */
-    public function setCtype(array $ctype): static
+    /** @param Collection<CreativeType>|array<CreativeType> $ctype */
+    public function setCtype(Collection|array $ctype): static
     {
-        return $this->set('ctype', $ctype);
+        return $this->set('ctype', (array)$ctype);
     }
 
-    /** @return list<CreativeType>|null */
-    public function getCtype(): ?array
+    /** @return Collection<CreativeType>|null */
+    public function getCtype(): ?Collection
     {
-        return $this->get('ctype');
+        return new Collection($this->get('ctype') ?? [], CreativeType::class);
     }
 
     public function setW(int $w): static
@@ -253,16 +254,16 @@ class VideoPlacement implements ObjectInterface
         return $this->get('maxbitr');
     }
 
-    /** @param list<DeliveryMethod> $delivery */
-    public function setDelivery(array $delivery): static
+    /** @param Collection<DeliveryMethod>|array<DeliveryMethod> $delivery */
+    public function setDelivery(Collection|array $delivery): static
     {
-        return $this->set('delivery', $delivery);
+        return $this->set('delivery',  (array)$delivery);
     }
 
-    /** @return list<DeliveryMethod>|null */
-    public function getDelivery(): ?array
+    /** @return Collection<DeliveryMethod>|null */
+    public function getDelivery(): ?Collection
     {
-        return $this->get('delivery');
+        return new Collection($this->get('delivery') ?? [], DeliveryMethod::class);
     }
 
     public function setMaxseq(int $maxseq): static
@@ -295,27 +296,27 @@ class VideoPlacement implements ObjectInterface
         return $this->get('boxing');
     }
 
-    /** @param list<DisplayPlacement> $comp */
-    public function setComp(array $comp): static
+    /** @param Collection<DisplayPlacement>|array<DisplayPlacement> $comp */
+    public function setComp(Collection|array $comp): static
     {
-        return $this->set('comp', $comp);
+        return $this->set('comp', is_array($comp) ? $comp : $comp->toArray());
     }
 
-    /** @return list<DisplayPlacement>|null */
-    public function getComp(): ?array
+    /** @return Collection<DisplayPlacement>|null */
+    public function getComp(): ?Collection
     {
-        return $this->get('comp');
+        return new Collection($this->get('comp') ?? [], DisplayPlacement::class);
     }
 
-    /** @param list<CompanionType> $comptype */
-    public function setComptype(array $comptype): static
+    /** @param Collection<CompanionType>|array<CompanionType> $comptype */
+    public function setComptype(Collection|array $comptype): static
     {
-        return $this->set('comptype', $comptype);
+        return $this->set('comptype', is_array($comptype) ? $comptype : $comptype->toArray());
     }
 
-    /** @return list<CompanionType>|null */
-    public function getComptype(): ?array
+    /** @return Collection<CompanionType>|null */
+    public function getComptype(): ?Collection
     {
-        return $this->get('comptype');
+        return new Collection($this->get('comptype') ?? [], CompanionType::class);
     }
 }

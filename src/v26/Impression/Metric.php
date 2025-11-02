@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Impression;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Metric as CommonMetric;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=30
  */
-class Metric implements ObjectInterface
+class Metric extends CommonMetric
 {
-    use HasData;
-
-    protected static array $schema = [
-        'ext' => Ext::class,
-    ];
+    /**
+     * @return array<string, mixed>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'type' => 'string',
+            'ext' => Ext::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(CommonMetric::getBaseSchema(), static::getBaseSchema());
     }
 
     public function setType(string $type): static
@@ -32,26 +36,6 @@ class Metric implements ObjectInterface
     public function getType(): ?string
     {
         return $this->get('type');
-    }
-
-    public function setValue(float $value): static
-    {
-        return $this->set('value', $value);
-    }
-
-    public function getValue(): ?float
-    {
-        return $this->get('value');
-    }
-
-    public function setVendor(string $vendor): static
-    {
-        return $this->set('vendor', $vendor);
-    }
-
-    public function getVendor(): ?string
-    {
-        return $this->get('vendor');
     }
 
     public function setExt(Ext $ext): static

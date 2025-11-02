@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Impression;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=21
@@ -15,6 +15,7 @@ class Imp implements ObjectInterface
 {
     use HasData;
 
+    /** @var array<string, mixed> */
     protected static array $schema = [
         'metric' => [Metric::class],
         'banner' => Banner::class,
@@ -30,7 +31,7 @@ class Imp implements ObjectInterface
         return static::$schema;
     }
 
-    public function setId(string $id): self
+    public function setId(string $id): static
     {
         return $this->set('id', $id);
     }
@@ -41,7 +42,7 @@ class Imp implements ObjectInterface
     }
 
     /** @param list<Metric> $metric */
-    public function setMetric(array $metric): self
+    public function setMetric(array $metric): static
     {
         return $this->set('metric', $metric);
     }
@@ -52,7 +53,7 @@ class Imp implements ObjectInterface
         return $this->get('metric');
     }
 
-    public function setBanner(Banner $banner): self
+    public function setBanner(Banner $banner): static
     {
         return $this->set('banner', $banner);
     }
@@ -62,7 +63,7 @@ class Imp implements ObjectInterface
         return $this->get('banner');
     }
 
-    public function setVideo(Video $video): self
+    public function setVideo(Video $video): static
     {
         return $this->set('video', $video);
     }
@@ -72,7 +73,7 @@ class Imp implements ObjectInterface
         return $this->get('video');
     }
 
-    public function setAudio(Audio $audio): self
+    public function setAudio(Audio $audio): static
     {
         return $this->set('audio', $audio);
     }
@@ -82,7 +83,7 @@ class Imp implements ObjectInterface
         return $this->get('audio');
     }
 
-    public function setNative(Native $native): self
+    public function setNative(Native $native): static
     {
         return $this->set('native', $native);
     }
@@ -92,7 +93,7 @@ class Imp implements ObjectInterface
         return $this->get('native');
     }
 
-    public function setPmp(Pmp $pmp): self
+    public function setPmp(Pmp $pmp): static
     {
         return $this->set('pmp', $pmp);
     }
@@ -102,7 +103,7 @@ class Imp implements ObjectInterface
         return $this->get('pmp');
     }
 
-    public function setInstl(int $instl): self
+    public function setInstl(int $instl): static
     {
         return $this->set('instl', $instl);
     }
@@ -112,7 +113,7 @@ class Imp implements ObjectInterface
         return $this->get('instl');
     }
 
-    public function setClickbrowser(int $clickbrowser): self
+    public function setClickbrowser(int $clickbrowser): static
     {
         return $this->set('clickbrowser', $clickbrowser);
     }
@@ -122,7 +123,7 @@ class Imp implements ObjectInterface
         return $this->get('clickbrowser');
     }
 
-    public function setSecure(int $secure): self
+    public function setSecure(int $secure): static
     {
         return $this->set('secure', $secure);
     }
@@ -132,7 +133,7 @@ class Imp implements ObjectInterface
         return $this->get('secure');
     }
 
-    public function setExp(int $exp): self
+    public function setExp(int $exp): static
     {
         return $this->set('exp', $exp);
     }
@@ -142,7 +143,7 @@ class Imp implements ObjectInterface
         return $this->get('exp');
     }
 
-    public function setExt(Ext $ext): self
+    public function setExt(Ext $ext): static
     {
         return $this->set('ext', $ext);
     }

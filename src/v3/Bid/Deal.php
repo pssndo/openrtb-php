@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v3\Enums\AuctionType;
 
 class Deal implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|float|int|array<string>>
+     */
     protected static array $schema = [
         'id' => 'string',
         'price' => 'float',
@@ -19,12 +24,15 @@ class Deal implements ObjectInterface
         'at' => 'int',
     ];
 
+    /**
+     * @return array<string, string|float|int|array<string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setId(string $id): self
+    public function setId(string $id): static
     {
         return $this->set('id', $id);
     }
@@ -34,7 +42,7 @@ class Deal implements ObjectInterface
         return $this->get('id');
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(float $price): static
     {
         return $this->set('price', $price);
     }
@@ -45,36 +53,41 @@ class Deal implements ObjectInterface
     }
 
     /** @param list<string> $wseat */
-    public function setWseat(array $wseat): self
+    public function setWseat(Collection|array $wseat): static
     {
-        return $this->set('wseat', $wseat);
+        return $this->set('wseat', (array)$wseat);
     }
 
-    /** @return list<string>|null */
-    public function getWseat(): ?array
+    /** @return Collection<string>|null */
+    public function getWseat(): ?Collection
     {
-        return $this->get('wseat');
+        return new Collection($this->get('wseat') ?? [], 'string');
     }
 
     /** @param list<string> $wadomain */
-    public function setWadomain(array $wadomain): self
+    public function setWadomain(Collection|array $wadomain): static
     {
-        return $this->set('wadomain', $wadomain);
+        return $this->set('wadomain', (array)$wadomain);
     }
 
-    /** @return list<string>|null */
-    public function getWadomain(): ?array
+    /** @return Collection<string>|null */
+    public function getWadomain(): ?Collection
     {
-        return $this->get('wadomain');
+        return new Collection($this->get('wadomain') ?? [], 'string');
     }
 
-    public function setAt(int $at): self
+    public function setAt(int $at): static
     {
         return $this->set('at', $at);
     }
 
-    public function getAt(): ?int
+    public function getAt(): ?AuctionType
     {
-        return $this->get('at');
+        $at = $this->get('at');
+        if ($at instanceof AuctionType) {
+            return $at;
+        }
+
+        return AuctionType::tryFrom($at);
     }
 }

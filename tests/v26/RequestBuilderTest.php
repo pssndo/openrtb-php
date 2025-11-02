@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26;
 
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\BidRequest;
 use OpenRTB\v26\Context\App;
 use OpenRTB\v26\Context\Device;
@@ -13,10 +14,9 @@ use OpenRTB\v26\Context\Source;
 use OpenRTB\v26\Context\User;
 use OpenRTB\v26\Enums\AuctionType;
 use OpenRTB\v26\Impression\Banner;
-use OpenRTB\v26\Ext;
 use OpenRTB\v26\Impression\Imp;
-use OpenRTB\v26\Util\RequestBuilder;
 use OpenRTB\v26\Util\Parser;
+use OpenRTB\v26\Util\RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -69,22 +69,24 @@ class RequestBuilderTest extends TestCase
             ->setTest(true)
             ->setExt($ext)();
 
+
         $this->assertInstanceOf(BidRequest::class, $request);
         $this->assertEquals('req-123', $request->getId());
-        $this->assertCount(1, $request->getImp());
+        $this->assertNotNull($request->getImp());
+        $this->assertCount(1, $request->getImp()->toArray());
         $this->assertSame($device, $request->getDevice());
         $this->assertSame($user, $request->getUser());
         $this->assertEquals(AuctionType::FIRST_PRICE, $request->getAt());
         $this->assertEquals(200, $request->getTmax());
-        $this->assertEquals(['seat-1'], $request->getWseat());
-        $this->assertEquals(['seat-2'], $request->getBseat());
+        $this->assertEquals(['seat-1'], $request->getWseat()->toArray());
+        $this->assertEquals(['seat-2'], $request->getBseat()->toArray());
         $this->assertEquals(1, $request->getAllimps());
-        $this->assertEquals(['USD'], $request->getCur());
-        $this->assertEquals(['en'], $request->getWlang());
-        $this->assertEquals(['en-US'], $request->getWlangb());
-        $this->assertEquals(['IAB1'], $request->getBcat());
-        $this->assertEquals(['bad.com'], $request->getBadv());
-        $this->assertEquals(['bad.app'], $request->getBapp());
+        $this->assertEquals(['USD'], $request->getCur()->toArray());
+        $this->assertEquals(['en'], $request->getWlang()->toArray());
+        $this->assertEquals(['en-US'], $request->getWlangb()->toArray());
+        $this->assertEquals(['IAB1'], $request->getBcat()->toArray());
+        $this->assertEquals(['bad.com'], $request->getBadv()->toArray());
+        $this->assertEquals(['bad.app'], $request->getBapp()->toArray());
         $this->assertSame($regs, $request->getRegs());
         $this->assertSame($source, $request->getSource());
         $this->assertEquals(1, $request->getTest());
@@ -99,10 +101,12 @@ class RequestBuilderTest extends TestCase
         $expectedArray = $request->toArray();
 
         $json = $request->toJson();
+        $this->assertIsString($json);
         $this->assertJson($json);
 
         $parser = new Parser();
         $parsedRequest = $parser->parseBidRequest($json);
+        $this->assertNotNull($parsedRequest);
         $this->assertEquals($expectedArray, $parsedRequest->toArray());
     }
 }

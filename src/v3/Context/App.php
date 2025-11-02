@@ -4,74 +4,36 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\App as CommonApp;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class App implements ObjectInterface
+class App extends CommonApp
 {
-    use HasData;
-
-    /** @var array<string, class-string> */
+    /** @var array<string, class-string|string|array<string>> */
     protected static array $schema = [
+        'storeid' => 'string',
+        'cat' => 'array<string>',
+        'sectioncat' => 'array<string>',
+        'pagecat' => 'array<string>',
         'cattax' => ContentTaxonomy::class,
-        'publisher' => Publisher::class,
-        'content' => Content::class,
+        'ver' => 'string',
+        'privacypolicy' => 'int',
+        'paid' => 'int',
+        'keywords' => 'string',
+        'kwarray' => 'array<string>',
     ];
 
-    public static function getSchema(): array
+    /**
+     * @return array<string, class-string|string|array<string>>
+     */
+    protected static function getBaseSchema(): array
     {
         return static::$schema;
     }
 
-    public function setId(string $id): static
+    public static function getSchema(): array
     {
-        return $this->set('id', $id);
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
-    }
-
-    public function setName(string $name): static
-    {
-        return $this->set('name', $name);
-    }
-
-    public function getName(): ?string
-    {
-        return $this->get('name');
-    }
-
-    public function setBundle(string $bundle): static
-    {
-        return $this->set('bundle', $bundle);
-    }
-
-    public function getBundle(): ?string
-    {
-        return $this->get('bundle');
-    }
-
-    public function setDomain(string $domain): static
-    {
-        return $this->set('domain', $domain);
-    }
-
-    public function getDomain(): ?string
-    {
-        return $this->get('domain');
-    }
-
-    public function setStoreurl(string $storeurl): static
-    {
-        return $this->set('storeurl', $storeurl);
-    }
-
-    public function getStoreurl(): ?string
-    {
-        return $this->get('storeurl');
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
     public function setStoreid(string $storeid): static
@@ -180,25 +142,5 @@ class App implements ObjectInterface
     public function getKwarray(): ?array
     {
         return $this->get('kwarray');
-    }
-
-    public function setPublisher(Publisher $publisher): static
-    {
-        return $this->set('publisher', $publisher);
-    }
-
-    public function getPublisher(): ?Publisher
-    {
-        return $this->get('publisher');
-    }
-
-    public function setContent(Content $content): static
-    {
-        return $this->set('content', $content);
-    }
-
-    public function getContent(): ?Content
-    {
-        return $this->get('content');
     }
 }

@@ -7,6 +7,8 @@ namespace OpenRTB\Tests\v3\Bid;
 use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Bid\Bid;
+use OpenRTB\Common\Resources\Bid as CommonBid;
+use OpenRTB\Common\Collection;
 
 /**
  * @covers \OpenRTB\v3\Bid\Seatbid
@@ -17,13 +19,15 @@ final class SeatbidTest extends TestCase
     {
         $schema = Seatbid::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonSeatBid
         $this->assertArrayHasKey('seat', $schema);
         $this->assertEquals('string', $schema['seat']);
+        $this->assertArrayHasKey('bid', $schema);
+        $this->assertEquals([CommonBid::class], $schema['bid']);
+
+        // Assertions for properties unique to v3 Seatbid
         $this->assertArrayHasKey('package', $schema);
         $this->assertEquals('int', $schema['package']);
-        $this->assertArrayHasKey('bid', $schema);
-        $this->assertEquals([Bid::class], $schema['bid']);
     }
 
     public function testSetSeat(): void
@@ -63,7 +67,10 @@ final class SeatbidTest extends TestCase
         $bid2 = new Bid();
         $seatbid->addBid($bid1);
         $seatbid->addBid($bid2);
-        $this->assertEquals([$bid1, $bid2], $seatbid->getBid());
+        $this->assertInstanceOf(Collection::class, $seatbid->getBid());
+        $this->assertCount(2, $seatbid->getBid());
+        $this->assertSame($bid1, $seatbid->getBid()->offsetGet(0));
+        $this->assertSame($bid2, $seatbid->getBid()->offsetGet(1));
     }
 
     public function testGetBid(): void
@@ -71,6 +78,8 @@ final class SeatbidTest extends TestCase
         $seatbid = new Seatbid();
         $bid = new Bid();
         $seatbid->addBid($bid);
-        $this->assertEquals([$bid], $seatbid->getBid());
+        $this->assertInstanceOf(Collection::class, $seatbid->getBid());
+        $this->assertCount(1, $seatbid->getBid());
+        $this->assertSame($bid, $seatbid->getBid()[0]);
     }
 }

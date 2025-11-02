@@ -17,7 +17,6 @@ final class AuditTest extends TestCase
     {
         $schema = Audit::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('status', $schema);
         $this->assertEquals(AuditStatus::class, $schema['status']);
         $this->assertArrayHasKey('feedback', $schema);

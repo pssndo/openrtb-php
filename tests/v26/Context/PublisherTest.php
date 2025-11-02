@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\Publisher;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Publisher as CommonPublisher;
 
 /**
  * @covers \OpenRTB\v26\Context\Publisher
@@ -17,7 +18,7 @@ final class PublisherTest extends TestCase
     {
         $schema = Publisher::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonPublisher
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('name', $schema);
@@ -26,6 +27,8 @@ final class PublisherTest extends TestCase
         $this->assertEquals('array', $schema['cat']);
         $this->assertArrayHasKey('domain', $schema);
         $this->assertEquals('string', $schema['domain']);
+
+        // Assertions for properties unique to v26 Publisher
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }

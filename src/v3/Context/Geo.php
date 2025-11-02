@@ -4,46 +4,33 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\Geo as CommonGeo;
 use OpenRTB\v3\Enums\Context\IpLocationService;
 use OpenRTB\v3\Enums\Context\LocationType;
 
-class Geo implements ObjectInterface
+class Geo extends CommonGeo
 {
-    use HasData;
-
-    protected static array $schema = [
-        'type' => LocationType::class,
-        'ipservice' => IpLocationService::class,
-    ];
+    /**
+     * @return array<string, class-string|string|int>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'type' => LocationType::class,
+            'ipservice' => IpLocationService::class,
+            'accuracy' => 'int',
+            'lastfix' => 'int',
+            'regionfips104' => 'string',
+            'metro' => 'string',
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
-    public function setLat(float $lat): self
-    {
-        return $this->set('lat', $lat);
-    }
-
-    public function getLat(): ?float
-    {
-        return $this->get('lat');
-    }
-
-    public function setLon(float $lon): self
-    {
-        return $this->set('lon', $lon);
-    }
-
-    public function getLon(): ?float
-    {
-        return $this->get('lon');
-    }
-
-    public function setType(LocationType $type): self
+    public function setType(LocationType $type): static
     {
         return $this->set('type', $type);
     }
@@ -53,7 +40,7 @@ class Geo implements ObjectInterface
         return $this->get('type');
     }
 
-    public function setAccuracy(int $accuracy): self
+    public function setAccuracy(int $accuracy): static
     {
         return $this->set('accuracy', $accuracy);
     }
@@ -63,7 +50,7 @@ class Geo implements ObjectInterface
         return $this->get('accuracy');
     }
 
-    public function setLastfix(int $lastfix): self
+    public function setLastfix(int $lastfix): static
     {
         return $this->set('lastfix', $lastfix);
     }
@@ -73,7 +60,7 @@ class Geo implements ObjectInterface
         return $this->get('lastfix');
     }
 
-    public function setIpservice(IpLocationService $ipservice): self
+    public function setIpservice(IpLocationService $ipservice): static
     {
         return $this->set('ipservice', $ipservice);
     }
@@ -83,27 +70,7 @@ class Geo implements ObjectInterface
         return $this->get('ipservice');
     }
 
-    public function setCountry(string $country): self
-    {
-        return $this->set('country', $country);
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->get('country');
-    }
-
-    public function setRegion(string $region): self
-    {
-        return $this->set('region', $region);
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->get('region');
-    }
-
-    public function setRegionfips104(string $regionfips104): self
+    public function setRegionfips104(string $regionfips104): static
     {
         return $this->set('regionfips104', $regionfips104);
     }
@@ -113,7 +80,7 @@ class Geo implements ObjectInterface
         return $this->get('regionfips104');
     }
 
-    public function setMetro(string $metro): self
+    public function setMetro(string $metro): static
     {
         return $this->set('metro', $metro);
     }
@@ -121,35 +88,5 @@ class Geo implements ObjectInterface
     public function getMetro(): ?string
     {
         return $this->get('metro');
-    }
-
-    public function setCity(string $city): self
-    {
-        return $this->set('city', $city);
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->get('city');
-    }
-
-    public function setZip(string $zip): self
-    {
-        return $this->set('zip', $zip);
-    }
-
-    public function getZip(): ?string
-    {
-        return $this->get('zip');
-    }
-
-    public function setUtcoffset(int $utcoffset): self
-    {
-        return $this->set('utcoffset', $utcoffset);
-    }
-
-    public function getUtcoffset(): ?int
-    {
-        return $this->get('utcoffset');
     }
 }

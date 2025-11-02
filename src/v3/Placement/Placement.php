@@ -7,11 +7,15 @@ namespace OpenRTB\v3\Placement;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
+use OpenRTB\Common\Collection;
 
 class Placement implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|array<class-string>|int>
+     */
     protected static array $schema = [
         'display' => DisplayPlacement::class,
         'video' => VideoPlacement::class,
@@ -28,7 +32,7 @@ class Placement implements ObjectInterface
         return static::$schema;
     }
 
-    public function setTagid(string $tagid): self
+    public function setTagid(string $tagid): static
     {
         return $this->set('tagid', $tagid);
     }
@@ -38,7 +42,7 @@ class Placement implements ObjectInterface
         return $this->get('tagid');
     }
 
-    public function setW(int $w): self
+    public function setW(int $w): static
     {
         return $this->set('w', $w);
     }
@@ -48,7 +52,7 @@ class Placement implements ObjectInterface
         return $this->get('w');
     }
 
-    public function setH(int $h): self
+    public function setH(int $h): static
     {
         return $this->set('h', $h);
     }
@@ -58,7 +62,7 @@ class Placement implements ObjectInterface
         return $this->get('h');
     }
 
-    public function setReward(int $reward): self
+    public function setReward(int $reward): static
     {
         return $this->set('reward', $reward);
     }
@@ -68,7 +72,7 @@ class Placement implements ObjectInterface
         return $this->get('reward');
     }
 
-    public function setSsai(int $ssai): self
+    public function setSsai(int $ssai): static
     {
         return $this->set('ssai', $ssai);
     }
@@ -78,7 +82,7 @@ class Placement implements ObjectInterface
         return $this->get('ssai');
     }
 
-    public function setSdk(string $sdk): self
+    public function setSdk(string $sdk): static
     {
         return $this->set('sdk', $sdk);
     }
@@ -88,7 +92,7 @@ class Placement implements ObjectInterface
         return $this->get('sdk');
     }
 
-    public function setSdkver(string $sdkver): self
+    public function setSdkver(string $sdkver): static
     {
         return $this->set('sdkver', $sdkver);
     }
@@ -98,7 +102,7 @@ class Placement implements ObjectInterface
         return $this->get('sdkver');
     }
 
-    public function setUnit(SizeUnit $unit): self
+    public function setUnit(SizeUnit $unit): static
     {
         return $this->set('unit', $unit);
     }
@@ -108,7 +112,7 @@ class Placement implements ObjectInterface
         return $this->get('unit');
     }
 
-    public function setPriv(int $priv): self
+    public function setPriv(int $priv): static
     {
         return $this->set('priv', $priv);
     }
@@ -118,7 +122,7 @@ class Placement implements ObjectInterface
         return $this->get('priv');
     }
 
-    public function setNative(NativePlacement $native): self
+    public function setNative(NativePlacement $native): static
     {
         return $this->set('native', $native);
     }
@@ -128,7 +132,7 @@ class Placement implements ObjectInterface
         return $this->get('native');
     }
 
-    public function setDisplay(DisplayPlacement $display): self
+    public function setDisplay(DisplayPlacement $display): static
     {
         return $this->set('display', $display);
     }
@@ -138,7 +142,7 @@ class Placement implements ObjectInterface
         return $this->get('display');
     }
 
-    public function setVideo(VideoPlacement $video): self
+    public function setVideo(VideoPlacement $video): static
     {
         return $this->set('video', $video);
     }
@@ -148,7 +152,7 @@ class Placement implements ObjectInterface
         return $this->get('video');
     }
 
-    public function setAudio(AudioPlacement $audio): self
+    public function setAudio(AudioPlacement $audio): static
     {
         return $this->set('audio', $audio);
     }
@@ -158,7 +162,7 @@ class Placement implements ObjectInterface
         return $this->get('audio');
     }
 
-    public function setNativefmt(NativeFormat $nativefmt): self
+    public function setNativefmt(NativeFormat $nativefmt): static
     {
         return $this->set('nativefmt', $nativefmt);
     }
@@ -169,34 +173,34 @@ class Placement implements ObjectInterface
     }
 
     /**
-     * @param list<DisplayFormat> $displayfmt
+     * @param Collection<DisplayFormat>|array<DisplayFormat> $displayfmt
      */
-    public function setDisplayfmt(array $displayfmt): self
+    public function setDisplayfmt(Collection|array $displayfmt): static
     {
-        return $this->set('displayfmt', $displayfmt);
+        return $this->set('displayfmt', is_array($displayfmt) ? $displayfmt : $displayfmt->toArray());
     }
 
     /**
-     * @return list<DisplayFormat>|null
+     * @return Collection<DisplayFormat>|null
      */
-    public function getDisplayfmt(): ?array
+    public function getDisplayfmt(): ?Collection
     {
-        return $this->get('displayfmt');
+        return new Collection($this->get('displayfmt') ?? [], DisplayFormat::class);
     }
 
     /**
-     * @param list<Event> $event
+     * @param Collection<Event>|array<Event> $event
      */
-    public function setEvent(array $event): self
+    public function setEvent(Collection|array $event): static
     {
-        return $this->set('event', $event);
+        return $this->set('event', is_array($event) ? $event : $event->toArray());
     }
 
     /**
-     * @return list<Event>|null
+     * @return Collection<Event>|null
      */
-    public function getEvent(): ?array
+    public function getEvent(): ?Collection
     {
-        return $this->get('event');
+        return new Collection($this->get('event') ?? [], Event::class);
     }
 }

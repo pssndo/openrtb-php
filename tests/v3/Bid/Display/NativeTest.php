@@ -17,7 +17,6 @@ final class NativeTest extends TestCase
     {
         $schema = Native::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('link', $schema);
         $this->assertEquals(Link::class, $schema['link']);
         $this->assertArrayHasKey('asset', $schema);

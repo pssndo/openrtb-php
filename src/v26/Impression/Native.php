@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Impression;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=28
@@ -15,10 +15,20 @@ class Native implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string|array<string>>
+     */
     protected static array $schema = [
         'ext' => Ext::class,
+        'request' => 'string',
+        'ver' => 'string',
+        'api' => ['int'],
+        'battr' => ['int'],
     ];
 
+    /**
+     * @return array<string, string|class-string|array<string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;

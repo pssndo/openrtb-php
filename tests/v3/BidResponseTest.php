@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use OpenRTB\v3\BidResponse;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\BidResponse;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\v3\Ext;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -73,6 +73,8 @@ class BidResponseTest extends TestCase
 
         $expectedJson = '{"id":"json-test-id"}';
 
-        $this->assertJsonStringEqualsJsonString($expectedJson, $bidResponse->toJson());
+        $json = $bidResponse->toJson();
+        $this->assertIsString($json);
+        $this->assertJsonStringEqualsJsonString($expectedJson, $json);
     }
 }

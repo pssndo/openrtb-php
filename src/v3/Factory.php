@@ -11,9 +11,6 @@ class Factory
 {
     public function __invoke(): RequestBuilderInterface
     {
-        $request = new RequestBuilder();
-        $request();
-
-        return $request;
+        return new RequestBuilder();
     }
 }

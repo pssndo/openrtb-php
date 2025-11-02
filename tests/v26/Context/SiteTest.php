@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\Site;
-use OpenRTB\v26\Context\Publisher;
-use OpenRTB\v26\Context\Content;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Publisher as CommonPublisher;
+use OpenRTB\Common\Resources\Content as CommonContent;
+use OpenRTB\v26\Context\Content as V26Content;
 
 /**
  * @covers \OpenRTB\v26\Context\Site
@@ -19,7 +20,6 @@ final class SiteTest extends TestCase
     {
         $schema = Site::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('name', $schema);
@@ -31,9 +31,9 @@ final class SiteTest extends TestCase
         $this->assertArrayHasKey('ref', $schema);
         $this->assertEquals('string', $schema['ref']);
         $this->assertArrayHasKey('publisher', $schema);
-        $this->assertEquals(Publisher::class, $schema['publisher']);
+        $this->assertEquals(CommonPublisher::class, $schema['publisher']);
         $this->assertArrayHasKey('content', $schema);
-        $this->assertEquals(Content::class, $schema['content']);
+        $this->assertEquals(CommonContent::class, $schema['content']);
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }
@@ -116,7 +116,7 @@ final class SiteTest extends TestCase
     public function testSetPublisher(): void
     {
         $site = new Site();
-        $publisher = new Publisher();
+        $publisher = new CommonPublisher();
         $site->setPublisher($publisher);
         $this->assertSame($publisher, $site->getPublisher());
     }
@@ -124,7 +124,7 @@ final class SiteTest extends TestCase
     public function testGetPublisher(): void
     {
         $site = new Site();
-        $publisher = new Publisher();
+        $publisher = new CommonPublisher();
         $site->setPublisher($publisher);
         $this->assertSame($publisher, $site->getPublisher());
     }
@@ -132,7 +132,7 @@ final class SiteTest extends TestCase
     public function testSetContent(): void
     {
         $site = new Site();
-        $content = new Content();
+        $content = new V26Content();
         $site->setContent($content);
         $this->assertSame($content, $site->getContent());
     }
@@ -140,7 +140,7 @@ final class SiteTest extends TestCase
     public function testGetContent(): void
     {
         $site = new Site();
-        $content = new Content();
+        $content = new V26Content();
         $site->setContent($content);
         $this->assertSame($content, $site->getContent());
     }

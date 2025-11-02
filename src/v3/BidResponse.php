@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace OpenRTB\v3;
 
 use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\BidResponseInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\v3\Ext;
 
 class BidResponse implements BidResponseInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|class-string|array<class-string>>
+     */
     protected static array $schema = [
         'id' => 'string',
         'bidid' => 'string',
@@ -24,6 +27,9 @@ class BidResponse implements BidResponseInterface
         'cdata' => 'string',
     ];
 
+    /**
+     * @return array<string, string|class-string|array<class-string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;

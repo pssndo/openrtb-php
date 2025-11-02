@@ -4,60 +4,49 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Impression;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Deal as CommonDeal;
+use OpenRTB\v26\Enums\AuctionType;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=30
  */
-class Deal implements ObjectInterface
+class Deal extends CommonDeal
 {
-    use HasData;
-
-    protected static array $schema = [
-        'id' => 'string',
-        'bidfloor' => 'float',
-        'bidfloorcur' => 'string',
-        'at' => 'int',
-        'wseat' => 'array',
-        'wadv' => 'array',
-        'ext' => Ext::class,
-    ];
+    /**
+     * @return array<string, class-string|int|string>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'at' => 'int',
+            'ext' => Ext::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
-    }
-
-    public function setId(string $id): static
-    {
-        return $this->set('id', $id);
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
+        return array_merge(CommonDeal::getBaseSchema(), static::getBaseSchema());
     }
 
     public function setBidfloor(float $bidfloor): static
     {
-        return $this->set('bidfloor', $bidfloor);
+        return $this->set('flr', $bidfloor);
     }
 
     public function getBidfloor(): ?float
     {
-        return $this->get('bidfloor');
+        return $this->get('flr');
     }
 
     public function setBidfloorcur(string $bidfloorcur): static
     {
-        return $this->set('bidfloorcur', $bidfloorcur);
+        return $this->set('flrcur', $bidfloorcur);
     }
 
     public function getBidfloorcur(): ?string
     {
-        return $this->get('bidfloorcur');
+        return $this->get('flrcur');
     }
 
     public function setAt(int $at): static
@@ -65,33 +54,14 @@ class Deal implements ObjectInterface
         return $this->set('at', $at);
     }
 
-    public function getAt(): ?int
+    public function getAt(): ?AuctionType
     {
-        return $this->get('at');
-    }
+        $at = $this->get('at');
+        if ($at instanceof AuctionType) {
+            return $at;
+        }
 
-    /** @param list<string> $wseat */
-    public function setWseat(array $wseat): static
-    {
-        return $this->set('wseat', $wseat);
-    }
-
-    /** @return list<string>|null */
-    public function getWseat(): ?array
-    {
-        return $this->get('wseat');
-    }
-
-    /** @param list<string> $wadv */
-    public function setWadv(array $wadv): static
-    {
-        return $this->set('wadv', $wadv);
-    }
-
-    /** @return list<string>|null */
-    public function getWadv(): ?array
-    {
-        return $this->get('wadv');
+        return AuctionType::tryFrom($at);
     }
 
     public function setExt(Ext $ext): static

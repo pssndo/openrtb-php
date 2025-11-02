@@ -14,7 +14,13 @@ class Format implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    /**
+     * @var array<string, string>
+     */
+    protected static array $schema = [
+        'w' => 'int',
+        'h' => 'int',
+    ];
 
     public static function getSchema(): array
     {

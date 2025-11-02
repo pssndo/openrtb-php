@@ -16,7 +16,6 @@ final class TitleTest extends TestCase
     {
         $schema = Title::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('text', $schema);
         $this->assertEquals('string', $schema['text']);
     }

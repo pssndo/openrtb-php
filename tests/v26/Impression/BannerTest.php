@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Impression;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Impression\Banner;
 use OpenRTB\v26\Impression\Format;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v26\Impression\Banner
@@ -18,7 +18,7 @@ final class BannerTest extends TestCase
     {
         $schema = Banner::getSchema();
 
-        $this->assertIsArray($schema);
+        // Removed redundant assertIsArray($schema);
         $this->assertArrayHasKey('format', $schema);
         $this->assertEquals([Format::class], $schema['format']);
         $this->assertArrayHasKey('w', $schema);

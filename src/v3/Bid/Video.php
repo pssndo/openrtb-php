@@ -15,6 +15,9 @@ class Video implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|array<class-string>|int>
+     */
     protected static array $schema = [
         'adm' => 'string',
         'curl' => 'string',
@@ -24,6 +27,9 @@ class Video implements ObjectInterface
         'dur' => 'int',
     ];
 
+    /**
+     * @return array<string, string|array<class-string>|int>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
@@ -34,7 +40,7 @@ class Video implements ObjectInterface
         return $this->get('adm');
     }
 
-    public function setAdm(string $adm): self
+    public function setAdm(string $adm): static
     {
         return $this->set('adm', $adm);
     }
@@ -44,7 +50,7 @@ class Video implements ObjectInterface
         return $this->get('curl');
     }
 
-    public function setCurl(string $curl): self
+    public function setCurl(string $curl): static
     {
         return $this->set('curl', $curl);
     }
@@ -56,7 +62,7 @@ class Video implements ObjectInterface
     }
 
     /** @param list<ApiFramework> $api */
-    public function setApi(array $api): self
+    public function setApi(array $api): static
     {
         return $this->set('api', $api);
     }
@@ -66,7 +72,7 @@ class Video implements ObjectInterface
         return $this->get('ctype');
     }
 
-    public function setCtype(string $ctype): self
+    public function setCtype(string $ctype): static
     {
         return $this->set('ctype', $ctype);
     }
@@ -76,7 +82,7 @@ class Video implements ObjectInterface
         return $this->get('mime');
     }
 
-    public function setMime(string $mime): self
+    public function setMime(string $mime): static
     {
         return $this->set('mime', $mime);
     }
@@ -86,7 +92,7 @@ class Video implements ObjectInterface
         return $this->get('dur');
     }
 
-    public function setDur(int $dur): self
+    public function setDur(int $dur): static
     {
         return $this->set('dur', $dur);
     }

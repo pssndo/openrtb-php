@@ -4,87 +4,68 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Site as CommonSite;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class Site implements ObjectInterface
+class Site extends CommonSite
 {
-    use HasData;
-
-    protected static array $schema = [
-        'cattax' => ContentTaxonomy::class,
-        'publisher' => Publisher::class,
-        'content' => Content::class,
-    ];
-
     public static function getSchema(): array
     {
-        return static::$schema;
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
-    public function setId(string $id): static
+    /**
+     * @return array<string, string|class-string|array<string>|int>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('id', $id);
+        return [
+            'cattax' => ContentTaxonomy::class,
+            'cat' => ['string'],
+            'sectioncat' => ['string'],
+            'pagecat' => ['string'],
+            'privacypolicy' => 'int',
+            'keywords' => 'string',
+            'kwarray' => ['string'],
+            'search' => 'string',
+            'mobile' => 'int',
+            'amp' => 'int',
+        ];
     }
 
-    public function getId(): ?string
-    {
-        return $this->get('id');
-    }
-
-    public function setName(string $name): static
-    {
-        return $this->set('name', $name);
-    }
-
-    public function getName(): ?string
-    {
-        return $this->get('name');
-    }
-
-    public function setDomain(string $domain): static
-    {
-        return $this->set('domain', $domain);
-    }
-
-    public function getDomain(): ?string
-    {
-        return $this->get('domain');
-    }
-
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param list<string>|Collection<string> $cat */
+    public function setCat(array|Collection $cat): static
     {
         return $this->set('cat', $cat);
     }
 
-    /** @return list<string>|null */
-    public function getCat(): ?array
+    /** @return list<string>|Collection<string>|null */
+    public function getCat(): array|Collection|null
     {
         return $this->get('cat');
     }
 
-    /** @param list<string> $sectioncat */
-    public function setSectioncat(array $sectioncat): static
+    /** @param list<string>|Collection<string> $sectioncat */
+    public function setSectioncat(array|Collection $sectioncat): static
     {
         return $this->set('sectioncat', $sectioncat);
     }
 
-    /** @return list<string>|null */
-    public function getSectioncat(): ?array
+    /** @return list<string>|Collection<string>|null */
+    public function getSectioncat(): array|Collection|null
     {
         return $this->get('sectioncat');
     }
 
-    /** @param list<string> $pagecat */
-    public function setPagecat(array $pagecat): static
+    /** @param list<string>|Collection<string> $pagecat */
+    public function setPagecat(array|Collection $pagecat): static
     {
         return $this->set('pagecat', $pagecat);
     }
 
-    /** @return list<string>|null */
-    public function getPagecat(): ?array
+    /** @return list<string>|Collection<string>|null */
+    public function getPagecat(): array|Collection|null
     {
         return $this->get('pagecat');
     }
@@ -119,36 +100,16 @@ class Site implements ObjectInterface
         return $this->get('keywords');
     }
 
-    /** @param list<string> $kwarray */
-    public function setKwarray(array $kwarray): static
+    /** @param list<string>|Collection<string> $kwarray */
+    public function setKwarray(array|Collection $kwarray): static
     {
         return $this->set('kwarray', $kwarray);
     }
 
-    /** @return list<string>|null */
-    public function getKwarray(): ?array
+    /** @return list<string>|Collection<string>|null */
+    public function getKwarray(): array|Collection|null
     {
         return $this->get('kwarray');
-    }
-
-    public function setPage(string $page): static
-    {
-        return $this->set('page', $page);
-    }
-
-    public function getPage(): ?string
-    {
-        return $this->get('page');
-    }
-
-    public function setRef(string $ref): static
-    {
-        return $this->set('ref', $ref);
-    }
-
-    public function getRef(): ?string
-    {
-        return $this->get('ref');
     }
 
     public function setSearch(string $search): static
@@ -179,25 +140,5 @@ class Site implements ObjectInterface
     public function getAmp(): ?int
     {
         return $this->get('amp');
-    }
-
-    public function setPublisher(Publisher $publisher): static
-    {
-        return $this->set('publisher', $publisher);
-    }
-
-    public function getPublisher(): ?Publisher
-    {
-        return $this->get('publisher');
-    }
-
-    public function setContent(Content $content): static
-    {
-        return $this->set('content', $content);
-    }
-
-    public function getContent(): ?Content
-    {
-        return $this->get('content');
     }
 }

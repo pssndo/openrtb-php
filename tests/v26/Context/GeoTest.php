@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\Geo;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Geo as CommonGeo;
 
 /**
  * @covers \OpenRTB\v26\Context\Geo
@@ -17,13 +18,11 @@ final class GeoTest extends TestCase
     {
         $schema = Geo::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonGeo
         $this->assertArrayHasKey('lat', $schema);
         $this->assertEquals('float', $schema['lat']);
         $this->assertArrayHasKey('lon', $schema);
         $this->assertEquals('float', $schema['lon']);
-        $this->assertArrayHasKey('type', $schema);
-        $this->assertEquals('int', $schema['type']);
         $this->assertArrayHasKey('country', $schema);
         $this->assertEquals('string', $schema['country']);
         $this->assertArrayHasKey('region', $schema);
@@ -34,6 +33,10 @@ final class GeoTest extends TestCase
         $this->assertEquals('string', $schema['zip']);
         $this->assertArrayHasKey('utcoffset', $schema);
         $this->assertEquals('int', $schema['utcoffset']);
+
+        // Assertions for properties unique to v26 Geo
+        $this->assertArrayHasKey('type', $schema);
+        $this->assertEquals('int', $schema['type']);
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }

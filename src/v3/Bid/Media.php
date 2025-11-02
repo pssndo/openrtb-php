@@ -11,6 +11,9 @@ class Media implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'ad' => Ad::class,
     ];
@@ -20,7 +23,7 @@ class Media implements ObjectInterface
         return static::$schema;
     }
 
-    public function setAd(Ad $ad): self
+    public function setAd(Ad $ad): static
     {
         return $this->set('ad', $ad);
     }

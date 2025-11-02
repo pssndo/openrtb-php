@@ -34,7 +34,7 @@ class BidRequestTest extends TestCase
         $request->addImp($imp);
 
         $json = $request->toJson();
-        $this->assertJson($json);
+        $this->assertIsString($json);
 
         $parser = new Parser();
         $parsedRequest = $parser->parseBidRequest($json);

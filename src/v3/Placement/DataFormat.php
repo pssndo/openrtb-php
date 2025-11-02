@@ -11,19 +11,25 @@ class DataFormat implements ObjectInterface
 {
     use HasData;
 
-    protected static array $schema = [];
+    /**
+     * @var array<string, string>
+     */
+    protected static array $schema = [
+        'type' => 'int',
+        'len' => 'int',
+    ];
 
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setType(int $type): self
+    public function setType(int $type): static
     {
         return $this->set('type', $type);
     }
 
-    public function setLen(int $len): self
+    public function setLen(int $len): static
     {
         return $this->set('len', $len);
     }

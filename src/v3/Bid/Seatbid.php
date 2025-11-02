@@ -4,33 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
+use OpenRTB\Common\Collection;
 
-class Seatbid implements ObjectInterface
+class Seatbid extends CommonSeatBid
 {
-    use HasData;
-
-    /** @var array<string, array<class-string>> */
-    protected static array $schema = [
-        'seat' => 'string',
-        'package' => 'int',
-        'bid' => [Bid::class],
-    ];
+    /**
+     * @return array<string, string|int>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'package' => 'int',
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
-    }
-
-    public function setSeat(string $seat): static
-    {
-        return $this->set('seat', $seat);
-    }
-
-    public function getSeat(): ?string
-    {
-        return $this->get('seat');
+        return array_merge(CommonSeatBid::getSchema(), static::getBaseSchema());
     }
 
     public function setPackage(int $package): static
@@ -45,14 +36,9 @@ class Seatbid implements ObjectInterface
 
     public function addBid(Bid $bid): static
     {
-        $items = $this->get('bid') ?? [];
-        $items[] = $bid;
-        return $this->set('bid', $items);
-    }
+        $bids = $this->getBid() ?: new Collection([], Bid::class);
+        $bids->add($bid);
 
-    /** @return list<Bid>|null */
-    public function getBid(): ?array
-    {
-        return $this->get('bid');
+        return $this->setBid($bids);
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Context\User;
-use OpenRTB\v26\Context\Geo;
-use OpenRTB\v26\Ext;
+use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Geo as CommonGeo;
 
 /**
  * @covers \OpenRTB\v26\Context\User
@@ -18,7 +18,7 @@ final class UserTest extends TestCase
     {
         $schema = User::getSchema();
 
-        $this->assertIsArray($schema);
+        // Assertions for properties from CommonUser
         $this->assertArrayHasKey('id', $schema);
         $this->assertEquals('string', $schema['id']);
         $this->assertArrayHasKey('buyeruid', $schema);
@@ -30,7 +30,9 @@ final class UserTest extends TestCase
         $this->assertArrayHasKey('keywords', $schema);
         $this->assertEquals('string', $schema['keywords']);
         $this->assertArrayHasKey('geo', $schema);
-        $this->assertEquals(Geo::class, $schema['geo']);
+        $this->assertEquals(CommonGeo::class, $schema['geo']);
+
+        // Assertions for properties unique to v26 User
         $this->assertArrayHasKey('ext', $schema);
         $this->assertEquals(Ext::class, $schema['ext']);
     }
@@ -80,7 +82,7 @@ final class UserTest extends TestCase
         $this->assertEquals(1985, $user->getYob());
     }
 
-    public function testSetGender(): void
+    public function setGender(string $gender): void
     {
         $user = new User();
         $gender = 'M';
@@ -113,7 +115,7 @@ final class UserTest extends TestCase
     public function testSetGeo(): void
     {
         $user = new User();
-        $geo = new Geo();
+        $geo = new CommonGeo();
         $user->setGeo($geo);
         $this->assertSame($geo, $user->getGeo());
     }
@@ -121,7 +123,7 @@ final class UserTest extends TestCase
     public function testGetGeo(): void
     {
         $user = new User();
-        $geo = new Geo();
+        $geo = new CommonGeo();
         $user->setGeo($geo);
         $this->assertSame($geo, $user->getGeo());
     }

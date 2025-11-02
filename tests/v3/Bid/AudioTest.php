@@ -17,7 +17,6 @@ final class AudioTest extends TestCase
     {
         $schema = Audio::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('adm', $schema);
         $this->assertEquals('string', $schema['adm']);
         $this->assertArrayHasKey('curl', $schema);

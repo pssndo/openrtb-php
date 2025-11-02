@@ -16,7 +16,6 @@ final class LinkTest extends TestCase
     {
         $schema = Link::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('url', $schema);
         $this->assertEquals('string', $schema['url']);
         $this->assertArrayHasKey('trkr', $schema);

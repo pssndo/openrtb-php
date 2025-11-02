@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v26\Impression\Imp;
 
 class NativeAd implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string|array<class-string>|string>
+     */
     protected static array $schema = [
         'link' => Link::class,
         'asset' => [Asset::class],
@@ -18,12 +23,15 @@ class NativeAd implements ObjectInterface
         'privacy' => 'string',
     ];
 
+    /**
+     * @return array<string, class-string|array<class-string>|string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setLink(Link $link): self
+    public function setLink(Link $link): static
     {
         return $this->set('link', $link);
     }
@@ -34,30 +42,46 @@ class NativeAd implements ObjectInterface
     }
 
     /** @param list<Asset> $asset */
-    public function setAsset(array $asset): self
+    public function setAsset(Collection|array $asset): static
     {
-        return $this->set('asset', $asset);
+        $collection = $asset instanceof Collection ? $asset : new Collection($asset, Asset::class);
+        return $this->set('asset', $collection);
     }
 
-    /** @return list<Asset>|null */
-    public function getAsset(): ?array
+    /** @return Collection<Asset>|null */
+    public function getAsset(): ?Collection
     {
-        return $this->get('asset');
+        $value = $this->get('asset');
+        if ($value instanceof Collection) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return new Collection($value, Asset::class);
+        }
+        return null;
     }
 
     /** @param list<Event> $event */
-    public function setEvent(array $event): self
+    public function setEvent(Collection|array $event): static
     {
-        return $this->set('event', $event);
+        $collection = $event instanceof Collection ? $event : new Collection($event, Event::class);
+        return $this->set('event', $collection);
     }
 
-    /** @return list<Event>|null */
-    public function getEvent(): ?array
+    /** @return Collection<Event>|null */
+    public function getEvent(): ?Collection
     {
-        return $this->get('event');
+        $value = $this->get('event');
+        if ($value instanceof Collection) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return new Collection($value, Event::class);
+        }
+        return null;
     }
 
-    public function setPrivacy(string $privacy): self
+    public function setPrivacy(string $privacy): static
     {
         return $this->set('privacy', $privacy);
     }

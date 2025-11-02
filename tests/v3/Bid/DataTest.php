@@ -16,7 +16,6 @@ final class DataTest extends TestCase
     {
         $schema = Data::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('value', $schema);
         $this->assertEquals('string', $schema['value']);
     }

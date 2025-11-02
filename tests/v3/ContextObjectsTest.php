@@ -11,8 +11,8 @@ use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Device;
 use OpenRTB\v3\Context\Dooh;
 use OpenRTB\v3\Context\Geo;
-use OpenRTB\v3\Context\Producer;
-use OpenRTB\v3\Context\Publisher;
+use OpenRTB\Common\Resources\Producer;
+use OpenRTB\Common\Resources\Publisher;
 use OpenRTB\v3\Context\Regs;
 use OpenRTB\v3\Context\Restrictions;
 use OpenRTB\v3\Context\Site;
@@ -34,14 +34,14 @@ use OpenRTB\v3\Util\Parser;
  * @covers \OpenRTB\v3\Context\Device
  * @covers \OpenRTB\v3\Context\Dooh
  * @covers \OpenRTB\v3\Context\Geo
- * @covers \OpenRTB\v3\Context\Publisher
+ * @covers \OpenRTB\Common\Resources\Publisher
  * @covers \OpenRTB\v3\Context\Regs
  * @covers \OpenRTB\v3\Context\Restrictions
  * @covers \OpenRTB\v3\Context\Site
  * @covers \OpenRTB\v3\Context\Source
  * @covers \OpenRTB\v3\Context\User
  * @covers \OpenRTB\v3\Context\Content
- * @covers \OpenRTB\v3\Context\Producer
+ * @covers \OpenRTB\Common\Resources\Producer
  * @covers \OpenRTB\v3\Context\Sua
  */
 class ContextObjectsTest extends TestCase
@@ -78,7 +78,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals([['brand' => 'Chrome', 'version' => '108']], $sua->getBrowsers());
         $this->assertEquals([['brand' => 'Android', 'version' => '13']], $sua->getPlatform());
         $this->assertEquals(1, $sua->getMobile());
-        $this->assertIsArray(Sua::getSchema());
     }
 
     public function testDeviceObject(): void
@@ -116,7 +115,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('310-410', $device->getMccmnc());
         $this->assertSame($geo, $device->getGeo());
         $this->assertSame($sua, $device->getSua());
-        $this->assertIsArray(Device::getSchema());
     }
 
     public function testUserObject(): void
@@ -152,7 +150,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('Producer A', $producer->getName());
         $this->assertEquals('producer.com', $producer->getDomain());
         $this->assertEquals(['cat'], $producer->getCat());
-        $this->assertIsArray(Producer::getSchema());
     }
 
     public function testContentObject(): void
@@ -189,7 +186,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $content->getEmbeddable());
         $this->assertEquals([['name' => 'data']], $content->getData());
         $this->assertSame($producer, $content->getProducer());
-        $this->assertIsArray(Content::getSchema());
     }
 
     public function testPublisherObject(): void
@@ -199,7 +195,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('Publisher A', $publisher->getName());
         $this->assertEquals('publisher.com', $publisher->getDomain());
         $this->assertEquals(['cat'], $publisher->getCat());
-        $this->assertIsArray(Publisher::getSchema());
     }
 
     public function testSiteObject(): void
@@ -256,7 +251,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(['kw1'], $app->getKwarray());
         $this->assertSame($publisher, $app->getPublisher());
         $this->assertSame($content, $app->getContent());
-        $this->assertIsArray(App::getSchema());
     }
 
     public function testRegsObject(): void
@@ -266,7 +260,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('gpp-string', $regs->getGpp());
         $this->assertEquals(1, $regs->getCoppa());
         $this->assertEquals([1,2], $regs->getGppSid());
-        $this->assertIsArray(Regs::getSchema());
     }
 
     public function testRestrictionsObject(): void
@@ -277,12 +270,11 @@ class ContextObjectsTest extends TestCase
             ->setBadv(['adv.com'])
             ->setBapp(['com.app.banned'])
             ->setBattr([CreativeAttribute::ONE_POOR]);
-        $this->assertEquals(['IAB25'], $restrictions->getBcat());
-        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $restrictions->getCattax());
-        $this->assertEquals(['adv.com'], $restrictions->getBadv());
-        $this->assertEquals(['com.app.banned'], $restrictions->getBapp());
-        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr());
-        $this->assertIsArray(Restrictions::getSchema());
+        $this->assertEquals(['IAB25'], $restrictions->getBcat()->toArray());
+        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $restrictions->getCattax()); // This should be an enum
+        $this->assertEquals(['adv.com'], $restrictions->getBadv()->toArray()); // This is an array of strings
+        $this->assertEquals(['com.app.banned'], $restrictions->getBapp()->toArray()); // This is an array of strings
+        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr()->toArray()); // This is a collection of enums
     }
 
     public function testDoohObject(): void
@@ -294,7 +286,6 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
         $this->assertEquals(1, $dooh->getCattax());
-        $this->assertIsArray(Dooh::getSchema());
     }
 
     public function testSourceObject(): void

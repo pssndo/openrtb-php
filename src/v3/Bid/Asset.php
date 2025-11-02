@@ -11,6 +11,9 @@ class Asset implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|int|class-string>
+     */
     protected static array $schema = [
         'id' => 'int',
         'req' => 'int',
@@ -20,12 +23,15 @@ class Asset implements ObjectInterface
         'link' => Link::class,
     ];
 
+    /**
+     * @return array<string, string|int|class-string>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setId(int $id): self
+    public function setId(int $id): static
     {
         return $this->set('id', $id);
     }
@@ -35,7 +41,7 @@ class Asset implements ObjectInterface
         return $this->get('id');
     }
 
-    public function setReq(int $req): self
+    public function setReq(int $req): static
     {
         return $this->set('req', $req);
     }
@@ -45,7 +51,7 @@ class Asset implements ObjectInterface
         return $this->get('req');
     }
 
-    public function setTitle(Title $title): self
+    public function setTitle(Title $title): static
     {
         return $this->set('title', $title);
     }
@@ -55,7 +61,7 @@ class Asset implements ObjectInterface
         return $this->get('title');
     }
 
-    public function setImg(Image $img): self
+    public function setImg(Image $img): static
     {
         return $this->set('img', $img);
     }
@@ -65,7 +71,7 @@ class Asset implements ObjectInterface
         return $this->get('img');
     }
 
-    public function setData(Data $data): self
+    public function setData(Data $data): static
     {
         return $this->set('data', $data);
     }
@@ -75,7 +81,7 @@ class Asset implements ObjectInterface
         return $this->get('data');
     }
 
-    public function setLink(Link $link): self
+    public function setLink(Link $link): static
     {
         return $this->set('link', $link);
     }

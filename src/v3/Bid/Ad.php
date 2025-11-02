@@ -12,6 +12,9 @@ class Ad implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, string|int|class-string|array<string>|array<class-string>>
+     */
     protected static array $schema = [
         'id' => 'string',
         'adomain' => 'array',
@@ -27,15 +30,18 @@ class Ad implements ObjectInterface
         'video' => Video::class,
         'audio' => Audio::class,
         'native' => NativeAd::class,
-        'audit' => Audit::class,
+        'audit' => Audit::class
     ];
 
+    /**
+     * @return array<string, string|int|class-string|array<string>|array<class-string>>
+     */
     public static function getSchema(): array
     {
         return static::$schema;
     }
 
-    public function setId(string $id): self
+    public function setId(string $id): static
     {
         return $this->set('id', $id);
     }
@@ -46,7 +52,7 @@ class Ad implements ObjectInterface
     }
 
     /** @param list<string> $adomain */
-    public function setAdomain(array $adomain): self
+    public function setAdomain(array $adomain): static
     {
         return $this->set('adomain', $adomain);
     }
@@ -58,7 +64,7 @@ class Ad implements ObjectInterface
     }
 
     /** @param list<string> $bundle */
-    public function setBundle(array $bundle): self
+    public function setBundle(array $bundle): static
     {
         return $this->set('bundle', $bundle);
     }
@@ -70,7 +76,7 @@ class Ad implements ObjectInterface
     }
 
     /** @param list<string> $cat */
-    public function setCat(array $cat): self
+    public function setCat(array $cat): static
     {
         return $this->set('cat', $cat);
     }
@@ -81,7 +87,7 @@ class Ad implements ObjectInterface
         return $this->get('cat');
     }
 
-    public function setCattax(int $cattax): self
+    public function setCattax(int $cattax): static
     {
         return $this->set('cattax', $cattax);
     }
@@ -91,7 +97,7 @@ class Ad implements ObjectInterface
         return $this->get('cattax');
     }
 
-    public function setLang(string $lang): self
+    public function setLang(string $lang): static
     {
         return $this->set('lang', $lang);
     }
@@ -102,7 +108,7 @@ class Ad implements ObjectInterface
     }
 
     /** @param list<CreativeAttribute> $attr */
-    public function setAttr(array $attr): self
+    public function setAttr(array $attr): static
     {
         return $this->set('attr', $attr);
     }
@@ -113,7 +119,7 @@ class Ad implements ObjectInterface
         return $this->get('attr');
     }
 
-    public function setSecure(int $secure): self
+    public function setSecure(int $secure): static
     {
         return $this->set('secure', $secure);
     }
@@ -123,7 +129,7 @@ class Ad implements ObjectInterface
         return $this->get('secure');
     }
 
-    public function setInit(int $init): self
+    public function setInit(int $init): static
     {
         return $this->set('init', $init);
     }
@@ -133,7 +139,7 @@ class Ad implements ObjectInterface
         return $this->get('init');
     }
 
-    public function setLastmod(int $lastmod): self
+    public function setLastmod(int $lastmod): static
     {
         return $this->set('lastmod', $lastmod);
     }
@@ -143,7 +149,7 @@ class Ad implements ObjectInterface
         return $this->get('lastmod');
     }
 
-    public function setDisplay(Display $display): self
+    public function setDisplay(Display $display): static
     {
         return $this->set('display', $display);
     }
@@ -153,7 +159,7 @@ class Ad implements ObjectInterface
         return $this->get('display');
     }
 
-    public function setVideo(Video $video): self
+    public function setVideo(Video $video): static
     {
         return $this->set('video', $video);
     }
@@ -163,7 +169,7 @@ class Ad implements ObjectInterface
         return $this->get('video');
     }
 
-    public function setAudio(Audio $audio): self
+    public function setAudio(Audio $audio): static
     {
         return $this->set('audio', $audio);
     }
@@ -173,7 +179,7 @@ class Ad implements ObjectInterface
         return $this->get('audio');
     }
 
-    public function setNative(NativeAd $native): self
+    public function setNative(NativeAd $native): static
     {
         return $this->set('native', $native);
     }
@@ -183,7 +189,7 @@ class Ad implements ObjectInterface
         return $this->get('native');
     }
 
-    public function setAudit(Audit $audit): self
+    public function setAudit(Audit $audit): static
     {
         return $this->set('audit', $audit);
     }

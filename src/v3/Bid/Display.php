@@ -13,6 +13,9 @@ class Display implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'banner' => Banner::class,
         'native' => Native::class,
@@ -23,7 +26,7 @@ class Display implements ObjectInterface
         return static::$schema;
     }
 
-    public function setBanner(Banner $banner): self
+    public function setBanner(Banner $banner): static
     {
         return $this->set('banner', $banner);
     }
@@ -33,7 +36,7 @@ class Display implements ObjectInterface
         return $this->get('banner');
     }
 
-    public function setNative(Native $native): self
+    public function setNative(Native $native): static
     {
         return $this->set('native', $native);
     }

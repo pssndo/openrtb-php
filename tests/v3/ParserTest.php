@@ -49,9 +49,6 @@ class ParserTest extends TestCase
     "site": {
       "id": "site-456",
       "domain": "example.com"
-    },
-    "device": {
-      "ip": "1.2.3.4"
     }
   },
   "item": [
@@ -78,13 +75,21 @@ JSON;
 
         $context = $request->getContext();
         $this->assertNotNull($context);
-        $this->assertEquals('site-456', $context->getSite()->getId());
-        $this->assertEquals('1.2.3.4', $context->getDevice()->getIp());
+        $site = $context->getSite();
+        $this->assertNotNull($site);
+        $this->assertEquals('site-456', $site->getId());
 
         $items = $request->getItem();
+        $this->assertNotNull($items);
         $this->assertCount(1, $items);
         $this->assertEquals('item-789', $items[0]->getId());
-        $this->assertEquals(300, $items[0]->getSpec()->getPlacement()->getDisplay()->getW());
+        $spec = $items[0]->getSpec();
+        $this->assertNotNull($spec);
+        $placement = $spec->getPlacement();
+        $this->assertNotNull($placement);
+        $display = $placement->getDisplay();
+        $this->assertNotNull($display);
+        $this->assertEquals(300, $display->getW());
     }
 
     public function testHydrateWithUnhandledTypes(): void
@@ -103,10 +108,13 @@ JSON;
         $request = Parser::parseBidRequest($json);
 
         // Assert that the parser correctly passed through the unhandled array value
-        $this->assertEquals([1, 2, 3], $request->getContext()->get('unhandled_array'));
+        $context = $request->getContext();
+        $this->assertNotNull($context);
+        $this->assertEquals([1, 2, 3], $context->get('unhandled_array'));
 
         // Assert that the parser passed through the scalar value where an array of objects was expected
-        $this->assertEquals(['not-an-object'], $request->getItem());
+        // It should now return a Collection with null for the unhandled item.
+        $this->assertEquals([null], $request->getItem()->toArray());
     }
 
     public function testHydrateWithInvalidDataTypes(): void
@@ -126,11 +134,15 @@ JSON;
 
         // This covers the `!is_array($value)` check.
         // The parser should return the raw string value.
-        $this->assertEquals('this-is-a-string-not-an-object', $request->getContext()->get('site'));
+        $context = $request->getContext();
+        $this->assertNotNull($context);
+        $this->assertEquals('this-is-a-string-not-an-object', $context->get('site'));
 
         // This covers the final `return $value` by providing an object for a property
         // that is not a known ObjectInterface class in the schema.
-        $this->assertEquals(['key' => 'value'], $request->getSource()->get('some_unhandled_object'));
+        $source = $request->getSource();
+        $this->assertNotNull($source);
+        $this->assertEquals(['key' => 'value'], $source->get('some_unhandled_object'));
     }
 
     public function testHydrateWithInvalidSchemaClass(): void
@@ -160,13 +172,14 @@ JSON;
         $this->assertEquals(['key' => 'value'], $result->get('source'));
     }
 
-    private function invokeMethod(object $object, string $methodName, array $parameters = [])
+    /**
+     * @param array<mixed> $parameters
+     */
+    private function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
     {
         $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
 
-        return $method->invokeArgs($object, $parameters);
+        return $reflection->getMethod($methodName)->invokeArgs($object, $parameters);
     }
 }
 

@@ -16,7 +16,6 @@ final class MacroTest extends TestCase
     {
         $schema = Macro::getSchema();
 
-        $this->assertIsArray($schema);
         $this->assertArrayHasKey('key', $schema);
         $this->assertEquals('string', $schema['key']);
         $this->assertArrayHasKey('value', $schema);

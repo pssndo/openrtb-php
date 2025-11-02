@@ -4,34 +4,37 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Response;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Ext;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Bid as CommonBid;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=45
  */
-class Bid implements ObjectInterface
+class Bid extends CommonBid
 {
-    use HasData;
-
-    protected static array $schema = [
-        'ext' => Ext::class,
-    ];
+    /**
+     * @return array<string, string|class-string|int>
+     */
+    protected static function getBaseSchema(): array
+    {
+        return [
+            'impid' => 'string',
+            'adid' => 'string',
+            'nurl' => 'string',
+            'burl' => 'string',
+            'lurl' => 'string',
+            'adm' => 'string',
+            'crid' => 'string',
+            'dealid' => 'string',
+            'w' => 'int',
+            'h' => 'int',
+            'ext' => Ext::class,
+        ];
+    }
 
     public static function getSchema(): array
     {
-        return static::$schema;
-    }
-
-    public function setId(string $id): static
-    {
-        return $this->set('id', $id);
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
     public function setImpid(string $impid): static
@@ -42,16 +45,6 @@ class Bid implements ObjectInterface
     public function getImpid(): ?string
     {
         return $this->get('impid');
-    }
-
-    public function setPrice(float $price): static
-    {
-        return $this->set('price', $price);
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->get('price');
     }
 
     public function setAdid(string $adid): static

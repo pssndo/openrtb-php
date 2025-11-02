@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Util;
 
 use OpenRTB\Common\AbstractRequestBuilder;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\BidRequest as Request;
-use OpenRTB\v3\Ext;
 
+/**
+ * @extends AbstractRequestBuilder<Request>
+ */
 class RequestBuilder extends AbstractRequestBuilder
 {
     public function __construct()

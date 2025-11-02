@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 
@@ -21,16 +22,16 @@ class NativeFormat implements ObjectInterface
         return static::$schema;
     }
 
-    /** @param list<AssetFormat> $asset */
-    public function setAsset(array $asset): static
+    /** @param Collection<AssetFormat>|array<AssetFormat> $asset */
+    public function setAsset(Collection|array $asset): static
     {
-        return $this->set('asset', $asset);
+        return $this->set('asset', is_array($asset) ? $asset : $asset->toArray());
     }
 
-    /** @return list<AssetFormat>|null */
-    public function getAsset(): ?array
+    /** @return Collection<AssetFormat>|null */
+    public function getAsset(): ?Collection
     {
-        return $this->get('asset');
+        return new Collection($this->get('asset') ?? [], AssetFormat::class);
     }
 
     public function setPriv(int $priv): static
