@@ -35,7 +35,7 @@ abstract class AbstractParser
     {
         if (is_array($type)) { // It's an array of objects or enums
             $class = $type[0];
-            return array_map(fn($itemData) => $this->hydrateArrayItem($itemData, $class), $value);
+            return array_map(fn ($itemData) => $this->hydrateArrayItem($itemData, $class), $value);
         }
 
         // It's a single object or an enum

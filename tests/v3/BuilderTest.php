@@ -73,8 +73,7 @@ class BuilderTest extends TestCase
             ->setSource($source)
             ->setContext($context)
             ->addItem($item)
-            ->setExt($ext)
-        ();
+            ->setExt($ext)();
 
 
         $this->assertInstanceOf(Request::class, $request);

@@ -32,8 +32,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setBidId('bid-456')
             ->setNoBidReason(NoBidReason::TECHNICAL_ERROR)
-            ->setCurrency('USD')
-            ();
+            ->setCurrency('USD')();
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('req-123', $response->getId());
@@ -66,8 +65,7 @@ class ResponseBuilderTest extends TestCase
             ->setBidId('bid-xyz')
             ->setCurrency('EUR')
             ->setCdata('custom-data')
-            ->addSeatbid($seatbid)
-        ();
+            ->addSeatbid($seatbid)();
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals('req-abc', $response->getId());

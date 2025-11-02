@@ -19,7 +19,6 @@ enum TestEnum: int
 
 class TestSubObject implements ObjectInterface
 {
-
     use HasData;
 
     public function __construct(array $data = [])
