@@ -21,11 +21,17 @@ class TestSubObject implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(array $data = [])
     {
         $this->data = $data;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSchema(): array
     {
         return [
@@ -33,9 +39,10 @@ class TestSubObject implements ObjectInterface
         ];
     }
 
-    public function set(string $key, mixed $value): void
+    public function set(string $key, mixed $value): static
     {
         $this->data[$key] = $value;
+        return $this;
     }
 
     public function get(string $key): mixed
@@ -48,11 +55,17 @@ class TestObject implements ObjectInterface
 {
     use HasData;
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(array $data = [])
     {
         $this->data = $data;
     }
 
+    /**
+     * @return array<string, class-string|array<class-string>|string|list<string>>
+     */
     public static function getSchema(): array
     {
         return [
@@ -68,9 +81,10 @@ class TestObject implements ObjectInterface
         ];
     }
 
-    public function set(string $key, mixed $value): void
+    public function set(string $key, mixed $value): static
     {
         $this->data[$key] = $value;
+        return $this;
     }
 
     public function get(string $key): mixed
