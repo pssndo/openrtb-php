@@ -57,13 +57,13 @@ abstract class AbstractParser
         // If the class is an enum, create it from the value
         if (is_subclass_of($class, \BackedEnum::class)) {
             return $class::from($itemData);
+        } else {
+            // Otherwise, it's a complex object that needs full hydration
+            if (is_array($itemData)) {
+                return $this->hydrate($itemData, $class);
+            } else {
+                return $itemData;
+            }
         }
-        // Otherwise, it's a complex object that needs full hydration
-        if (is_array($itemData)) {
-            return $this->hydrate($itemData, $class);
-        }
-        // This line is covered when $type is an array of ObjectInterface and $itemData is not an array.
-        // See AbstractParserTest::testHydrateValueWithArrayOfMixedItemsInObjectArray.
-        return $itemData;
     }
 }

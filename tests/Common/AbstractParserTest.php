@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace OpenRTB\Tests\Common;
 
 use OpenRTB\Common\AbstractParser;
+use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 // Dummy classes and enums for testing
-enum TestEnum: int implements \BackedEnum
+enum TestEnum: int
 {
     case VALUE1 = 1;
     case VALUE2 = 2;
@@ -17,7 +19,8 @@ enum TestEnum: int implements \BackedEnum
 
 class TestSubObject implements ObjectInterface
 {
-    private array $data = [];
+
+    use HasData;
 
     public function __construct(array $data = [])
     {
@@ -31,25 +34,20 @@ class TestSubObject implements ObjectInterface
         ];
     }
 
-    public function set(string $property, mixed $value): void
+    public function set(string $key, mixed $value): void
     {
-        $this->data[$property] = $value;
+        $this->data[$key] = $value;
     }
 
-    public function get(string $property): mixed
+    public function get(string $key): mixed
     {
-        return $this->data[$property] ?? null;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->get('name');
+        return $this->data[$key] ?? null;
     }
 }
 
 class TestObject implements ObjectInterface
 {
-    private array $data = [];
+    use HasData;
 
     public function __construct(array $data = [])
     {
@@ -67,63 +65,18 @@ class TestObject implements ObjectInterface
             'scalarValue' => 'string',
             'nullableString' => 'string',
             'stringArray' => ['string'],
-            'unknownProperty' => 'mixed', // Add this to schema to explicitly test unknown properties
+            'unknownProperty' => 'mixed',
         ];
     }
 
-    public function set(string $property, mixed $value): void
+    public function set(string $key, mixed $value): void
     {
-        $this->data[$property] = $value;
+        $this->data[$key] = $value;
     }
 
-    public function get(string $property): mixed
+    public function get(string $key): mixed
     {
-        return $this->data[$property] ?? null;
-    }
-
-    public function getId(): ?string
-    {
-        return $this->get('id');
-    }
-
-    public function getEnumValue(): mixed
-    {
-        return $this->get('enumValue');
-    }
-
-    public function getEnumArray(): array
-    {
-        return $this->get('enumArray') ?? [];
-    }
-
-    public function getSubObject(): mixed
-    {
-        return $this->get('subObject');
-    }
-
-    public function getSubObjectArray(): array
-    {
-        return $this->get('subObjectArray') ?? [];
-    }
-
-    public function getScalarValue(): mixed
-    {
-        return $this->get('scalarValue');
-    }
-
-    public function getNullableString(): ?string
-    {
-        return $this->get('nullableString');
-    }
-
-    public function getStringArray(): array
-    {
-        return $this->get('stringArray') ?? [];
-    }
-
-    public function getUnknownProperty(): mixed
-    {
-        return $this->get('unknownProperty');
+        return $this->data[$key] ?? null;
     }
 }
 
@@ -145,12 +98,6 @@ class AbstractParserTest extends TestCase
 {
     private TestParser $parser;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->parser = new TestParser();
-    }
-
     public function testHydrateWithScalarValue(): void
     {
         $data = [
@@ -159,7 +106,7 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertEquals('hello', $object->getScalarValue());
+        $this->assertEquals('hello', $object->get('scalarValue'));
     }
 
     public function testHydrateWithSingleEnum(): void
@@ -170,7 +117,7 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertEquals(TestEnum::VALUE1, $object->getEnumValue());
+        $this->assertEquals(TestEnum::VALUE1, $object->get('enumValue'));
     }
 
     public function testHydrateWithArrayOfEnums(): void
@@ -181,9 +128,9 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertCount(2, $object->getEnumArray());
-        $this->assertEquals(TestEnum::VALUE1, $object->getEnumArray()[0]);
-        $this->assertEquals(TestEnum::VALUE2, $object->getEnumArray()[1]);
+        $this->assertCount(2, $object->get('enumArray'));
+        $this->assertEquals(TestEnum::VALUE1, $object->get('enumArray')[0]);
+        $this->assertEquals(TestEnum::VALUE2, $object->get('enumArray')[1]);
     }
 
     public function testHydrateWithSingleObject(): void
@@ -194,8 +141,8 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertInstanceOf(TestSubObject::class, $object->getSubObject());
-        $this->assertEquals('sub1', $object->getSubObject()->getName());
+        $this->assertInstanceOf(TestSubObject::class, $object->get('subObject'));
+        $this->assertEquals('sub1', $object->get('subObject')->get('name'));
     }
 
     public function testHydrateWithArrayOfObjects(): void
@@ -209,11 +156,11 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertCount(2, $object->getSubObjectArray());
-        $this->assertInstanceOf(TestSubObject::class, $object->getSubObjectArray()[0]);
-        $this->assertEquals('subA', $object->getSubObjectArray()[0]->getName());
-        $this->assertInstanceOf(TestSubObject::class, $object->getSubObjectArray()[1]);
-        $this->assertEquals('subB', $object->getSubObjectArray()[1]->getName());
+        $this->assertCount(2, $object->get('subObjectArray'));
+        $this->assertInstanceOf(TestSubObject::class, $object->get('subObjectArray')[0]);
+        $this->assertEquals('subA', $object->get('subObjectArray')[0]->get('name'));
+        $this->assertInstanceOf(TestSubObject::class, $object->get('subObjectArray')[1]);
+        $this->assertEquals('subB', $object->get('subObjectArray')[1]->get('name'));
     }
 
     public function testHydrateValueWithArrayOfScalars(): void
@@ -227,7 +174,7 @@ class AbstractParserTest extends TestCase
         $testObject = $parser->parse($data, TestObject::class);
 
         $this->assertInstanceOf(TestObject::class, $testObject);
-        $this->assertEquals('test-id', $testObject->getId());
+        $this->assertEquals('test-id', $testObject->get('id'));
         $this->assertEquals(['tag1', 'tag2', 'tag3'], $testObject->get('tags'));
     }
 
@@ -242,10 +189,10 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertCount(2, $object->getSubObjectArray());
-        $this->assertInstanceOf(TestSubObject::class, $object->getSubObjectArray()[0]);
-        $this->assertEquals('subX', $object->getSubObjectArray()[0]->getName());
-        $this->assertEquals('not-an-array', $object->getSubObjectArray()[1]);
+        $this->assertCount(2, $object->get('subObjectArray'));
+        $this->assertInstanceOf(TestSubObject::class, $object->get('subObjectArray')[0]);
+        $this->assertEquals('subX', $object->get('subObjectArray')[0]->get('name'));
+        $this->assertEquals('not-an-array', $object->get('subObjectArray')[1]);
     }
 
     public function testHydrateWithSingleObjectButScalarValue(): void
@@ -256,7 +203,7 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertEquals('not-an-object-data', $object->getSubObject());
+        $this->assertEquals('not-an-object-data', $object->get('subObject'));
     }
 
     public function testHydrateWithNullValueForOptionalProperty(): void
@@ -267,7 +214,7 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertNull($object->getNullableString());
+        $this->assertNull($object->get('nullableString'));
     }
 
     public function testHydrateWithSingleEnumButNonScalarValue(): void
@@ -278,7 +225,7 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertEquals(['not', 'a', 'scalar'], $object->getEnumValue());
+        $this->assertEquals(['not', 'a', 'scalar'], $object->get('enumValue'));
     }
 
     public function testHydrateWithArrayOfEnumsAndNonScalarItem(): void
@@ -289,12 +236,12 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertCount(2, $object->getEnumArray());
-        $this->assertEquals(TestEnum::VALUE1, $object->getEnumArray()[0]);
+        $this->assertCount(2, $object->get('enumArray'));
+        $this->assertEquals(TestEnum::VALUE1, $object->get('enumArray')[0]);
         // Expect an InvalidArgumentException from TestEnum::from() for the second item
-        $this->expectException(\\InvalidArgumentException::class);
+        $this->expectException(ValueError::class);
         // Accessing this will trigger the exception if not already triggered, ensuring line 41 is hit.
-        $invalidEnum = $object->getEnumArray()[1];
+        $invalidEnum = $object->get('enumArray')[1];
     }
 
     public function testHydrateWithArrayOfScalarsInSchema(): void
@@ -305,6 +252,47 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        $this->assertEquals(['str1', 'str2', 'str3'], $object->getStringArray());
+        $this->assertEquals(['str1', 'str2', 'str3'], $object->get('stringArray'));
+    }
+
+    public function testHydrateWithArrayOfMixedTypes(): void
+    {
+        $data = [
+            'id' => 'mixed-types-array-test',
+            'subObjectArray' => [
+                ['name' => 'subA'],
+                1, // Scalar item
+                ['name' => 'subB'],
+            ],
+            'enumArray' => [
+                1, // Valid enum
+                'not-an-enum', // Invalid enum
+            ]
+        ];
+
+        $object = $this->parser->parse($data, TestObject::class);
+        $this->assertInstanceOf(TestObject::class, $object);
+
+        // Test subObjectArray
+        $subObjectArray = $object->get('subObjectArray');
+        $this->assertCount(3, $subObjectArray);
+        $this->assertInstanceOf(TestSubObject::class, $subObjectArray[0]);
+        $this->assertEquals('subA', $subObjectArray[0]->get('name'));
+        $this->assertEquals(1, $subObjectArray[1]); // Should hit return $itemData;
+        $this->assertInstanceOf(TestSubObject::class, $subObjectArray[2]);
+        $this->assertEquals('subB', $subObjectArray[2]->get('name'));
+
+        // Test enumArray
+        $enumArray = $object->get('enumArray');
+        $this->assertCount(2, $enumArray);
+        $this->assertEquals(TestEnum::VALUE1, $enumArray[0]);
+        $this->expectException(ValueError::class); // BackedEnum::from() throws ValueError for invalid value
+        $invalidEnum = $enumArray[1]; // Accessing this will trigger the exception
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->parser = new TestParser();
     }
 }

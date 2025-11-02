@@ -48,44 +48,6 @@ class AudioPlacement implements ObjectInterface
         return static::$schema;
     }
 
-    public function toArray(): array
-    {
-        $array = $this->data;
-        if (isset($array['playmethod'])) {
-            $array['playmethod'] = array_map(fn($pm) => $pm->value, $array['playmethod']);
-        }
-        if (isset($array['playend'])) {
-            $array['playend'] = $array['playend']->value;
-        }
-        if (isset($array['feed'])) {
-            $array['feed'] = $array['feed']->value;
-        }
-        if (isset($array['nvol'])) {
-            $array['nvol'] = $array['nvol']->value;
-        }
-        if (isset($array['api'])) {
-            $array['api'] = array_map(fn($api) => $api->value, $array['api']);
-        }
-        if (isset($array['ctype'])) {
-            $array['ctype'] = array_map(fn($ct) => $ct->value, $array['ctype']);
-        }
-        if (isset($array['delivery'])) {
-            $array['delivery'] = array_map(fn($dm) => $dm->value, $array['delivery']);
-        }
-        if (isset($array['comp'])) {
-            $array['comp'] = array_map(fn($comp) => $comp->toArray(), $array['comp']);
-        }
-        if (isset($array['comptype'])) {
-            $array['comptype'] = array_map(fn($ct) => $ct->value, $array['comptype']);
-        }
-        return $array;
-    }
-
-    public function toJson(int $flags = JSON_UNESCAPED_SLASHES): string|false
-    {
-        return json_encode($this->toArray(), $flags);
-    }
-
     public function setDelay(int $delay): static
     {
         return $this->set('delay', $delay);
