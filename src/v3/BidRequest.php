@@ -86,7 +86,7 @@ class BidRequest implements BidRequestInterface
         return $this->get('at');
     }
 
-    /** @param list<string> $cur */
+    /** @param Collection<string>|array<string> $cur */
     public function setCur(Collection|array $cur): static
     {
         return $this->set('cur', is_array($cur) ? $cur : $cur->toArray());
@@ -98,7 +98,7 @@ class BidRequest implements BidRequestInterface
         return new Collection($this->get('cur') ?? [], 'string');
     }
 
-    /** @param list<string> $wseat */
+    /** @param Collection<string>|array<string> $wseat */
     public function setWseat(Collection|array $wseat): static
     {
         return $this->set('wseat', is_array($wseat) ? $wseat : $wseat->toArray());
@@ -110,7 +110,7 @@ class BidRequest implements BidRequestInterface
         return new Collection($this->get('wseat') ?? [], 'string');
     }
 
-    /** @param list<string> $bseat */
+    /** @param Collection<string>|array<string> $bseat */
     public function setBseat(Collection|array $bseat): static
     {
         return $this->set('bseat', is_array($bseat) ? $bseat : $bseat->toArray());
@@ -122,7 +122,7 @@ class BidRequest implements BidRequestInterface
         return new Collection($this->get('bseat') ?? [], 'string');
     }
 
-    /** @param list<string> $badv */
+    /** @param Collection<string>|array<string> $badv */
     public function setBadv(Collection|array $badv): static
     {
         return $this->set('badv', is_array($badv) ? $badv : $badv->toArray());
@@ -134,7 +134,7 @@ class BidRequest implements BidRequestInterface
         return new Collection($this->get('badv') ?? [], 'string');
     }
 
-    /** @param list<string> $bapp */
+    /** @param Collection<string>|array<string> $bapp */
     public function setBapp(Collection|array $bapp): static
     {
         return $this->set('bapp', is_array($bapp) ? $bapp : $bapp->toArray());
@@ -146,7 +146,7 @@ class BidRequest implements BidRequestInterface
         return new Collection($this->get('bapp') ?? [], 'string');
     }
 
-    /** @param list<string> $bcat */
+    /** @param Collection<string>|array<string> $bcat */
     public function setBcat(Collection|array $bcat): static
     {
         return $this->set('bcat', is_array($bcat) ? $bcat : $bcat->toArray());

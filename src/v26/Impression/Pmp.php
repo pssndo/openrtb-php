@@ -7,6 +7,7 @@ namespace OpenRTB\v26\Impression;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=29
@@ -38,8 +39,8 @@ class Pmp implements ObjectInterface
         return $this->get('private_auction');
     }
 
-    /** @param list<Deal> $deals */
-    public function setDeals(array $deals): static
+    /** @param Collection<Deal>|array<Deal> $deals */
+    public function setDeals(Collection|array $deals): static
     {
         return $this->set('deals', $deals);
     }

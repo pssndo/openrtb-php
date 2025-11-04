@@ -83,12 +83,12 @@ class BuilderTest extends TestCase
         $this->assertEquals(1, $request->getTest());
         $this->assertEquals(200, $request->getTmax());
         $this->assertEquals(AuctionType::SECOND_PRICE, $request->getAt());
-        $this->assertEquals(['USD'], $request->getCur()->toArray());
-        $this->assertEquals(['seat-1'], $request->getBseat()->toArray());
-        $this->assertEquals(['seat-w-1'], $request->getWseat()->toArray());
-        $this->assertEquals(['badv1', 'badv2'], $request->getBadv()->toArray());
-        $this->assertEquals(['bapp1', 'bapp2'], $request->getBapp()->toArray());
-        $this->assertEquals(['bcat1', 'bcat2'], $request->getBcat()->toArray());
+        $this->assertEquals(['USD'], $request->getCur()?->toArray());
+        $this->assertEquals(['seat-1'], $request->getBseat()?->toArray());
+        $this->assertEquals(['seat-w-1'], $request->getWseat()?->toArray());
+        $this->assertEquals(['badv1', 'badv2'], $request->getBadv()?->toArray());
+        $this->assertEquals(['bapp1', 'bapp2'], $request->getBapp()?->toArray());
+        $this->assertEquals(['bcat1', 'bcat2'], $request->getBcat()?->toArray());
         $this->assertEquals('cdata-val', $request->getCdata());
         $this->assertSame($source, $request->getSource());
         $this->assertSame($context, $request->getContext());
@@ -118,5 +118,16 @@ class BuilderTest extends TestCase
         $this->assertInstanceOf(Collection::class, $parsedRequest->getBapp());
         $this->assertInstanceOf(Collection::class, $parsedRequest->getBcat());
         $this->assertInstanceOf(Collection::class, $parsedRequest->getCur());
+    }
+
+    public function testSetWseatWithCollection(): void
+    {
+        // Test BidRequest directly (not through builder) to hit the Collection branch
+        $request = new Request();
+        $collection = new Collection(['seat1', 'seat2'], 'string');
+
+        $request->setWseat($collection);
+
+        $this->assertEquals(['seat1', 'seat2'], $request->getWseat()?->toArray());
     }
 }

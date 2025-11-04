@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Parsing and Validating a Request Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Util\{Validator};
-use src\v3\Util\Parser;
+use OpenRTB\v3\Util\{Validator};
+use OpenRTB\v3\Util\Parser;
 
 // Example JSON request body
 $jsonRequest = <<<'JSON'

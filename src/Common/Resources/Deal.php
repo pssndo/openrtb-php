@@ -61,7 +61,7 @@ class Deal implements ObjectInterface
         return $this->get('flrcur');
     }
 
-    /** @param list<string> $wseat */
+    /** @param Collection<string>|array<string> $wseat */
     public function setWseat(Collection|array $wseat): static
     {
         return $this->set('wseat', is_array($wseat) ? $wseat : $wseat->toArray());
@@ -73,7 +73,7 @@ class Deal implements ObjectInterface
         return new Collection($this->get('wseat') ?? [], 'string');
     }
 
-    /** @param list<string> $wadv */
+    /** @param Collection<string>|array<string> $wadv */
     public function setWadv(Collection|array $wadv): static
     {
         return $this->set('wadv', is_array($wadv) ? $wadv : $wadv->toArray());

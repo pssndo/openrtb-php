@@ -67,10 +67,11 @@ final class SeatbidTest extends TestCase
         $bid2 = new Bid();
         $seatbid->addBid($bid1);
         $seatbid->addBid($bid2);
-        $this->assertInstanceOf(Collection::class, $seatbid->getBid());
-        $this->assertCount(2, $seatbid->getBid());
-        $this->assertSame($bid1, $seatbid->getBid()->offsetGet(0));
-        $this->assertSame($bid2, $seatbid->getBid()->offsetGet(1));
+        $bidCollection = $seatbid->getBid();
+        $this->assertInstanceOf(Collection::class, $bidCollection);
+        $this->assertCount(2, $bidCollection);
+        $this->assertSame($bid1, $bidCollection->offsetGet(0));
+        $this->assertSame($bid2, $bidCollection->offsetGet(1));
     }
 
     public function testGetBid(): void

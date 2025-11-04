@@ -40,6 +40,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
                 $this->add($item);
             } catch (InvalidArgumentException $e) {
                 // During construction, if an item doesn't match the expected type, add null instead.
+                // @phpstan-ignore-next-line - Intentionally adding null for invalid items during construction
                 $this->items[] = null;
             }
         }
@@ -161,7 +162,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * Convert collection to array (converts objects to arrays for serialization)
-     * @return array<int, T|array>
+     * @return array<int, mixed>
      */
     public function toArray(): array
     {
@@ -183,7 +184,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return array<int, T>
+     * @return array{items: array<int, T>, itemType: class-string<T>|string|null}
      */
     public function __serialize(): array
     {

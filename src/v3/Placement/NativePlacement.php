@@ -8,6 +8,7 @@ use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\NativeAdUnit;
+use OpenRTB\Common\Collection;
 
 class NativePlacement implements ObjectInterface
 {
@@ -53,20 +54,20 @@ class NativePlacement implements ObjectInterface
         return $this->set('ver', $ver);
     }
 
-    /** @param list<int> $api */
-    public function setApi(array $api): static
+    /** @param Collection<int>|array<int> $api */
+    public function setApi(Collection|array $api): static
     {
         return $this->set('api', $api);
     }
 
-    /** @param list<AssetFormat> $asset */
-    public function setAsset(array $asset): static
+    /** @param Collection<AssetFormat>|array<AssetFormat> $asset */
+    public function setAsset(Collection|array $asset): static
     {
         return $this->set('asset', $asset);
     }
 
-    /** @param list<EventSpec> $event */
-    public function setEvent(array $event): static
+    /** @param Collection<EventSpec>|array<EventSpec> $event */
+    public function setEvent(Collection|array $event): static
     {
         return $this->set('event', $event);
     }

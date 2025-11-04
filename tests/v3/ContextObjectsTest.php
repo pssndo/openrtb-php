@@ -67,6 +67,7 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('501', $geo->getMetro());
         $this->assertEquals('10001', $geo->getZip());
         $this->assertEquals(300, $geo->getUtcoffset());
+        // @phpstan-ignore-next-line - Testing return type
         $this->assertIsArray(Geo::getSchema());
     }
 
@@ -78,6 +79,11 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals([['brand' => 'Chrome', 'version' => '108']], $sua->getBrowsers());
         $this->assertEquals([['brand' => 'Android', 'version' => '13']], $sua->getPlatform());
         $this->assertEquals(1, $sua->getMobile());
+
+        // Test schema
+        $schema = Sua::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testDeviceObject(): void
@@ -115,6 +121,13 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('310-410', $device->getMccmnc());
         $this->assertSame($geo, $device->getGeo());
         $this->assertSame($sua, $device->getSua());
+
+        // Test schema
+        $schema = Device::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('type', $schema);
+        $this->assertArrayHasKey('ip', $schema);
     }
 
     public function testUserObject(): void
@@ -186,6 +199,12 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $content->getEmbeddable());
         $this->assertEquals([['name' => 'data']], $content->getData());
         $this->assertSame($producer, $content->getProducer());
+
+        // Test schema methods
+        $schema = Content::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('artist', $schema);
     }
 
     public function testPublisherObject(): void
@@ -223,6 +242,13 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $site->getAmp());
         $this->assertSame($publisher, $site->getPublisher());
         $this->assertSame($content, $site->getContent());
+
+        // Test schema
+        $schema = Site::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('cattax', $schema);
+        $this->assertArrayHasKey('cat', $schema);
     }
 
     public function testAppObject(): void
@@ -251,6 +277,12 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(['kw1'], $app->getKwarray());
         $this->assertSame($publisher, $app->getPublisher());
         $this->assertSame($content, $app->getContent());
+
+        // Test schema methods
+        $schema = App::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('storeid', $schema);
     }
 
     public function testRegsObject(): void
@@ -260,6 +292,13 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('gpp-string', $regs->getGpp());
         $this->assertEquals(1, $regs->getCoppa());
         $this->assertEquals([1,2], $regs->getGppSid());
+
+        // Test schema
+        $schema = Regs::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('gpp', $schema);
+        $this->assertArrayHasKey('gpp_sid', $schema);
     }
 
     public function testRestrictionsObject(): void
@@ -270,11 +309,16 @@ class ContextObjectsTest extends TestCase
             ->setBadv(['adv.com'])
             ->setBapp(['com.app.banned'])
             ->setBattr([CreativeAttribute::ONE_POOR]);
-        $this->assertEquals(['IAB25'], $restrictions->getBcat()->toArray());
+        $this->assertEquals(['IAB25'], $restrictions->getBcat()?->toArray());
         $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $restrictions->getCattax()); // This should be an enum
-        $this->assertEquals(['adv.com'], $restrictions->getBadv()->toArray()); // This is an array of strings
-        $this->assertEquals(['com.app.banned'], $restrictions->getBapp()->toArray()); // This is an array of strings
-        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr()->toArray()); // This is a collection of enums
+        $this->assertEquals(['adv.com'], $restrictions->getBadv()?->toArray()); // This is an array of strings
+        $this->assertEquals(['com.app.banned'], $restrictions->getBapp()?->toArray()); // This is an array of strings
+        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr()?->toArray()); // This is a collection of enums
+
+        // Test schema
+        $schema = Restrictions::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testDoohObject(): void
@@ -286,6 +330,11 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
         $this->assertEquals(1, $dooh->getCattax());
+
+        // Test schema
+        $schema = Dooh::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testSourceObject(): void

@@ -63,14 +63,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wseat = ['seat1', 'seat2'];
         $deal->setWseat($wseat);
-        $this->assertEquals($wseat, $deal->getWseat()->toArray());
+        $this->assertEquals($wseat, $deal->getWseat()?->toArray());
     }
 
     public function testGetWseat(): void
     {
         $deal = new Deal();
         $deal->setWseat(['seat3']);
-        $this->assertEquals(['seat3'], $deal->getWseat()->toArray());
+        $this->assertEquals(['seat3'], $deal->getWseat()?->toArray());
     }
 
     public function testSetWadomain(): void
@@ -78,14 +78,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wadomain = ['domain1', 'domain2'];
         $deal->setWadomain($wadomain);
-        $this->assertEquals($wadomain, $deal->getWadomain()->toArray());
+        $this->assertEquals($wadomain, $deal->getWadomain()?->toArray());
     }
 
     public function testGetWadomain(): void
     {
         $deal = new Deal();
         $deal->setWadomain(['domain3']);
-        $this->assertEquals(['domain3'], $deal->getWadomain()->toArray());
+        $this->assertEquals(['domain3'], $deal->getWadomain()?->toArray());
     }
 
     public function testSetAt(): void
@@ -93,13 +93,25 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $at = 1;
         $deal->setAt($at);
-        $this->assertEquals($at, $deal->getAt()->value);
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertEquals(1, $at->value);
     }
 
     public function testGetAt(): void
     {
         $deal = new Deal();
         $deal->setAt(2);
-        $this->assertEquals(2, $deal->getAt()->value);
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertEquals(2, $at->value);
+    }
+
+    public function testGetAtWithEnumValue(): void
+    {
+        $deal = new Deal();
+        // Directly set an AuctionType enum instance
+        $deal->set('at', \OpenRTB\v3\Enums\AuctionType::FIRST_PRICE);
+        $this->assertEquals(\OpenRTB\v3\Enums\AuctionType::FIRST_PRICE, $deal->getAt());
     }
 }

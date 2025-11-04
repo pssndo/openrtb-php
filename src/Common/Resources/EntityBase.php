@@ -6,6 +6,7 @@ namespace OpenRTB\Common\Resources;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * Base class for entities with common properties (id, name, domain, cat).
@@ -63,8 +64,8 @@ abstract class EntityBase implements ObjectInterface
         return $this->get('domain');
     }
 
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }

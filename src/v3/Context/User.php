@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Context;
 
 use OpenRTB\Common\Resources\User as CommonUser;
+use OpenRTB\Common\Collection;
 
 class User extends CommonUser
 {
@@ -26,8 +27,8 @@ class User extends CommonUser
         return array_merge(CommonUser::getBaseSchema(), static::getBaseSchema());
     }
 
-    /** @param list<string> $kwarray */
-    public function setKwarray(array $kwarray): static
+    /** @param Collection<string>|array<string> $kwarray */
+    public function setKwarray(Collection|array $kwarray): static
     {
         return $this->set('kwarray', $kwarray);
     }

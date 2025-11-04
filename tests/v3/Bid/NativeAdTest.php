@@ -50,7 +50,9 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $asset = [new Asset()];
         $nativeAd->setAsset($asset);
-        $this->assertEquals($asset, $nativeAd->getAsset()->all());
+        $assetCollection = $nativeAd->getAsset();
+        $this->assertNotNull($assetCollection);
+        $this->assertEquals($asset, $assetCollection->all());
     }
 
     public function testGetAsset(): void
@@ -58,7 +60,9 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $asset = [new Asset()];
         $nativeAd->setAsset($asset);
-        $this->assertEquals($asset, $nativeAd->getAsset()->all());
+        $assetCollection = $nativeAd->getAsset();
+        $this->assertNotNull($assetCollection);
+        $this->assertEquals($asset, $assetCollection->all());
     }
 
     public function testSetEvent(): void
@@ -66,7 +70,9 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $event = [new Event()];
         $nativeAd->setEvent($event);
-        $this->assertEquals($event, $nativeAd->getEvent()->all());
+        $eventCollection = $nativeAd->getEvent();
+        $this->assertNotNull($eventCollection);
+        $this->assertEquals($event, $eventCollection->all());
     }
 
     public function testGetEvent(): void
@@ -74,7 +80,9 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $event = [new Event()];
         $nativeAd->setEvent($event);
-        $this->assertEquals($event, $nativeAd->getEvent()->all());
+        $eventCollection = $nativeAd->getEvent();
+        $this->assertNotNull($eventCollection);
+        $this->assertEquals($event, $eventCollection->all());
     }
 
     public function testSetPrivacy(): void
@@ -90,5 +98,19 @@ final class NativeAdTest extends TestCase
         $nativeAd = new NativeAd();
         $nativeAd->setPrivacy('another_privacy_string');
         $this->assertEquals('another_privacy_string', $nativeAd->getPrivacy());
+    }
+
+    // Note: imptrackers is not part of OpenRTB 3.0 NativeAd spec - removed tests
+
+    public function testGetAssetReturnsNullWhenNotSet(): void
+    {
+        $nativeAd = new NativeAd();
+        $this->assertEmpty($nativeAd->getAsset());
+    }
+
+    public function testGetEventReturnsNullWhenNotSet(): void
+    {
+        $nativeAd = new NativeAd();
+        $this->assertEmpty($nativeAd->getEvent());
     }
 }

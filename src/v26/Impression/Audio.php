@@ -7,6 +7,7 @@ namespace OpenRTB\v26\Impression;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=27
@@ -27,8 +28,8 @@ class Audio implements ObjectInterface
         return static::$schema;
     }
 
-    /** @param list<string> $mimes */
-    public function setMimes(array $mimes): static
+    /** @param Collection<string>|array<string> $mimes */
+    public function setMimes(Collection|array $mimes): static
     {
         return $this->set('mimes', $mimes);
     }
@@ -59,8 +60,8 @@ class Audio implements ObjectInterface
         return $this->get('maxduration');
     }
 
-    /** @param list<int> $protocols */
-    public function setProtocols(array $protocols): static
+    /** @param Collection<int>|array<int> $protocols */
+    public function setProtocols(Collection|array $protocols): static
     {
         return $this->set('protocols', $protocols);
     }
@@ -81,8 +82,8 @@ class Audio implements ObjectInterface
         return $this->get('maxseq');
     }
 
-    /** @param list<int> $api */
-    public function setApi(array $api): static
+    /** @param Collection<int>|array<int> $api */
+    public function setApi(Collection|array $api): static
     {
         return $this->set('api', $api);
     }

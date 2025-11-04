@@ -12,6 +12,7 @@ use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
+use OpenRTB\Common\Collection;
 
 /**
  * @extends AbstractRequestBuilder<Request>
@@ -36,43 +37,43 @@ class RequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
-    /** @param list<string> $cur */
-    public function setCur(array $cur): static
+    /** @param Collection<string>|array<string> $cur */
+    public function setCur(Collection|array $cur): static
     {
         $this->request->setCur($cur);
         return $this;
     }
 
-    /** @param list<string> $wseat */
-    public function setWseat(array $wseat): static
+    /** @param Collection<string>|array<string> $wseat */
+    public function setWseat(Collection|array $wseat): static
     {
         $this->request->setWseat($wseat);
         return $this;
     }
 
-    /** @param list<string> $bseat */
-    public function setBseat(array $bseat): static
+    /** @param Collection<string>|array<string> $bseat */
+    public function setBseat(Collection|array $bseat): static
     {
         $this->request->setBseat($bseat);
         return $this;
     }
 
-    /** @param list<string> $badv */
-    public function setBadv(array $badv): static
+    /** @param Collection<string>|array<string> $badv */
+    public function setBadv(Collection|array $badv): static
     {
         $this->request->setBadv($badv);
         return $this;
     }
 
-    /** @param list<string> $bapp */
-    public function setBapp(array $bapp): static
+    /** @param Collection<string>|array<string> $bapp */
+    public function setBapp(Collection|array $bapp): static
     {
         $this->request->setBapp($bapp);
         return $this;
     }
 
-    /** @param list<string> $bcat */
-    public function setBcat(array $bcat): static
+    /** @param Collection<string>|array<string> $bcat */
+    public function setBcat(Collection|array $bcat): static
     {
         $this->request->setBcat($bcat);
         return $this;

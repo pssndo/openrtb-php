@@ -7,6 +7,7 @@ namespace OpenRTB\v26\Impression;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=28
@@ -54,8 +55,8 @@ class Native implements ObjectInterface
         return $this->get('ver');
     }
 
-    /** @param list<int> $api */
-    public function setApi(array $api): static
+    /** @param Collection<int>|array<int> $api */
+    public function setApi(Collection|array $api): static
     {
         return $this->set('api', $api);
     }
@@ -66,8 +67,8 @@ class Native implements ObjectInterface
         return $this->get('api');
     }
 
-    /** @param list<int> $battr */
-    public function setBattr(array $battr): static
+    /** @param Collection<int>|array<int> $battr */
+    public function setBattr(Collection|array $battr): static
     {
         return $this->set('battr', $battr);
     }

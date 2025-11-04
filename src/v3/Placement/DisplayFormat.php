@@ -6,6 +6,7 @@ namespace OpenRTB\v3\Placement;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 class DisplayFormat implements ObjectInterface
 {
@@ -70,8 +71,8 @@ class DisplayFormat implements ObjectInterface
         return $this->get('hratio');
     }
 
-    /** @param list<int> $expdir */
-    public function setExpdir(array $expdir): static
+    /** @param Collection<int>|array<int> $expdir */
+    public function setExpdir(Collection|array $expdir): static
     {
         return $this->set('expdir', $expdir);
     }

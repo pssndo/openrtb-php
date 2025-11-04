@@ -25,7 +25,7 @@ class BidRequest implements ObjectInterface
     use HasData;
 
     /**
-     * @var array<string, string|class-string|array<class-string>>
+     * @var array<string, string|class-string|list<class-string>|list<string>>
      */
     protected static array $schema = [
         'imp' => [Imp::class],
@@ -215,7 +215,11 @@ class BidRequest implements ObjectInterface
     /** @return Collection<string>|null */
     public function getCur(): ?Collection
     {
-        return new Collection($this->get('cur') ?? [], 'string');
+        $cur = $this->get('cur');
+        if ($cur === null) {
+            return null;
+        }
+        return new Collection($cur, 'string');
     }
 
     /** @param Collection<string>|array<string> $wlang */

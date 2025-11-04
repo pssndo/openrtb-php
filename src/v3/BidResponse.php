@@ -9,6 +9,7 @@ use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\BidResponseInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
+use OpenRTB\Common\Collection;
 
 class BidResponse implements BidResponseInterface
 {
@@ -75,8 +76,8 @@ class BidResponse implements BidResponseInterface
         return $this->get('nbr');
     }
 
-    /** @param list<Seatbid> $seatbid */
-    public function setSeatbid(array $seatbid): static
+    /** @param Collection<Seatbid>|array<Seatbid> $seatbid */
+    public function setSeatbid(Collection|array $seatbid): static
     {
         return $this->set('seatbid', $seatbid);
     }

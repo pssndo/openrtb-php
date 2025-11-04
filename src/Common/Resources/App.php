@@ -29,7 +29,7 @@ class App implements ObjectInterface
 
     public static function getSchema(): array
     {
-        return static::getBaseSchema();
+        return self::getBaseSchema();
     }
 
     public function setId(string $id): static

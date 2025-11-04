@@ -39,7 +39,7 @@ class EventSpec implements ObjectInterface
         return $this->get('type');
     }
 
-    /** @param list<int> $method */
+    /** @param Collection<int>|array<int> $method */
     public function setMethod(Collection|array $method): static
     {
         return $this->set('method', is_array($method) ? $method : $method->toArray());

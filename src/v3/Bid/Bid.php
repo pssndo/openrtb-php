@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Bid;
 
 use OpenRTB\Common\Resources\Bid as CommonBid;
+use OpenRTB\Common\Collection;
 
 class Bid extends CommonBid
 {
@@ -45,8 +46,8 @@ class Bid extends CommonBid
         return $this->get('deal');
     }
 
-    /** @param list<Macro> $macro */
-    public function setMacro(array $macro): static
+    /** @param Collection<Macro>|array<Macro> $macro */
+    public function setMacro(Collection|array $macro): static
     {
         return $this->set('macro', $macro);
     }

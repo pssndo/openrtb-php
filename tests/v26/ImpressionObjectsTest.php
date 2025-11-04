@@ -88,6 +88,14 @@ class ImpressionObjectsTest extends TestCase
         $this->assertSame($ext, $audio->getExt());
     }
 
+    public function testAudioSchema(): void
+    {
+        $schema = Audio::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('ext', $schema);
+    }
+
     public function testBannerObject(): void
     {
         $format = new Format();
@@ -124,9 +132,21 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals('deal-1', $deal->getId());
         $this->assertEquals(1.5, $deal->getBidfloor());
         $this->assertEquals('USD', $deal->getBidfloorcur());
-        $this->assertEquals(2, $deal->getAt()->value);
-        $this->assertEquals(['seat-1'], $deal->getWseat()->toArray());
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertEquals(2, $at->value);
+        $wseat = $deal->getWseat();
+        $this->assertNotNull($wseat);
+        $this->assertEquals(['seat-1'], $wseat->toArray());
         $this->assertSame($ext, $deal->getExt());
+    }
+
+    public function testDealSchema(): void
+    {
+        $schema = Deal::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('ext', $schema);
     }
 
     public function testFormatObject(): void
@@ -134,6 +154,12 @@ class ImpressionObjectsTest extends TestCase
         $format = (new Format())->setW(300)->setH(250);
         $this->assertEquals(300, $format->getW());
         $this->assertEquals(250, $format->getH());
+
+        $schema = Format::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('w', $schema);
+        $this->assertArrayHasKey('h', $schema);
     }
 
     public function testMetricObject(): void
@@ -166,6 +192,14 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals([3, 5], $native->getApi());
         $this->assertEquals([1, 2], $native->getBattr());
         $this->assertSame($ext, $native->getExt());
+    }
+
+    public function testNativeSchema(): void
+    {
+        $schema = Native::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('ext', $schema);
     }
 
     public function testPmpObject(): void
@@ -207,5 +241,13 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(1, $video->getPlacement());
         $this->assertEquals([3, 5], $video->getApi());
         $this->assertSame($ext, $video->getExt());
+    }
+
+    public function testVideoSchema(): void
+    {
+        $schema = Video::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('ext', $schema);
     }
 }

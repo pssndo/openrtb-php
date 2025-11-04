@@ -11,9 +11,10 @@ use OpenRTB\v26\Context\Device;
 use OpenRTB\v26\Context\Regs;
 use OpenRTB\v26\Context\Site;
 use OpenRTB\v26\Context\User;
+use OpenRTB\v26\Enums\AuctionType;
 use OpenRTB\v26\Impression\Banner;
 use OpenRTB\v26\Impression\Imp;
-use OpenRTB\v26\Util\BidRequestBuilder;
+use OpenRTB\v26\Util\RequestBuilder;
 
 /**
  * This file provides examples of how to use the BidRequestBuilder to construct
@@ -50,7 +51,7 @@ $site->setPage('http://www.example.com/index.html');
 $site->setDomain('example.com');
 
 try {
-    $siteRequestBuilder = new BidRequestBuilder();
+    $siteRequestBuilder = new RequestBuilder();
 
     $siteBidRequest = $siteRequestBuilder
         ->setSite($site)
@@ -58,18 +59,18 @@ try {
         ->setDevice($device)
         ->setUser($user)
         ->setRegs($regs)
-        ->setAt(2) // Second-price auction
+        ->setAt(AuctionType::SECOND_PRICE)
         ->setTmax(200)
         ->setCur(['USD'])
         ->setBcat(['IAB25', 'IAB7-39'])
-        ->setTest(true) // Use a boolean for convenience
+        ->setTest(1) // 1 = Test mode is enabled
         ->build();
 
-    // The `HasData` trait provides a `json()` method for easy serialization
-    echo json_encode($siteBidRequest->json(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    // The BidRequest object implements JsonSerializable for direct encoding.
+    echo json_encode($siteBidRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     echo "\n\n";
 
-} catch (\InvalidArgumentException $e) {
+} catch (\Exception $e) {
     echo "Error building site-based request: " . $e->getMessage() . "\n\n";
 }
 
@@ -86,7 +87,7 @@ $app->setBundle('com.example.app');
 $app->setDomain('example.com');
 
 try {
-    $appRequestBuilder = new BidRequestBuilder();
+    $appRequestBuilder = new RequestBuilder();
 
     // Note that calling setApp() will automatically nullify any previously set Site object.
     $appBidRequest = $appRequestBuilder
@@ -95,16 +96,16 @@ try {
         ->setDevice($device)
         ->setUser($user)
         ->setRegs($regs)
-        ->setAt(1) // First-price auction
+        ->setAt(AuctionType::FIRST_PRICE)
         ->setTmax(150)
         ->setCur(['USD'])
         ->setBadv(['apple.com'])
-        ->setTest(0) // You can also use an integer
+        ->setTest(0) // 0 = Test mode is disabled (production)
         ->build();
 
-    echo json_encode($appBidRequest->json(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo json_encode($appBidRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     echo "\n\n";
 
-} catch (\InvalidArgumentException $e) {
+} catch (\Exception $e) {
     echo "Error building app-based request: " . $e->getMessage() . "\n\n";
 }

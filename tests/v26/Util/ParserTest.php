@@ -64,9 +64,11 @@ final class ParserTest extends TestCase
         $imp = $request->getImp();
         $this->assertNotNull($imp);
         $this->assertCount(1, $imp);
-        $this->assertEquals('1', $imp[0]->getId());
+        $impItem = $imp[0];
+        $this->assertNotNull($impItem);
+        $this->assertEquals('1', $impItem->getId());
 
-        $banner = $imp[0]->getBanner();
+        $banner = $impItem->getBanner();
         $this->assertNotNull($banner);
         $this->assertEquals(300, $banner->getW());
 
@@ -106,13 +108,17 @@ final class ParserTest extends TestCase
         $seatbid = $response->getSeatbid();
         $this->assertNotNull($seatbid);
         $this->assertCount(1, $seatbid);
-        $this->assertEquals('seat1', $seatbid[0]->getSeat());
+        $seatbidItem = $seatbid[0];
+        $this->assertNotNull($seatbidItem);
+        $this->assertEquals('seat1', $seatbidItem->getSeat());
 
-        $bid = $seatbid[0]->getBid();
+        $bid = $seatbidItem->getBid();
         $this->assertNotNull($bid);
         $this->assertCount(1, $bid);
-        $this->assertEquals('bid1', $bid[0]->getId());
-        $this->assertEquals(1.23, $bid[0]->getPrice());
+        $bidItem = $bid[0];
+        $this->assertNotNull($bidItem);
+        $this->assertEquals('bid1', $bidItem->getId());
+        $this->assertEquals(1.23, $bidItem->getPrice());
     }
 
     public function testHydrateScalarValue(): void
@@ -128,6 +134,6 @@ final class ParserTest extends TestCase
         $json = '{"id":"array_scalar_test","wseat":["seat1","seat2"]}';
         $request = $this->parser->parseBidRequest($json);
         $this->assertNotNull($request);
-        $this->assertEquals(['seat1', 'seat2'], $request->getWseat()->toArray());
+        $this->assertEquals(['seat1', 'seat2'], $request->getWseat()?->toArray());
     }
 }

@@ -83,14 +83,18 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $at = 1;
         $deal->setAt($at);
-        $this->assertEquals($at, $deal->getAt()->value);
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertEquals(1, $at->value);
     }
 
     public function testGetAt(): void
     {
         $deal = new Deal();
         $deal->setAt(2);
-        $this->assertEquals(2, $deal->getAt()->value);
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertEquals(2, $at->value);
     }
 
     public function testSetWseat(): void
@@ -98,14 +102,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wseat = ['seat1', 'seat2'];
         $deal->setWseat($wseat);
-        $this->assertEquals($wseat, $deal->getWseat()->toArray());
+        $this->assertEquals($wseat, $deal->getWseat()?->toArray());
     }
 
     public function testGetWseat(): void
     {
         $deal = new Deal();
         $deal->setWseat(['seat3']);
-        $this->assertEquals(['seat3'], $deal->getWseat()->toArray());
+        $this->assertEquals(['seat3'], $deal->getWseat()?->toArray());
     }
 
     public function testSetWadv(): void
@@ -113,14 +117,14 @@ final class DealTest extends TestCase
         $deal = new Deal();
         $wadv = ['adv1', 'adv2'];
         $deal->setWadv($wadv);
-        $this->assertEquals($wadv, $deal->getWadv()->toArray());
+        $this->assertEquals($wadv, $deal->getWadv()?->toArray());
     }
 
     public function testGetWadv(): void
     {
         $deal = new Deal();
         $deal->setWadv(['adv3']);
-        $this->assertEquals(['adv3'], $deal->getWadv()->toArray());
+        $this->assertEquals(['adv3'], $deal->getWadv()?->toArray());
     }
 
     public function testSetExt(): void

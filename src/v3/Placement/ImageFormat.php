@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Placement;
 
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 class ImageFormat implements ObjectInterface
 {
@@ -80,8 +81,8 @@ class ImageFormat implements ObjectInterface
         return $this->get('type');
     }
 
-    /** @param list<string> $mimes */
-    public function setMimes(array $mimes): static
+    /** @param Collection<string>|array<string> $mimes */
+    public function setMimes(Collection|array $mimes): static
     {
         return $this->set('mimes', $mimes);
     }

@@ -2,6 +2,10 @@
 <phpunit bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
+        <testsuite name="OpenRTB Common Test Suite">
+            <directory suffix="Test.php">./tests/Common</directory>
+            <directory suffix="Test.php">./tests/OpenRTB</directory>
+        </testsuite>
         <testsuite name="OpenRTB v3 Test Suite">
             <directory suffix="Test.php">./tests/v3</directory>
         </testsuite>

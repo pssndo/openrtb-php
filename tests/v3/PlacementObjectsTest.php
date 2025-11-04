@@ -106,8 +106,8 @@ class PlacementObjectsTest extends TestCase
         $this->assertEquals(ClickType::CLICKABLE, $displayPlacement->getClktype());
         $this->assertEquals(PlacementType::IN_ATOMIC_UNIT, $displayPlacement->getPtype());
         $this->assertEquals(ContextType::CONTENT, $displayPlacement->getContext());
-        $this->assertEquals([ApiFramework::MRAID_2], $displayPlacement->getApi()->toArray());
-        $this->assertEquals([CreativeType::HTML], $displayPlacement->getCtype()->toArray());
+        $this->assertEquals([ApiFramework::MRAID_2], $displayPlacement->getApi()?->toArray());
+        $this->assertEquals([CreativeType::HTML], $displayPlacement->getCtype()?->toArray());
         $this->assertEquals(SizeUnit::DENSITY_INDEPENDENT_PIXELS, $displayPlacement->getUnit());
         $this->assertInstanceOf(Collection::class, $displayPlacement->getDisplayfmt());
         $this->assertCount(1, $displayPlacement->getDisplayfmt());
@@ -116,12 +116,12 @@ class PlacementObjectsTest extends TestCase
         $this->assertSame($nativeFormat, $displayPlacement->getNativefmt());
         $this->assertEquals(1, $displayPlacement->getInstl());
         $this->assertEquals(1, $displayPlacement->getTopframe());
-        $this->assertEquals(['ifrbust'], $displayPlacement->getIfrbust()->toArray());
+        $this->assertEquals(['ifrbust'], $displayPlacement->getIfrbust()?->toArray());
         $this->assertEquals(1, $displayPlacement->getAmpren());
         $this->assertEquals(300, $displayPlacement->getW());
         $this->assertEquals(250, $displayPlacement->getH());
         $this->assertEquals(1, $displayPlacement->getPriv());
-        $this->assertEquals(['image/png'], $displayPlacement->getMime()->toArray());
+        $this->assertEquals(['image/png'], $displayPlacement->getMime()?->toArray());
 
         $videoPlacement = (new VideoPlacement())
             ->setPtype(VideoPlacementType::INSTREAM)->setLinear(Linearity::LINEAR)->setPlaymethod([PlaybackMethod::ON_CLICK_SOUND_ON])
@@ -132,20 +132,20 @@ class PlacementObjectsTest extends TestCase
             ->setMaxext(60)->setMinbitr(320)->setMaxbitr(1024)->setMaxseq(2)->setComp([$displayPlacement]);
         $this->assertEquals(VideoPlacementType::INSTREAM, $videoPlacement->getPtype());
         $this->assertEquals(Linearity::LINEAR, $videoPlacement->getLinear());
-        $this->assertEquals([PlaybackMethod::ON_CLICK_SOUND_ON], $videoPlacement->getPlaymethod()->toArray());
+        $this->assertEquals([PlaybackMethod::ON_CLICK_SOUND_ON], $videoPlacement->getPlaymethod()?->toArray());
         $this->assertEquals(PlaybackCessationMode::ON_VIDEO_COMPLETION, $videoPlacement->getPlayend());
         $this->assertEquals(BoxingAllowed::ALLOWED, $videoPlacement->getBoxing());
-        $this->assertEquals([DeliveryMethod::TAG], $videoPlacement->getDelivery()->toArray());
-        $this->assertEquals([CompanionType::HTML_RESOURCE], $videoPlacement->getComptype()->toArray());
+        $this->assertEquals([DeliveryMethod::TAG], $videoPlacement->getDelivery()?->toArray());
+        $this->assertEquals([CompanionType::HTML_RESOURCE], $videoPlacement->getComptype()?->toArray());
         $this->assertEquals(AdPosition::HEADER, $videoPlacement->getPos());
         $this->assertEquals(10, $videoPlacement->getDelay());
         $this->assertEquals(1, $videoPlacement->getSkip());
         $this->assertEquals(5, $videoPlacement->getSkipmin());
         $this->assertEquals(15, $videoPlacement->getSkipafter());
         $this->assertEquals(ClickType::NON_CLICKABLE, $videoPlacement->getClktype());
-        $this->assertEquals(['video/mp4'], $videoPlacement->getMime()->toArray());
-        $this->assertEquals([ApiFramework::VPAID_2], $videoPlacement->getApi()->toArray());
-        $this->assertEquals([CreativeType::AMPHTML], $videoPlacement->getCtype()->toArray());
+        $this->assertEquals(['video/mp4'], $videoPlacement->getMime()?->toArray());
+        $this->assertEquals([ApiFramework::VPAID_2], $videoPlacement->getApi()?->toArray());
+        $this->assertEquals([CreativeType::AMPHTML], $videoPlacement->getCtype()?->toArray());
         $this->assertEquals(1920, $videoPlacement->getW());
         $this->assertEquals(1080, $videoPlacement->getH());
         $this->assertEquals(SizeUnit::DENSITY_INDEPENDENT_PIXELS, $videoPlacement->getUnit());
@@ -171,21 +171,21 @@ class PlacementObjectsTest extends TestCase
         $this->assertEquals(1, $audioPlacement->getSkip());
         $this->assertEquals(5, $audioPlacement->getSkipmin());
         $this->assertEquals(10, $audioPlacement->getSkipafter());
-        $this->assertEquals([PlaybackMethod::ON_PAGE_LOAD_SOUND_ON], $audioPlacement->getPlaymethod()->toArray());
+        $this->assertEquals([PlaybackMethod::ON_PAGE_LOAD_SOUND_ON], $audioPlacement->getPlaymethod()?->toArray());
         $this->assertEquals(PlaybackCessationMode::ON_LEAVING_VIEWPORT, $audioPlacement->getPlayend());
-        $this->assertEquals(['audio/mp4'], $audioPlacement->getMime()->toArray());
-        $this->assertEquals([ApiFramework::VPAID_2], $audioPlacement->getApi()->toArray());
-        $this->assertEquals([CreativeType::HTML], $audioPlacement->getCtype()->toArray());
+        $this->assertEquals(['audio/mp4'], $audioPlacement->getMime()?->toArray());
+        $this->assertEquals([ApiFramework::VPAID_2], $audioPlacement->getApi()?->toArray());
+        $this->assertEquals([CreativeType::HTML], $audioPlacement->getCtype()?->toArray());
         $this->assertEquals(5, $audioPlacement->getMindur());
         $this->assertEquals(30, $audioPlacement->getMaxdur());
         $this->assertEquals(60, $audioPlacement->getMaxext());
         $this->assertEquals(320, $audioPlacement->getMinbitr());
         $this->assertEquals(1024, $audioPlacement->getMaxbitr());
-        $this->assertEquals([DeliveryMethod::PROGRAMMATIC], $audioPlacement->getDelivery()->toArray());
+        $this->assertEquals([DeliveryMethod::PROGRAMMATIC], $audioPlacement->getDelivery()?->toArray());
         $this->assertEquals(2, $audioPlacement->getMaxseq());
         $this->assertInstanceOf(Collection::class, $audioPlacement->getComp());
         $this->assertCount(1, $audioPlacement->getComp());
-        $this->assertEquals([CompanionType::STATIC_RESOURCE], $audioPlacement->getComptype()->toArray());
+        $this->assertEquals([CompanionType::STATIC_RESOURCE], $audioPlacement->getComptype()?->toArray());
 
         $placement = (new Placement())
             ->setTagid('placement-1')->setW(800)->setH(600)->setReward(1)->setSsai(1)->setSdk('sdk')->setSdkver('1.0')
@@ -221,9 +221,9 @@ class PlacementObjectsTest extends TestCase
         $this->assertInstanceOf(Request::class, $parsedRequest);
 
         // Get the parsed item to test its getters
-        $parsedItem = $parsedRequest->getItem()->offsetGet(0);
+        $parsedItem = $parsedRequest->getItem()?->offsetGet(0);
         $this->assertInstanceOf(Item::class, $parsedItem);
-        $parsedPlacement = $parsedItem->getSpec()->getPlacement();
+        $parsedPlacement = $parsedItem->getSpec()?->getPlacement();
         $this->assertInstanceOf(Placement::class, $parsedPlacement);
         $parsedAudio = $parsedPlacement->getAudio();
         $this->assertInstanceOf(AudioPlacement::class, $parsedAudio);

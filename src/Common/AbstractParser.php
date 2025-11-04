@@ -21,6 +21,7 @@ abstract class AbstractParser
      */
     protected function hydrate(array $data, string $class): ObjectInterface
     {
+        // @phpstan-ignore-next-line - Defensive check for invalid data
         if (array_is_list($data)) {
             return new $class();
         }
@@ -69,7 +70,7 @@ abstract class AbstractParser
 
         $itemType = $type[0];
 
-        $collection = new Collection([], $itemType);
+        $collection = new Collection([], is_string($itemType) ? $itemType : null);
 
         foreach ($value as $item) {
             try {
@@ -97,10 +98,12 @@ abstract class AbstractParser
         }
 
         if ($this->isBackedEnum($itemType)) {
+            /** @var class-string<\BackedEnum> $itemType */
             return $this->hydrateEnum($item, $itemType);
         }
 
         if ($this->isObjectInterface($itemType) && is_array($item)) {
+            /** @var class-string<ObjectInterface> $itemType */
             return $this->hydrate($item, $itemType);
         }
 
@@ -121,10 +124,12 @@ abstract class AbstractParser
         }
 
         if ($this->isObjectInterface($type)) {
+            /** @var class-string<ObjectInterface> $type */
             return $this->hydrateObject($value, $type);
         }
 
         if ($this->isBackedEnum($type)) {
+            /** @var class-string<\BackedEnum> $type */
             return $this->hydrateEnum($value, $type);
         }
 

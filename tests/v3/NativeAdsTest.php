@@ -77,7 +77,7 @@ class NativeAdsTest extends TestCase
         $event->setType(EventType::IMPRESSION);
         $event->setMethod([1, 2]);
         $this->assertEquals(EventType::IMPRESSION, $event->getType());
-        $this->assertEquals([1, 2], $event->getMethod()->toArray());
+        $this->assertEquals([1, 2], $event->getMethod()?->toArray());
 
         $native
             ->setContext(ContextType::SOCIAL_CENTRIC_FEED)

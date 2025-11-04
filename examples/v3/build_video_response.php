@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Building a Video VAST Response Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Bid\{Media};
-use src\v3\Bid\Ad;
-use src\v3\Bid\Bid;
-use src\v3\Bid\Seatbid;
-use src\v3\Bid\VideoAd;
-use src\v3\Enums\CreativeType;
-use src\v3\Enums\Placement\ApiFramework;
-use src\v3\Util\ResponseBuilder;
+use OpenRTB\v3\Bid\{Media};
+use OpenRTB\v3\Bid\Ad;
+use OpenRTB\v3\Bid\Bid;
+use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\Bid\Video;
+use OpenRTB\v3\Util\ResponseBuilder;
 
 // The ID of the bid request to which this is a response.
 $requestId = 'test-request-456';
@@ -48,32 +48,27 @@ $vastXml = <<<XML
 </VAST>
 XML;
 
-// 1. Create the VideoAd
-$videoAd = new VideoAd();
-$videoAd
-    ->setMime(['video/mp4'])
-    ->setType(CreativeType::HTML) // VAST is often served in a VPAID context which is HTML/JS
-    ->setAdm($vastXml) // The entire VAST XML is placed in the adm field
-    ->setApis([ApiFramework::VPAID_2]);
+// 1. Create the Video creative
+$videoAd = (new Video())
+    ->setAdm($vastXml); // The entire VAST XML is placed in the adm field
 
 // 2. Create the Ad, Media, Bid, and Seatbid
-$ad = new Ad();
-$ad
+$ad = (new Ad())
     ->setId('video-ad-456')
     ->setAdomain(['advertiser.com'])
     ->setVideo($videoAd);
 
-$media = new Media();
-$media->setAd($ad);
+$media = (new Media())->setAd($ad);
 
-$bid = new Bid();
-$bid
-    ->setId('bid-video-' . uniqid())
-    ->setItem('1')
+$bid = (new Bid())
+    ->setId('bid-video-' . uniqid('', true))
     ->setPrice(3.50)
-    ->setCid('video-campaign-789')
-    ->setMedia($media)
-    ->setBurl('https://dsp.example.com/win?id=${AUCTION_ID}&price=${AUCTION_PRICE}');
+    ->setMedia($media);
+
+// Use the generic set() method for properties not yet implemented
+$bid->set('item', '1');
+$bid->set('cid', 'video-campaign-789');
+$bid->set('burl', 'https://dsp.example.com/win?id=${AUCTION_ID}&price=${AUCTION_PRICE}');
 
 $seatbid = new Seatbid();
 $seatbid
@@ -83,7 +78,7 @@ $seatbid
 // 3. Build the final Response
 $responseBuilder = new ResponseBuilder($requestId);
 $response = $responseBuilder
-    ->setBidId('video-bidresponse-' . uniqid())
+    ->setBidId('video-bidresponse-' . uniqid('', true))
     ->setCurrency('USD')
     ->addSeatbid($seatbid)
     ->build();

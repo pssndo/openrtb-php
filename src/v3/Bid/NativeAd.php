@@ -41,7 +41,7 @@ class NativeAd implements ObjectInterface
         return $this->get('link');
     }
 
-    /** @param list<Asset> $asset */
+    /** @param Collection<Asset>|array<Asset> $asset */
     public function setAsset(Collection|array $asset): static
     {
         $collection = $asset instanceof Collection ? $asset : new Collection($asset, Asset::class);
@@ -61,7 +61,7 @@ class NativeAd implements ObjectInterface
         return null;
     }
 
-    /** @param list<Event> $event */
+    /** @param Collection<Event>|array<Event> $event */
     public function setEvent(Collection|array $event): static
     {
         $collection = $event instanceof Collection ? $event : new Collection($event, Event::class);

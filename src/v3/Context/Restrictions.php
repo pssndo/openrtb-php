@@ -27,7 +27,7 @@ class Restrictions implements ObjectInterface
         return static::$schema;
     }
 
-    /** @param list<string> $bcat */
+    /** @param Collection<string>|array<string> $bcat */
     public function setBcat(Collection|array $bcat): static
     {
         return $this->set('bcat', is_array($bcat) ? $bcat : $bcat->toArray());
@@ -49,7 +49,7 @@ class Restrictions implements ObjectInterface
         return $this->get('cattax');
     }
 
-    /** @param list<string> $badv */
+    /** @param Collection<string>|array<string> $badv */
     public function setBadv(Collection|array $badv): static
     {
         return $this->set('badv', is_array($badv) ? $badv : $badv->toArray());
@@ -61,7 +61,7 @@ class Restrictions implements ObjectInterface
         return new Collection($this->get('badv') ?? [], 'string');
     }
 
-    /** @param list<string> $bapp */
+    /** @param Collection<string>|array<string> $bapp */
     public function setBapp(Collection|array $bapp): static
     {
         return $this->set('bapp', is_array($bapp) ? $bapp : $bapp->toArray());
@@ -73,7 +73,7 @@ class Restrictions implements ObjectInterface
         return new Collection($this->get('bapp') ?? [], 'string');
     }
 
-    /** @param list<CreativeAttribute> $battr */
+    /** @param Collection<CreativeAttribute>|array<CreativeAttribute> $battr */
     public function setBattr(Collection|array $battr): static
     {
         return $this->set('battr', is_array($battr) ? $battr : $battr->toArray());

@@ -43,12 +43,17 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(AuctionType::FIRST_PRICE, $deal->getAt());
         $this->assertEquals(2.50, $deal->getFlr());
         $this->assertEquals('USD', $deal->getFlrcur());
-        $this->assertEquals(['seat-1'], $deal->getWseat()->toArray());
-        $this->assertEquals(['adv-1'], $deal->getWadv()->toArray());
+        $wseat = $deal->getWseat();
+        $this->assertNotNull($wseat);
+        $this->assertEquals(['seat-1'], $wseat->toArray());
+        $wadv = $deal->getWadv();
+        $this->assertNotNull($wadv);
+        $this->assertEquals(['adv-1'], $wadv->toArray());
 
         $spec = (new Spec())->setPlacement((new Placement())->setTagid('p1'));
-        $this->assertNotNull($spec->getPlacement());
-        $this->assertEquals('p1', $spec->getPlacement()->getTagid());
+        $placement = $spec->getPlacement();
+        $this->assertNotNull($placement);
+        $this->assertEquals('p1', $placement->getTagid());
 
         $item = (new Item())
             ->setId('item-123')
@@ -71,10 +76,16 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(300, $item->getExp());
         $this->assertEquals(12345, $item->getDt());
         $this->assertEquals(DeliveryMethod::TAG, $item->getDlvy());
-        $this->assertIsArray($item->getMetric()->toArray());
-        $this->assertCount(1, $item->getMetric());
-        $this->assertIsArray($item->getDeal()->toArray());
-        $this->assertCount(1, $item->getDeal());
+        $metric = $item->getMetric();
+        $this->assertNotNull($metric);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($metric->toArray());
+        $this->assertCount(1, $metric);
+        $dealColl = $item->getDeal();
+        $this->assertNotNull($dealColl);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($dealColl->toArray());
+        $this->assertCount(1, $dealColl);
         $this->assertEquals(1, $item->getPrivate());
         $this->assertSame($spec, $item->getSpec());
 
@@ -90,20 +101,30 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());
 
         $parsedItems = $parsedRequest->getItem();
+        $this->assertNotNull($parsedItems);
+        // @phpstan-ignore-next-line - Testing return type
         $this->assertIsArray($parsedItems->toArray());
         $this->assertCount(1, $parsedItems);
         $parsedItem = $parsedItems->offsetGet(0);
         $this->assertInstanceOf(Item::class, $parsedItem);
 
         $parsedMetrics = $parsedItem->getMetric();
+        $this->assertNotNull($parsedMetrics);
+        // @phpstan-ignore-next-line - Testing return type
         $this->assertIsArray($parsedMetrics->toArray());
         $this->assertCount(1, $parsedMetrics);
-        $this->assertEquals(MetricType::CLICKS, $parsedMetrics->offsetGet(0)->getType());
+        $metricItem = $parsedMetrics->offsetGet(0);
+        $this->assertNotNull($metricItem);
+        $this->assertEquals(MetricType::CLICKS, $metricItem->getType());
 
         $parsedDeals = $parsedItem->getDeal();
+        $this->assertNotNull($parsedDeals);
+        // @phpstan-ignore-next-line - Testing return type
         $this->assertIsArray($parsedDeals->toArray());
         $this->assertCount(1, $parsedDeals);
-        $this->assertEquals(AuctionType::FIRST_PRICE, $parsedDeals->offsetGet(0)->getAt());
+        $dealItem = $parsedDeals->offsetGet(0);
+        $this->assertNotNull($dealItem);
+        $this->assertEquals(AuctionType::FIRST_PRICE, $dealItem->getAt());
 
         $parsedSpec = $parsedItem->getSpec();
         $this->assertInstanceOf(Spec::class, $parsedSpec);

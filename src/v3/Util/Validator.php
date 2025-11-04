@@ -29,6 +29,7 @@ class Validator extends AbstractValidator
             $this->addError('Request must contain at least one Item');
         } else {
             foreach ($items as $item) {
+                // @phpstan-ignore-next-line - Defensive runtime check
                 if ($item instanceof Item) {
                     $this->validateItem($item);
                 }

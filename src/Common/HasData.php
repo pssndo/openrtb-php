@@ -52,6 +52,7 @@ trait HasData
         };
 
         $result = [];
+        // @phpstan-ignore-next-line - foreach on object is valid PHP
         foreach ($this->data as $key => $value) {
             $result[$key] = match (true) {
                 $value instanceof ObjectInterface => $value->toArray(),

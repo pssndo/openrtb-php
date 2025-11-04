@@ -1,28 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - App Banner Request with Privacy Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Context\{Device};
-use src\v3\Context\App;
-use src\v3\Context\Context;
-use src\v3\Context\Regs;
-use src\v3\Context\Source;
-use src\v3\Context\User;
-use src\v3\Enums\{AuctionType, Placement\AdPosition, Placement\ClickType};
-use src\v3\Enums\Context\DeviceType;
-use src\v3\Enums\CreativeType;
-use src\v3\Enums\Placement\{SizeUnit};
-use src\v3\Enums\Placement\PlacementType;
-use src\v3\Impression\{Spec};
-use src\v3\Impression\Item;
-use src\v3\Placement\{DisplayPlacement};
-use src\v3\Placement\Placement;
-use src\v3\Util\RequestBuilder;
+use OpenRTB\v3\Context\{Device};
+use OpenRTB\v3\Context\App;
+use OpenRTB\v3\Context\Context;
+use OpenRTB\v3\Context\Regs;
+use OpenRTB\v3\Context\Source;
+use OpenRTB\v3\Context\User;
+use OpenRTB\v3\Enums\{AuctionType, Placement\AdPosition, Placement\ClickType};
+use OpenRTB\v3\Enums\Context\DeviceType;
+use OpenRTB\v3\Enums\CreativeType;
+use OpenRTB\v3\Enums\Placement\{SizeUnit};
+use OpenRTB\v3\Enums\Placement\PlacementType;
+use OpenRTB\v3\Impression\{Spec};
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Placement\{DisplayPlacement};
+use OpenRTB\v3\Placement\Placement;
+use OpenRTB\v3\Util\RequestBuilder;
 
 // Create display placement
 $displayPlacement = new DisplayPlacement();
@@ -109,14 +111,13 @@ $source
 
 // Build request
 $builder = new RequestBuilder();
-$request = $builder
-    ->setTimeout(120)
-    ->setAuctionType(AuctionType::SECOND_PRICE)
-    ->setCurrencies(['USD'])
+$request = ($builder
+    ->setTmax(120)
+    ->setAt(AuctionType::SECOND_PRICE)
+    ->setCur(['USD'])
     ->addItem($item)
     ->setContext($context)
-    ->setSource($source)
-    ->build();
+    ->setSource($source))();
 
 // Add custom extension
 $request->set('ext', ['custom_param' => ['key' => 'value']]);

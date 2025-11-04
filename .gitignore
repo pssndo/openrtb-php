@@ -1,6 +1,6 @@
-coverage-report
 .php-cs-fixer.cache
 .phpunit.result.cache
 vendor
 .idea
 build
+coverage

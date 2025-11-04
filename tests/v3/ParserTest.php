@@ -82,8 +82,10 @@ JSON;
         $items = $request->getItem();
         $this->assertNotNull($items);
         $this->assertCount(1, $items);
-        $this->assertEquals('item-789', $items[0]->getId());
-        $spec = $items[0]->getSpec();
+        $item = $items[0];
+        $this->assertNotNull($item);
+        $this->assertEquals('item-789', $item->getId());
+        $spec = $item->getSpec();
         $this->assertNotNull($spec);
         $placement = $spec->getPlacement();
         $this->assertNotNull($placement);
@@ -114,7 +116,7 @@ JSON;
 
         // Assert that the parser passed through the scalar value where an array of objects was expected
         // It should now return a Collection with null for the unhandled item.
-        $this->assertEquals([null], $request->getItem()->toArray());
+        $this->assertEquals([null], $request->getItem()?->toArray());
     }
 
     public function testHydrateWithInvalidDataTypes(): void
@@ -170,6 +172,23 @@ JSON;
         // This covers the final `return $value` by providing an object for a property
         // whose class in the schema does not implement ObjectInterface.
         $this->assertEquals(['key' => 'value'], $result->get('source'));
+    }
+
+    public function testGetItemWithArrayValue(): void
+    {
+        $request = new Request();
+        $item = new \OpenRTB\v3\Impression\Item();
+        $item->setId('item-1');
+
+        // Set item as array directly (simulates parsed data)
+        $request->set('item', [$item]);
+
+        $result = $request->getItem();
+        $this->assertNotNull($result);
+        $this->assertCount(1, $result);
+        $resultItem = $result[0];
+        $this->assertNotNull($resultItem);
+        $this->assertEquals('item-1', $resultItem->getId());
     }
 
     /**

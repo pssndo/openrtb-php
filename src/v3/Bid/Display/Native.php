@@ -7,6 +7,7 @@ namespace OpenRTB\v3\Bid\Display;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Bid\Link;
+use OpenRTB\Common\Collection;
 
 class Native implements ObjectInterface
 {
@@ -38,8 +39,8 @@ class Native implements ObjectInterface
         return $this->get('link');
     }
 
-    /** @param list<string> $asset */
-    public function setAsset(array $asset): static
+    /** @param Collection<string>|array<string> $asset */
+    public function setAsset(Collection|array $asset): static
     {
         return $this->set('asset', $asset);
     }

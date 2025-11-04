@@ -7,6 +7,7 @@ namespace OpenRTB\v26\Impression;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=23
@@ -39,8 +40,8 @@ class Banner implements ObjectInterface
         return static::$schema;
     }
 
-    /** @param list<Format> $format */
-    public function setFormat(array $format): static
+    /** @param Collection<Format>|array<Format> $format */
+    public function setFormat(Collection|array $format): static
     {
         return $this->set('format', $format);
     }
@@ -81,8 +82,8 @@ class Banner implements ObjectInterface
         return $this->get('pos');
     }
 
-    /** @param list<int> $btype */
-    public function setBtype(array $btype): static
+    /** @param Collection<int>|array<int> $btype */
+    public function setBtype(Collection|array $btype): static
     {
         return $this->set('btype', $btype);
     }
@@ -93,8 +94,8 @@ class Banner implements ObjectInterface
         return $this->get('btype');
     }
 
-    /** @param list<int> $battr */
-    public function setBattr(array $battr): static
+    /** @param Collection<int>|array<int> $battr */
+    public function setBattr(Collection|array $battr): static
     {
         return $this->set('battr', $battr);
     }
@@ -105,8 +106,8 @@ class Banner implements ObjectInterface
         return $this->get('battr');
     }
 
-    /** @param list<int> $api */
-    public function setApi(array $api): static
+    /** @param Collection<int>|array<int> $api */
+    public function setApi(Collection|array $api): static
     {
         return $this->set('api', $api);
     }

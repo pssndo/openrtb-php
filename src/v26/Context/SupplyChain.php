@@ -8,6 +8,7 @@ use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\Context\SupplyChain\Node as SupplyChainNode;
+use OpenRTB\Common\Collection;
 
 class SupplyChain implements ObjectInterface
 {
@@ -48,8 +49,8 @@ class SupplyChain implements ObjectInterface
         return $this->get('ver');
     }
 
-    /** @param list<SupplyChainNode> $nodes */
-    public function setNodes(array $nodes): static
+    /** @param Collection<SupplyChainNode>|array<SupplyChainNode> $nodes */
+    public function setNodes(Collection|array $nodes): static
     {
         return $this->set('nodes', $nodes);
     }

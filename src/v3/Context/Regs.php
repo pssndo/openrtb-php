@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Context;
 
 use OpenRTB\Common\Resources\Regs as CommonRegs;
+use OpenRTB\Common\Collection;
 
 class Regs extends CommonRegs
 {
@@ -34,8 +35,8 @@ class Regs extends CommonRegs
         return $this->get('gpp');
     }
 
-    /** @param list<int> $gppSid */
-    public function setGppSid(array $gppSid): static
+    /** @param Collection<int>|array<int> $gppSid */
+    public function setGppSid(Collection|array $gppSid): static
     {
         return $this->set('gpp_sid', $gppSid);
     }

@@ -7,6 +7,7 @@ namespace OpenRTB\v3\Bid;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\AuditStatus;
+use OpenRTB\Common\Collection;
 
 class Audit implements ObjectInterface
 {
@@ -41,8 +42,8 @@ class Audit implements ObjectInterface
         return $this->get('status');
     }
 
-    /** @param list<string> $feedback */
-    public function setFeedback(array $feedback): static
+    /** @param Collection<string>|array<string> $feedback */
+    public function setFeedback(Collection|array $feedback): static
     {
         return $this->set('feedback', $feedback);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Context;
 
 use OpenRTB\Common\Resources\Content as CommonContent;
+use OpenRTB\Common\Collection;
 
 class Content extends CommonContent
 {
@@ -83,8 +84,8 @@ class Content extends CommonContent
         return $this->get('isrc');
     }
 
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }

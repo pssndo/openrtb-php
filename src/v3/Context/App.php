@@ -6,6 +6,7 @@ namespace OpenRTB\v3\Context;
 
 use OpenRTB\Common\Resources\App as CommonApp;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
+use OpenRTB\Common\Collection;
 
 class App extends CommonApp
 {
@@ -28,12 +29,12 @@ class App extends CommonApp
      */
     protected static function getBaseSchema(): array
     {
-        return static::$schema;
+        return self::$schema;
     }
 
     public static function getSchema(): array
     {
-        return array_merge(parent::getSchema(), static::getBaseSchema());
+        return array_merge(parent::getSchema(), self::getBaseSchema());
     }
 
     public function setStoreid(string $storeid): static
@@ -46,8 +47,8 @@ class App extends CommonApp
         return $this->get('storeid');
     }
 
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }
@@ -58,8 +59,8 @@ class App extends CommonApp
         return $this->get('cat');
     }
 
-    /** @param list<string> $sectioncat */
-    public function setSectioncat(array $sectioncat): static
+    /** @param Collection<string>|array<string> $sectioncat */
+    public function setSectioncat(Collection|array $sectioncat): static
     {
         return $this->set('sectioncat', $sectioncat);
     }
@@ -70,8 +71,8 @@ class App extends CommonApp
         return $this->get('sectioncat');
     }
 
-    /** @param list<string> $pagecat */
-    public function setPagecat(array $pagecat): static
+    /** @param Collection<string>|array<string> $pagecat */
+    public function setPagecat(Collection|array $pagecat): static
     {
         return $this->set('pagecat', $pagecat);
     }
@@ -132,8 +133,8 @@ class App extends CommonApp
         return $this->get('keywords');
     }
 
-    /** @param list<string> $kwarray */
-    public function setKwarray(array $kwarray): static
+    /** @param Collection<string>|array<string> $kwarray */
+    public function setKwarray(Collection|array $kwarray): static
     {
         return $this->set('kwarray', $kwarray);
     }

@@ -50,6 +50,7 @@ class Validator extends AbstractValidator
         }
 
         foreach ($impressions as $index => $impression) {
+            // @phpstan-ignore-next-line - Defensive runtime check
             if (!$impression instanceof Imp) {
                 $this->addError(sprintf(
                     'Invalid Imp object at index %d',

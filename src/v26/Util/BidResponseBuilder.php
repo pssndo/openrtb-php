@@ -6,11 +6,14 @@ namespace OpenRTB\v26\Util;
 
 use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\BidResponse;
 use OpenRTB\v26\Response\SeatBid;
 
 class BidResponseBuilder extends AbstractResponseBuilder
 {
+    /** @var BidResponse */
+    protected ObjectInterface $response;
 
     public function __construct(string $requestId)
     {

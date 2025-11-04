@@ -106,13 +106,13 @@ class Item implements ObjectInterface
         return $this->get('dlvy');
     }
 
-    /** @param list<Metric> $metric */
-    public function setMetric(array $metric): static
+    /** @param Collection<Metric>|array<Metric> $metric */
+    public function setMetric(Collection|array $metric): static
     {
         return $this->set('metric', $metric);
     }
 
-    /** @return list<Metric>|null */
+    /** @return Collection<Metric>|null */
     public function getMetric(): ?Collection
     {
         $metric = $this->get('metric');
@@ -124,13 +124,13 @@ class Item implements ObjectInterface
         return $metric;
     }
 
-    /** @param list<Deal> $deal */
-    public function setDeal(array $deal): static
+    /** @param Collection<Deal>|array<Deal> $deal */
+    public function setDeal(Collection|array $deal): static
     {
         return $this->set('deal', $deal);
     }
 
-    /** @return list<Deal>|null */
+    /** @return Collection<Deal>|null */
     public function getDeal(): ?Collection
     {
         $deal = $this->get('deal');

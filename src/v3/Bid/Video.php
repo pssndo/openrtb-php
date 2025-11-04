@@ -7,6 +7,7 @@ namespace OpenRTB\v3\Bid;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\ApiFramework;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-3.0-Framework-FINAL.pdf#page=59
@@ -61,8 +62,8 @@ class Video implements ObjectInterface
         return $this->get('api');
     }
 
-    /** @param list<ApiFramework> $api */
-    public function setApi(array $api): static
+    /** @param Collection<ApiFramework>|array<ApiFramework> $api */
+    public function setApi(Collection|array $api): static
     {
         return $this->set('api', $api);
     }

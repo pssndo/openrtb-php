@@ -23,6 +23,7 @@ class ResponseBuilderTest extends TestCase
     public function testFullBuildAndSerialization(): void
     {
         $bid = (new Bid())->setId('bid-1');
+        // @phpstan-ignore-next-line - Collection covariance in tests
         $seatBid = (new SeatBid())->setSeat('seat-1')->setBid(new Collection([$bid], Bid::class));
         $ext = new Ext();
 

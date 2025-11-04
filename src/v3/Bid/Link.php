@@ -6,6 +6,7 @@ namespace OpenRTB\v3\Bid;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 class Link implements ObjectInterface
 {
@@ -38,8 +39,8 @@ class Link implements ObjectInterface
         return $this->get('url');
     }
 
-    /** @param list<string> $trkr */
-    public function setTrkr(array $trkr): static
+    /** @param Collection<string>|array<string> $trkr */
+    public function setTrkr(Collection|array $trkr): static
     {
         return $this->set('trkr', $trkr);
     }

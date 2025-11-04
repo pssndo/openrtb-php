@@ -7,6 +7,7 @@ namespace OpenRTB\v26\Impression;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=21
@@ -41,8 +42,8 @@ class Imp implements ObjectInterface
         return $this->get('id');
     }
 
-    /** @param list<Metric> $metric */
-    public function setMetric(array $metric): static
+    /** @param Collection<Metric>|array<Metric> $metric */
+    public function setMetric(Collection|array $metric): static
     {
         return $this->set('metric', $metric);
     }

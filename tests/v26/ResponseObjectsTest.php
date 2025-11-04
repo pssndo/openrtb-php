@@ -49,11 +49,42 @@ class ResponseObjectsTest extends TestCase
         $this->assertSame($ext, $bid->getExt());
     }
 
+    public function testBidSerialization(): void
+    {
+        $bid = (new Bid())
+            ->setId('bid-1')
+            ->setImpid('imp-1')
+            ->setPrice(1.50);
+
+        $array = $bid->toArray();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($array);
+        $this->assertEquals('bid-1', $array['id']);
+        $this->assertEquals('imp-1', $array['impid']);
+        $this->assertEquals(1.50, $array['price']);
+
+        $json = $bid->toJson();
+        $this->assertIsString($json);
+        $this->assertJson($json);
+    }
+
+    public function testBidSchema(): void
+    {
+        $schema = Bid::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        // Test that schema is not empty and contains expected keys
+        $this->assertNotEmpty($schema);
+        $this->assertArrayHasKey('impid', $schema);
+        $this->assertArrayHasKey('ext', $schema);
+    }
+
     public function testSeatBidObject(): void
     {
         $bid = new Bid();
         $ext = new Ext();
         $seatBid = (new SeatBid())
+            // @phpstan-ignore-next-line - Collection covariance in tests
             ->setBid(new Collection([$bid], Bid::class))
             ->setSeat('seat-1')
             ->setGroup(1)

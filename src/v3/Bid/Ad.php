@@ -7,6 +7,7 @@ namespace OpenRTB\v3\Bid;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\CreativeAttribute;
+use OpenRTB\Common\Collection;
 
 class Ad implements ObjectInterface
 {
@@ -51,8 +52,8 @@ class Ad implements ObjectInterface
         return $this->get('id');
     }
 
-    /** @param list<string> $adomain */
-    public function setAdomain(array $adomain): static
+    /** @param Collection<string>|array<string> $adomain */
+    public function setAdomain(Collection|array $adomain): static
     {
         return $this->set('adomain', $adomain);
     }
@@ -63,8 +64,8 @@ class Ad implements ObjectInterface
         return $this->get('adomain');
     }
 
-    /** @param list<string> $bundle */
-    public function setBundle(array $bundle): static
+    /** @param Collection<string>|array<string> $bundle */
+    public function setBundle(Collection|array $bundle): static
     {
         return $this->set('bundle', $bundle);
     }
@@ -75,8 +76,8 @@ class Ad implements ObjectInterface
         return $this->get('bundle');
     }
 
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }
@@ -107,8 +108,8 @@ class Ad implements ObjectInterface
         return $this->get('lang');
     }
 
-    /** @param list<CreativeAttribute> $attr */
-    public function setAttr(array $attr): static
+    /** @param Collection<CreativeAttribute>|array<CreativeAttribute> $attr */
+    public function setAttr(Collection|array $attr): static
     {
         return $this->set('attr', $attr);
     }
