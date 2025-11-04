@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\v3\Bid\Ad;
 use OpenRTB\v3\Bid\Asset;
 use OpenRTB\v3\Bid\Bid;
@@ -74,9 +75,12 @@ class ResponseBuilderTest extends TestCase
         $this->assertEquals('custom-data', $response->getCdata());
 
         $seatbids = $response->getSeatbid();
-        $this->assertIsArray($seatbids);
+        $this->assertNotNull($seatbids);
+        $this->assertInstanceOf(Collection::class, $seatbids);
         $this->assertCount(1, $seatbids);
-        $this->assertEquals('seat-1', $seatbids[0]->getSeat());
+        $seatbid = $seatbids[0];
+        $this->assertNotNull($seatbid);
+        $this->assertEquals('seat-1', $seatbid->getSeat());
 
         // Test serialization on the built object
         $json = $response->toJson();

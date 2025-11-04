@@ -144,6 +144,26 @@ class Imp implements ObjectInterface
         return $this->get('exp');
     }
 
+    public function setBidfloor(float $bidfloor): static
+    {
+        return $this->set('bidfloor', $bidfloor);
+    }
+
+    public function getBidfloor(): ?float
+    {
+        return $this->get('bidfloor');
+    }
+
+    public function setBidfloorcur(string $bidfloorcur): static
+    {
+        return $this->set('bidfloorcur', $bidfloorcur);
+    }
+
+    public function getBidfloorcur(): ?string
+    {
+        return $this->get('bidfloorcur');
+    }
+
     public function setExt(Ext $ext): static
     {
         return $this->set('ext', $ext);

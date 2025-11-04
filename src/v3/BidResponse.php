@@ -82,15 +82,22 @@ class BidResponse implements BidResponseInterface
         return $this->set('seatbid', $seatbid);
     }
 
-    /** @return list<Seatbid>|null */
-    public function getSeatbid(): ?array
+    /** @return Collection<Seatbid>|null */
+    public function getSeatbid(): ?Collection
     {
-        return $this->get('seatbid');
+        $seatbid = $this->get('seatbid');
+        if (is_array($seatbid)) {
+            return new Collection($seatbid, Seatbid::class);
+        }
+        return $seatbid;
     }
 
     public function addSeatbid(Seatbid $seatbid): static
     {
-        $seatbids = $this->getSeatbid() ?? [];
+        $seatbids = $this->getSeatbid();
+        if ($seatbids === null) {
+            $seatbids = new Collection([], Seatbid::class);
+        }
         $seatbids[] = $seatbid;
 
         return $this->setSeatbid($seatbids);

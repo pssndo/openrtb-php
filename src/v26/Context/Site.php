@@ -13,11 +13,12 @@ use OpenRTB\Common\Resources\Site as CommonSite;
 class Site extends CommonSite
 {
     /**
-     * @return array<string, class-string>
+     * @return array<string, class-string|array<string>>
      */
     protected static function getBaseSchema(): array
     {
         return [
+            'cat' => ['string'],
             'ext' => Ext::class,
         ];
     }
@@ -25,6 +26,18 @@ class Site extends CommonSite
     public static function getSchema(): array
     {
         return array_merge(CommonSite::getBaseSchema(), static::getBaseSchema());
+    }
+
+    /** @param array<string> $cat */
+    public function setCat(array $cat): static
+    {
+        return $this->set('cat', $cat);
+    }
+
+    /** @return list<string>|null */
+    public function getCat(): ?array
+    {
+        return $this->get('cat');
     }
 
     public function setExt(Ext $ext): static

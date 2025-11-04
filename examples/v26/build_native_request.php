@@ -19,6 +19,9 @@ use OpenRTB\v26\Impression\Imp;
 use OpenRTB\v26\Impression\Native;
 use OpenRTB\v26\Util\RequestBuilder;
 
+echo "OpenRTB 2.6 Native Ad Request Example\n";
+echo str_repeat('=', 60) . "\n\n";
+
 // Create a native impression
 // The native request is typically a JSON-encoded Native Ad Request object
 $nativeRequest = [
@@ -61,6 +64,12 @@ $nativeRequest = [
     ]
 ];
 
+echo "Creating native ad request with:\n";
+echo "  - Title (max 50 chars)\n";
+echo "  - Main image (1200x627 min)\n";
+echo "  - Advertiser name (max 25 chars)\n";
+echo "  - Description (max 150 chars)\n\n";
+
 $native = new Native();
 $native
     ->setRequest(json_encode($nativeRequest))
@@ -70,8 +79,8 @@ $imp = new Imp();
 $imp
     ->setId('1')
     ->setNative($native)
-    ->setBidfloor(0.75)
-    ->setBidfloorcur('USD');
+    ->set('bidfloor', 0.75) // Use generic set() for fields without dedicated setter
+    ->set('bidfloorcur', 'USD');
 
 // Create context
 $site = new Site();
@@ -80,35 +89,43 @@ $site
     ->setName('News Publisher')
     ->setDomain('news.example.com')
     ->setPage('https://news.example.com/article/breaking-news')
-    ->setCat(['IAB12']); // News category
+    ->set('cat', ['IAB12']); // News category
 
 $device = new Device();
 $device
     ->setUa('Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15')
     ->setIp('192.168.1.1')
-    ->setDevicetype(4); // Phone
+    ->set('devicetype', 4); // Phone
 
 $user = new User();
 $user->setId('user-' . uniqid('', true));
 
 // Build the request
 try {
+    echo "Building native bid request...\n\n";
+
     $builder = new RequestBuilder();
     $request = $builder
         ->setSite($site)
         ->addImp($imp)
         ->setDevice($device)
         ->setUser($user)
-        ->setAt(AuctionType::SECOND_PRICE)
+        ->setAt(AuctionType::SECOND_PRICE_PLUS)
         ->setTmax(120)
-        ->setCur(['USD'])
-        ->build();
+        ->setCur(['USD'])(); // Invoke the builder with ()
 
     // Output the JSON
-    header('Content-Type: application/json');
-    echo json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo "Native Bid Request:\n";
+    echo json_encode($request->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo "\n\n";
+
+    echo "✓ Native request built successfully!\n";
+    echo "\nKey fields:\n";
+    echo "  - Request ID: {$request->getId()}\n";
+    echo "  - Platform: Mobile (iPhone)\n";
+    echo "  - Context: News article\n";
+    echo "  - Floor price: \$0.75 USD\n";
 
 } catch (\Exception $e) {
-    header('Content-Type: text/plain', true, 500);
-    echo "Error building native request: " . $e->getMessage();
+    echo "✗ Error building native request: " . $e->getMessage() . "\n";
 }

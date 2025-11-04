@@ -68,7 +68,7 @@ $nativeFormat = (new NativeFormat())
 
 $placement = (new Placement())
     ->setTagid('native-ad-slot-1')
-    ->setPos(AdPosition::BELOW_FOLD->value)
+    ->set('pos', AdPosition::BELOW_FOLD->value)  // Use generic set() for fields without dedicated setter
     ->setNativefmt($nativeFormat);
 // Create the main Placement object.
 
@@ -117,7 +117,7 @@ $link = (new Link())
 $nativeAd = (new NativeAd())
     ->setAsset([$responseTitle, $responseImage, $responseSponsoredBy])
     ->setLink($link)
-    ->setImptrackers(['https://analytics.example.com/impression-tracker']);
+    ->set('imptrackers', ['https://analytics.example.com/impression-tracker']); // Use generic set()
 
 // Wrap the NativeAd in the standard Ad/Media/Bid/Seatbid structure.
 $ad = (new Ad())

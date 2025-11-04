@@ -124,6 +124,56 @@ class Video implements ObjectInterface
         return $this->get('api');
     }
 
+    public function setStartdelay(int $startdelay): static
+    {
+        return $this->set('startdelay', $startdelay);
+    }
+
+    public function getStartdelay(): ?int
+    {
+        return $this->get('startdelay');
+    }
+
+    public function setSkip(int $skip): static
+    {
+        return $this->set('skip', $skip);
+    }
+
+    public function getSkip(): ?int
+    {
+        return $this->get('skip');
+    }
+
+    public function setSkipmin(int $skipmin): static
+    {
+        return $this->set('skipmin', $skipmin);
+    }
+
+    public function getSkipmin(): ?int
+    {
+        return $this->get('skipmin');
+    }
+
+    public function setSkipafter(int $skipafter): static
+    {
+        return $this->set('skipafter', $skipafter);
+    }
+
+    public function getSkipafter(): ?int
+    {
+        return $this->get('skipafter');
+    }
+
+    public function setPos(int $pos): static
+    {
+        return $this->set('pos', $pos);
+    }
+
+    public function getPos(): ?int
+    {
+        return $this->get('pos');
+    }
+
     public function setExt(Ext $ext): static
     {
         return $this->set('ext', $ext);

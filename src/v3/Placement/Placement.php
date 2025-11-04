@@ -6,6 +6,7 @@ namespace OpenRTB\v3\Placement;
 
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v3\Enums\Placement\AdPosition;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 use OpenRTB\Common\Collection;
 
@@ -25,6 +26,7 @@ class Placement implements ObjectInterface
         'event' => [Event::class],
         'nativefmt' => NativeFormat::class,
         'unit' => SizeUnit::class,
+        'pos' => AdPosition::class,
     ];
 
     public static function getSchema(): array
@@ -110,6 +112,16 @@ class Placement implements ObjectInterface
     public function getUnit(): ?SizeUnit
     {
         return $this->get('unit');
+    }
+
+    public function setPos(AdPosition $pos): static
+    {
+        return $this->set('pos', $pos);
+    }
+
+    public function getPos(): ?AdPosition
+    {
+        return $this->get('pos');
     }
 
     public function setPriv(int $priv): static

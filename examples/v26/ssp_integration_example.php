@@ -28,14 +28,17 @@ class SSPIntegration
 
     /**
      * Handles an incoming JSON bid request from an exchange or bidder.
+     * @throws JsonException
      */
     public function handleBidRequest(string $jsonRequest): string
     {
         // 1. Parse the incoming JSON into a BidRequest object
-        $request = Parser::parseBidRequest($jsonRequest);
+        $parser = new Parser();
+        $request = $parser->parseBidRequest($jsonRequest);
 
         // 2. Validate the request against the OpenRTB specification
-        if (!$this->validator->validateRequest($request)) {
+        $this->validator->validateBidRequest($request);
+        if ($this->validator->hasErrors()) {
             $errors = implode(', ', $this->validator->getErrors());
             return $this->buildNoBidResponse($request->getId(), 2, $errors); // 2 = Invalid Request
         }
@@ -82,7 +85,7 @@ class SSPIntegration
     private function createBidForImpression($imp): ?Bid
     {
         // Example logic: Only bid on impressions with a floor price below $2.00
-        $floorPrice = $imp->getBidfloor() ?? 0.0;
+        $floorPrice = $imp->get('bidfloor') ?? 0.0;
         if ($floorPrice > 2.00) {
             return null;
         }
@@ -92,7 +95,7 @@ class SSPIntegration
 
         // Create a simple display ad creative
         $adMarkup = '<a href="%%CLICK_URL_ESC%%https://example.com">' .
-                    '<img src="https://cdn.example.com/ad.jpg" width="300" height="250"/>' .
+                    '<img src="https://cdn.example.com/ad.jpg" width="300" height="250" alt=""/>' .
                     '</a>';
 
         $bid = new Bid();

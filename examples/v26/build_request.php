@@ -59,15 +59,14 @@ try {
         ->setDevice($device)
         ->setUser($user)
         ->setRegs($regs)
-        ->setAt(AuctionType::SECOND_PRICE)
+        ->setAt(AuctionType::SECOND_PRICE_PLUS)
         ->setTmax(200)
         ->setCur(['USD'])
         ->setBcat(['IAB25', 'IAB7-39'])
-        ->setTest(1) // 1 = Test mode is enabled
-        ->build();
+        ->setTest(1)(); // 1 = Test mode is enabled, () invokes the builder
 
     // The BidRequest object implements JsonSerializable for direct encoding.
-    echo json_encode($siteBidRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo json_encode($siteBidRequest->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     echo "\n\n";
 
 } catch (\Exception $e) {
@@ -100,10 +99,9 @@ try {
         ->setTmax(150)
         ->setCur(['USD'])
         ->setBadv(['apple.com'])
-        ->setTest(0) // 0 = Test mode is disabled (production)
-        ->build();
+        ->setTest(0)(); // 0 = Test mode is disabled (production), () invokes the builder
 
-    echo json_encode($appBidRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo json_encode($appBidRequest->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     echo "\n\n";
 
 } catch (\Exception $e) {

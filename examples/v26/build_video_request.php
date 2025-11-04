@@ -19,6 +19,9 @@ use OpenRTB\v26\Impression\Imp;
 use OpenRTB\v26\Impression\Video;
 use OpenRTB\v26\Util\RequestBuilder;
 
+echo "OpenRTB 2.6 Video Request Example\n";
+echo str_repeat('=', 60) . "\n\n";
+
 // Create a video impression
 $video = new Video();
 $video
@@ -28,20 +31,21 @@ $video
     ->setProtocols([2, 3, 5, 6]) // VAST 2.0, 3.0, VAST 2.0 Wrapper, VAST 3.0 Wrapper
     ->setW(1280)
     ->setH(720)
-    ->setStartdelay(0) // Pre-roll
+    ->set('startdelay', 0) // Pre-roll (use generic set() for fields without dedicated setter)
     ->setLinearity(1) // Linear/In-Stream
-    ->setSkip(1) // Skippable
-    ->setSkipmin(5) // Skip after 5 seconds
-    ->setSkipafter(5)
-    ->setPos(1) // Above the fold
+    ->set('skip', 1) // Skippable
+    ->set('skipmin', 5) // Skip after 5 seconds
+    ->set('skipafter', 5)
+    ->set('pos', 1) // Above the fold
+    ->setPlacement(1) // In-stream
     ->setApi([1, 2]); // VPAID 1.0, VPAID 2.0
 
 $imp = new Imp();
 $imp
     ->setId('1')
     ->setVideo($video)
-    ->setBidfloor(2.0)
-    ->setBidfloorcur('USD');
+    ->set('bidfloor', 2.0) // Use generic set() for fields without dedicated setter
+    ->set('bidfloorcur', 'USD');
 
 // Create context
 $site = new Site();
@@ -55,29 +59,38 @@ $device = new Device();
 $device
     ->setUa('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36')
     ->setIp('192.168.1.1')
-    ->setDevicetype(2); // Personal Computer
+    ->set('devicetype', 2); // Personal Computer
 
 $user = new User();
-$user->setId('user-' . uniqid());
+$user->setId('user-' . uniqid('', true));
 
 // Build the request
 try {
+    echo "Building video bid request...\n\n";
+
     $builder = new RequestBuilder();
     $request = $builder
         ->setSite($site)
         ->addImp($imp)
         ->setDevice($device)
         ->setUser($user)
-        ->setAt(AuctionType::SECOND_PRICE)
+        ->setAt(AuctionType::SECOND_PRICE_PLUS)
         ->setTmax(150)
-        ->setCur(['USD'])
-        ->build();
+        ->setCur(['USD'])(); // Invoke the builder with ()
 
     // Output the JSON
-    header('Content-Type: application/json');
-    echo json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo "Video Bid Request:\n";
+    echo json_encode($request->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    echo "\n\n";
+
+    echo "✓ Video request built successfully!\n";
+    echo "\nKey fields:\n";
+    echo "  - Request ID: {$request->getId()}\n";
+    echo "  - Video dimensions: 1280x720\n";
+    echo "  - Duration: 5-30 seconds\n";
+    echo "  - Position: Pre-roll\n";
+    echo "  - Floor price: \$2.00 USD\n";
 
 } catch (\Exception $e) {
-    header('Content-Type: text/plain', true, 500);
-    echo "Error building video request: " . $e->getMessage();
+    echo "✗ Error building video request: " . $e->getMessage() . "\n";
 }
