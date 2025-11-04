@@ -13,7 +13,7 @@ use OpenRTB\Common\Resources\Bid as CommonBid;
 class Bid extends CommonBid
 {
     /**
-     * @return array<string, string|class-string|int>
+     * @return array<string, string|class-string|int|array<string>|array<int>>
      */
     protected static function getBaseSchema(): array
     {
@@ -24,10 +24,21 @@ class Bid extends CommonBid
             'burl' => 'string',
             'lurl' => 'string',
             'adm' => 'string',
+            'adomain' => ['string'],
+            'bundle' => 'string',
+            'iurl' => 'string',
+            'cid' => 'string',
             'crid' => 'string',
+            'tactic' => 'string',
+            'cat' => ['string'],
+            'attr' => ['int'],
+            'api' => 'int',
+            'protocol' => 'int',
+            'qagmediarating' => 'int',
             'dealid' => 'string',
             'w' => 'int',
             'h' => 'int',
+            'exp' => 'int',
             'ext' => Ext::class,
         ];
     }
@@ -135,6 +146,122 @@ class Bid extends CommonBid
     public function getH(): ?int
     {
         return $this->get('h');
+    }
+
+    /** @param array<string> $adomain */
+    public function setAdomain(array $adomain): static
+    {
+        return $this->set('adomain', $adomain);
+    }
+
+    /** @return list<string>|null */
+    public function getAdomain(): ?array
+    {
+        return $this->get('adomain');
+    }
+
+    public function setBundle(string $bundle): static
+    {
+        return $this->set('bundle', $bundle);
+    }
+
+    public function getBundle(): ?string
+    {
+        return $this->get('bundle');
+    }
+
+    public function setIurl(string $iurl): static
+    {
+        return $this->set('iurl', $iurl);
+    }
+
+    public function getIurl(): ?string
+    {
+        return $this->get('iurl');
+    }
+
+    public function setCid(string $cid): static
+    {
+        return $this->set('cid', $cid);
+    }
+
+    public function getCid(): ?string
+    {
+        return $this->get('cid');
+    }
+
+    public function setTactic(string $tactic): static
+    {
+        return $this->set('tactic', $tactic);
+    }
+
+    public function getTactic(): ?string
+    {
+        return $this->get('tactic');
+    }
+
+    /** @param array<string> $cat */
+    public function setCat(array $cat): static
+    {
+        return $this->set('cat', $cat);
+    }
+
+    /** @return list<string>|null */
+    public function getCat(): ?array
+    {
+        return $this->get('cat');
+    }
+
+    /** @param array<int> $attr */
+    public function setAttr(array $attr): static
+    {
+        return $this->set('attr', $attr);
+    }
+
+    /** @return list<int>|null */
+    public function getAttr(): ?array
+    {
+        return $this->get('attr');
+    }
+
+    public function setApi(int $api): static
+    {
+        return $this->set('api', $api);
+    }
+
+    public function getApi(): ?int
+    {
+        return $this->get('api');
+    }
+
+    public function setProtocol(int $protocol): static
+    {
+        return $this->set('protocol', $protocol);
+    }
+
+    public function getProtocol(): ?int
+    {
+        return $this->get('protocol');
+    }
+
+    public function setQagmediarating(int $qagmediarating): static
+    {
+        return $this->set('qagmediarating', $qagmediarating);
+    }
+
+    public function getQagmediarating(): ?int
+    {
+        return $this->get('qagmediarating');
+    }
+
+    public function setExp(int $exp): static
+    {
+        return $this->set('exp', $exp);
+    }
+
+    public function getExp(): ?int
+    {
+        return $this->get('exp');
     }
 
     public function setExt(Ext $ext): static

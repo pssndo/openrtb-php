@@ -46,7 +46,9 @@ class BidRequest implements ObjectInterface
         'cur' => ['string'],
         'wlang' => ['string'],
         'wlangb' => ['string'],
+        'acat' => ['string'],
         'bcat' => ['string'],
+        'cattax' => 'int',
         'badv' => ['string'],
         'bapp' => ['string'],
     ];
@@ -246,6 +248,18 @@ class BidRequest implements ObjectInterface
         return new Collection($this->get('wlangb') ?? [], 'string');
     }
 
+    /** @param Collection<string>|array<string> $acat */
+    public function setAcat(Collection|array $acat): static
+    {
+        return $this->set('acat', is_array($acat) ? $acat : $acat->toArray());
+    }
+
+    /** @return Collection<string>|null */
+    public function getAcat(): ?Collection
+    {
+        return new Collection($this->get('acat') ?? [], 'string');
+    }
+
     /** @param Collection<string>|array<string> $bcat */
     public function setBcat(Collection|array $bcat): static
     {
@@ -256,6 +270,16 @@ class BidRequest implements ObjectInterface
     public function getBcat(): ?Collection
     {
         return new Collection($this->get('bcat') ?? [], 'string');
+    }
+
+    public function setCattax(int $cattax): static
+    {
+        return $this->set('cattax', $cattax);
+    }
+
+    public function getCattax(): ?int
+    {
+        return $this->get('cattax');
     }
 
     /** @param Collection<string>|array<string> $badv */

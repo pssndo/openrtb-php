@@ -17,7 +17,7 @@ class Banner implements ObjectInterface
     use HasData;
 
     /**
-     * @var array<string, string|class-string|array<class-string>|array<int>>
+     * @var array<string, string|class-string|array<class-string>|array<int>|array<string>>
      */
     protected static array $schema = [
         'format' => [Format::class],
@@ -26,6 +26,9 @@ class Banner implements ObjectInterface
         'pos' => 'int',
         'btype' => 'array',
         'battr' => 'array',
+        'mimes' => ['string'],
+        'topframe' => 'int',
+        'expdir' => ['int'],
         'api' => 'array',
         'id' => 'string',
         'vcm' => 'int',
@@ -33,7 +36,7 @@ class Banner implements ObjectInterface
     ];
 
     /**
-     * @return array<string, string|class-string|array<class-string>|array<int>>
+     * @return array<string, string|class-string|array<class-string>|array<int>|array<string>>
      */
     public static function getSchema(): array
     {
@@ -136,6 +139,40 @@ class Banner implements ObjectInterface
     public function getVcm(): ?int
     {
         return $this->get('vcm');
+    }
+
+    /** @param array<string> $mimes */
+    public function setMimes(array $mimes): static
+    {
+        return $this->set('mimes', $mimes);
+    }
+
+    /** @return list<string>|null */
+    public function getMimes(): ?array
+    {
+        return $this->get('mimes');
+    }
+
+    public function setTopframe(int $topframe): static
+    {
+        return $this->set('topframe', $topframe);
+    }
+
+    public function getTopframe(): ?int
+    {
+        return $this->get('topframe');
+    }
+
+    /** @param array<int> $expdir */
+    public function setExpdir(array $expdir): static
+    {
+        return $this->set('expdir', $expdir);
+    }
+
+    /** @return list<int>|null */
+    public function getExpdir(): ?array
+    {
+        return $this->get('expdir');
     }
 
     public function setExt(Ext $ext): static

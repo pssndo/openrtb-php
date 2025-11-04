@@ -92,6 +92,18 @@ class BidRequestTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testAcatAndCattax(): void
+    {
+        $request = new BidRequest();
+        $request->setAcat(['IAB1', 'IAB2-1', 'IAB3-5']);
+        $request->setCattax(2);
+
+        $acat = $request->getAcat();
+        $this->assertNotNull($acat);
+        $this->assertEquals(['IAB1', 'IAB2-1', 'IAB3-5'], $acat->toArray());
+        $this->assertEquals(2, $request->getCattax());
+    }
+
     public function testSetExt(): void
     {
         $request = new BidRequest();

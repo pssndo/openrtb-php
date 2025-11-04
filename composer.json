@@ -28,7 +28,8 @@
         "psr-4": {
             "OpenRTB\\Tests\\v3\\": "tests/v3/",
             "OpenRTB\\Tests\\v26\\": "tests/v26/",
-            "OpenRTB\\Tests\\Common\\": "tests/Common/"
+            "OpenRTB\\Tests\\Common\\": "tests/Common/",
+            "OpenRTB\\Tests\\Factory\\": "tests/Factory/"
         }
     },
     "config": {

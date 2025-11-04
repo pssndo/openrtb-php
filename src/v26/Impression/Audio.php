@@ -17,9 +17,15 @@ class Audio implements ObjectInterface
     use HasData;
 
     /**
-     * @var array<string, class-string>
+     * @var array<string, class-string|string|array<string>>
      */
     protected static array $schema = [
+        'mimes' => ['string'],
+        'minduration' => 'int',
+        'maxduration' => 'int',
+        'protocols' => ['int'],
+        'maxseq' => 'int',
+        'api' => ['int'],
         'ext' => Ext::class,
     ];
 

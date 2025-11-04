@@ -18,12 +18,26 @@ class Imp implements ObjectInterface
 
     /** @var array<string, mixed> */
     protected static array $schema = [
+        'id' => 'string',
         'metric' => [Metric::class],
         'banner' => Banner::class,
         'video' => Video::class,
         'audio' => Audio::class,
         'native' => Native::class,
         'pmp' => Pmp::class,
+        'displaymanager' => 'string',
+        'displaymanagerver' => 'string',
+        'instl' => 'int',
+        'tagid' => 'string',
+        'bidfloor' => 'float',
+        'bidfloorcur' => 'string',
+        'clickbrowser' => 'int',
+        'secure' => 'int',
+        'iframebuster' => ['string'],
+        'rwdd' => 'int',
+        'ssai' => 'int',
+        'exp' => 'int',
+        'dt' => 'float',
         'ext' => Ext::class,
     ];
 
@@ -162,6 +176,78 @@ class Imp implements ObjectInterface
     public function getBidfloorcur(): ?string
     {
         return $this->get('bidfloorcur');
+    }
+
+    public function setDisplaymanager(string $displaymanager): static
+    {
+        return $this->set('displaymanager', $displaymanager);
+    }
+
+    public function getDisplaymanager(): ?string
+    {
+        return $this->get('displaymanager');
+    }
+
+    public function setDisplaymanagerver(string $displaymanagerver): static
+    {
+        return $this->set('displaymanagerver', $displaymanagerver);
+    }
+
+    public function getDisplaymanagerver(): ?string
+    {
+        return $this->get('displaymanagerver');
+    }
+
+    public function setTagid(string $tagid): static
+    {
+        return $this->set('tagid', $tagid);
+    }
+
+    public function getTagid(): ?string
+    {
+        return $this->get('tagid');
+    }
+
+    /** @param array<string> $iframebuster */
+    public function setIframebuster(array $iframebuster): static
+    {
+        return $this->set('iframebuster', $iframebuster);
+    }
+
+    /** @return list<string>|null */
+    public function getIframebuster(): ?array
+    {
+        return $this->get('iframebuster');
+    }
+
+    public function setRwdd(int $rwdd): static
+    {
+        return $this->set('rwdd', $rwdd);
+    }
+
+    public function getRwdd(): ?int
+    {
+        return $this->get('rwdd');
+    }
+
+    public function setSsai(int $ssai): static
+    {
+        return $this->set('ssai', $ssai);
+    }
+
+    public function getSsai(): ?int
+    {
+        return $this->get('ssai');
+    }
+
+    public function setDt(float $dt): static
+    {
+        return $this->set('dt', $dt);
+    }
+
+    public function getDt(): ?float
+    {
+        return $this->get('dt');
     }
 
     public function setExt(Ext $ext): static

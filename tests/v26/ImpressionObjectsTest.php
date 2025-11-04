@@ -47,12 +47,19 @@ class ImpressionObjectsTest extends TestCase
             ->setAudio($audio)
             ->setNative($native)
             ->setPmp($pmp)
+            ->setDisplaymanager('MySDK')
+            ->setDisplaymanagerver('1.2.3')
+            ->setTagid('tag-123')
             ->setBidfloor(1.50)
             ->setBidfloorcur('USD')
             ->setInstl(1)
             ->setClickbrowser(1)
             ->setSecure(1)
+            ->setIframebuster(['buster1.js', 'buster2.js'])
+            ->setRwdd(0)
+            ->setSsai(1)
             ->setExp(30)
+            ->setDt(1234567890.5)
             ->setExt($ext);
 
         $this->assertEquals('imp-1', $imp->getId());
@@ -62,12 +69,19 @@ class ImpressionObjectsTest extends TestCase
         $this->assertSame($audio, $imp->getAudio());
         $this->assertSame($native, $imp->getNative());
         $this->assertSame($pmp, $imp->getPmp());
+        $this->assertEquals('MySDK', $imp->getDisplaymanager());
+        $this->assertEquals('1.2.3', $imp->getDisplaymanagerver());
+        $this->assertEquals('tag-123', $imp->getTagid());
         $this->assertEquals(1.50, $imp->getBidfloor());
         $this->assertEquals('USD', $imp->getBidfloorcur());
         $this->assertEquals(1, $imp->getInstl());
         $this->assertEquals(1, $imp->getClickbrowser());
         $this->assertEquals(1, $imp->getSecure());
+        $this->assertEquals(['buster1.js', 'buster2.js'], $imp->getIframebuster());
+        $this->assertEquals(0, $imp->getRwdd());
+        $this->assertEquals(1, $imp->getSsai());
         $this->assertEquals(30, $imp->getExp());
+        $this->assertEquals(1234567890.5, $imp->getDt());
         $this->assertSame($ext, $imp->getExt());
     }
 
@@ -109,6 +123,9 @@ class ImpressionObjectsTest extends TestCase
             ->setW(300)
             ->setH(250)
             ->setPos(1)
+            ->setMimes(['image/jpeg', 'image/png'])
+            ->setTopframe(1)
+            ->setExpdir([1, 2, 3])
             ->setApi([3])
             ->setVcm(1)
             ->setExt($ext);
@@ -117,6 +134,9 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(300, $banner->getW());
         $this->assertEquals(250, $banner->getH());
         $this->assertEquals(1, $banner->getPos());
+        $this->assertEquals(['image/jpeg', 'image/png'], $banner->getMimes());
+        $this->assertEquals(1, $banner->getTopframe());
+        $this->assertEquals([1, 2, 3], $banner->getExpdir());
         $this->assertEquals([3], $banner->getApi());
         $this->assertEquals(1, $banner->getVcm());
         $this->assertSame($ext, $banner->getExt());
@@ -151,6 +171,35 @@ class ImpressionObjectsTest extends TestCase
         // @phpstan-ignore-next-line - Testing return type
         $this->assertIsArray($schema);
         $this->assertArrayHasKey('ext', $schema);
+    }
+
+    public function testDealGetAtWithEnumInstance(): void
+    {
+        $deal = new Deal();
+        $deal->set('at', \OpenRTB\v26\Enums\AuctionType::SECOND_PRICE_PLUS);
+
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertInstanceOf(\OpenRTB\v26\Enums\AuctionType::class, $at);
+        $this->assertEquals(\OpenRTB\v26\Enums\AuctionType::SECOND_PRICE_PLUS, $at);
+    }
+
+    public function testDealGetAtWithInvalidValue(): void
+    {
+        $deal = new Deal();
+        $deal->set('at', 999); // Invalid auction type value
+
+        $at = $deal->getAt();
+        $this->assertNull($at); // tryFrom should return null for invalid value
+    }
+
+    public function testDealGetAtWithNull(): void
+    {
+        $deal = new Deal();
+        // Don't set 'at' at all
+
+        $at = $deal->getAt();
+        $this->assertNull($at);
     }
 
     public function testFormatObject(): void

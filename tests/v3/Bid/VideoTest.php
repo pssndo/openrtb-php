@@ -114,4 +114,107 @@ final class VideoTest extends TestCase
         $video->setDur($dur);
         $this->assertEquals($dur, $video->getDur());
     }
+
+    public function testGetW(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getW());
+    }
+
+    public function testSetW(): void
+    {
+        $video = new Video();
+        $w = 1920;
+        $video->setW($w);
+        $this->assertEquals($w, $video->getW());
+    }
+
+    public function testGetH(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getH());
+    }
+
+    public function testSetH(): void
+    {
+        $video = new Video();
+        $h = 1080;
+        $video->setH($h);
+        $this->assertEquals($h, $video->getH());
+    }
+
+    public function testGetWratio(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getWratio());
+    }
+
+    public function testSetWratio(): void
+    {
+        $video = new Video();
+        $wratio = 16;
+        $video->setWratio($wratio);
+        $this->assertEquals($wratio, $video->getWratio());
+    }
+
+    public function testGetHratio(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getHratio());
+    }
+
+    public function testSetHratio(): void
+    {
+        $video = new Video();
+        $hratio = 9;
+        $video->setHratio($hratio);
+        $this->assertEquals($hratio, $video->getHratio());
+    }
+
+    public function testGetPriv(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getPriv());
+    }
+
+    public function testSetPriv(): void
+    {
+        $video = new Video();
+        $priv = 'https://example.com/privacy';
+        $video->setPriv($priv);
+        $this->assertEquals($priv, $video->getPriv());
+    }
+
+    public function testGetEvent(): void
+    {
+        $video = new Video();
+        $this->assertNull($video->getEvent());
+    }
+
+    public function testSetEvent(): void
+    {
+        $video = new Video();
+        $event = new \OpenRTB\v3\Bid\Event();
+        $video->setEvent([$event]);
+        $this->assertEquals([$event], $video->getEvent());
+    }
+
+    public function testSchemaIncludesNewFields(): void
+    {
+        $schema = Video::getSchema();
+
+        // Test new fields are in schema
+        $this->assertArrayHasKey('w', $schema);
+        $this->assertEquals('int', $schema['w']);
+        $this->assertArrayHasKey('h', $schema);
+        $this->assertEquals('int', $schema['h']);
+        $this->assertArrayHasKey('wratio', $schema);
+        $this->assertEquals('int', $schema['wratio']);
+        $this->assertArrayHasKey('hratio', $schema);
+        $this->assertEquals('int', $schema['hratio']);
+        $this->assertArrayHasKey('priv', $schema);
+        $this->assertEquals('string', $schema['priv']);
+        $this->assertArrayHasKey('event', $schema);
+        $this->assertEquals([\OpenRTB\v3\Bid\Event::class], $schema['event']);
+    }
 }

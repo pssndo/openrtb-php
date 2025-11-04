@@ -17,9 +17,23 @@ class Video implements ObjectInterface
     use HasData;
 
     /**
-     * @var array<string, class-string>
+     * @var array<string, class-string|string|array<string>>
      */
     protected static array $schema = [
+        'mimes' => ['string'],
+        'minduration' => 'int',
+        'maxduration' => 'int',
+        'protocols' => ['int'],
+        'w' => 'int',
+        'h' => 'int',
+        'linearity' => 'int',
+        'placement' => 'int',
+        'api' => ['int'],
+        'startdelay' => 'int',
+        'skip' => 'int',
+        'skipmin' => 'int',
+        'skipafter' => 'int',
+        'pos' => 'int',
         'ext' => Ext::class,
     ];
 

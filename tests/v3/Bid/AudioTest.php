@@ -98,4 +98,43 @@ final class AudioTest extends TestCase
         $audio->setDur($dur);
         $this->assertEquals($dur, $audio->getDur());
     }
+
+    public function testGetPriv(): void
+    {
+        $audio = new Audio();
+        $this->assertNull($audio->getPriv());
+    }
+
+    public function testSetPriv(): void
+    {
+        $audio = new Audio();
+        $priv = 'https://example.com/privacy';
+        $audio->setPriv($priv);
+        $this->assertEquals($priv, $audio->getPriv());
+    }
+
+    public function testGetEvent(): void
+    {
+        $audio = new Audio();
+        $this->assertNull($audio->getEvent());
+    }
+
+    public function testSetEvent(): void
+    {
+        $audio = new Audio();
+        $event = new \OpenRTB\v3\Bid\Event();
+        $audio->setEvent([$event]);
+        $this->assertEquals([$event], $audio->getEvent());
+    }
+
+    public function testSchemaIncludesNewFields(): void
+    {
+        $schema = Audio::getSchema();
+
+        // Test new fields are in schema
+        $this->assertArrayHasKey('priv', $schema);
+        $this->assertEquals('string', $schema['priv']);
+        $this->assertArrayHasKey('event', $schema);
+        $this->assertEquals([\OpenRTB\v3\Bid\Event::class], $schema['event']);
+    }
 }

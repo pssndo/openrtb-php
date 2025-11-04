@@ -47,13 +47,17 @@ class SeatBid implements ObjectInterface
     }
 
     /** @return Collection<Bid>|null */
-    public function getBid(): Collection
+    public function getBid(): ?Collection
     {
         $value = $this->get('bid');
         if ($value instanceof Collection) {
             return $value;
         }
 
-        return new Collection(is_array($value) ? $value : [], Bid::class);
+        if (is_array($value) && count($value) > 0) {
+            return new Collection($value, Bid::class);
+        }
+
+        return null;
     }
 }

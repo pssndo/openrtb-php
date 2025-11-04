@@ -6,6 +6,9 @@
             <directory suffix="Test.php">./tests/Common</directory>
             <directory suffix="Test.php">./tests/OpenRTB</directory>
         </testsuite>
+        <testsuite name="OpenRTB Factory Test Suite">
+            <directory suffix="Test.php">./tests/Factory</directory>
+        </testsuite>
         <testsuite name="OpenRTB v3 Test Suite">
             <directory suffix="Test.php">./tests/v3</directory>
         </testsuite>

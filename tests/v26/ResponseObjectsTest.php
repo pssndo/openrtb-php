@@ -28,10 +28,21 @@ class ResponseObjectsTest extends TestCase
             ->setBurl('burl-val')
             ->setLurl('lurl-val')
             ->setAdm('adm-val')
+            ->setAdomain(['example.com', 'advertiser.com'])
+            ->setBundle('com.example.app')
+            ->setIurl('https://example.com/image.jpg')
+            ->setCid('campaign-123')
             ->setCrid('crid-val')
+            ->setTactic('tactic-1')
+            ->setCat(['IAB1', 'IAB2-1'])
+            ->setAttr([1, 2, 3])
+            ->setApi(5)
+            ->setProtocol(2)
+            ->setQagmediarating(1)
             ->setDealid('deal-1')
             ->setW(300)
             ->setH(250)
+            ->setExp(3600)
             ->setExt($ext);
 
         $this->assertEquals('bid-1', $bid->getId());
@@ -42,10 +53,21 @@ class ResponseObjectsTest extends TestCase
         $this->assertEquals('burl-val', $bid->getBurl());
         $this->assertEquals('lurl-val', $bid->getLurl());
         $this->assertEquals('adm-val', $bid->getAdm());
+        $this->assertEquals(['example.com', 'advertiser.com'], $bid->getAdomain());
+        $this->assertEquals('com.example.app', $bid->getBundle());
+        $this->assertEquals('https://example.com/image.jpg', $bid->getIurl());
+        $this->assertEquals('campaign-123', $bid->getCid());
         $this->assertEquals('crid-val', $bid->getCrid());
+        $this->assertEquals('tactic-1', $bid->getTactic());
+        $this->assertEquals(['IAB1', 'IAB2-1'], $bid->getCat());
+        $this->assertEquals([1, 2, 3], $bid->getAttr());
+        $this->assertEquals(5, $bid->getApi());
+        $this->assertEquals(2, $bid->getProtocol());
+        $this->assertEquals(1, $bid->getQagmediarating());
         $this->assertEquals('deal-1', $bid->getDealid());
         $this->assertEquals(300, $bid->getW());
         $this->assertEquals(250, $bid->getH());
+        $this->assertEquals(3600, $bid->getExp());
         $this->assertSame($ext, $bid->getExt());
     }
 
