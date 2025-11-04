@@ -323,13 +323,13 @@ class ContextObjectsTest extends TestCase
 
     public function testDoohObject(): void
     {
-        $dooh = (new Dooh())->setId('dooh-1')->setName('Times Square')->setVenuetype(['venue'])->setDomain('domain')->setCat(['cat'])->setCattax(1);
+        $dooh = (new Dooh())->setId('dooh-1')->setName('Times Square')->setVenuetype(['venue'])->setDomain('domain')->setCat(['cat'])->setCattax(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0);
         $this->assertEquals('dooh-1', $dooh->getId());
         $this->assertEquals('Times Square', $dooh->getName());
         $this->assertEquals(['venue'], $dooh->getVenuetype());
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
-        $this->assertEquals(1, $dooh->getCattax());
+        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $dooh->getCattax());
 
         // Test schema
         $schema = Dooh::getSchema();

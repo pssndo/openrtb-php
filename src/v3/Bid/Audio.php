@@ -25,6 +25,8 @@ class Audio implements ObjectInterface
         'api' => [ApiFramework::class],
         'mime' => 'string',
         'dur' => 'int',
+        'priv' => 'string',
+        'event' => [Event::class],
     ];
 
     /**
@@ -85,5 +87,27 @@ class Audio implements ObjectInterface
     public function setDur(int $dur): static
     {
         return $this->set('dur', $dur);
+    }
+
+    public function getPriv(): ?string
+    {
+        return $this->get('priv');
+    }
+
+    public function setPriv(string $priv): static
+    {
+        return $this->set('priv', $priv);
+    }
+
+    /** @return list<Event>|null */
+    public function getEvent(): ?array
+    {
+        return $this->get('event');
+    }
+
+    /** @param Collection<Event>|array<Event> $event */
+    public function setEvent(Collection|array $event): static
+    {
+        return $this->set('event', $event);
     }
 }

@@ -30,7 +30,13 @@ final class BidTest extends TestCase
         $this->assertArrayHasKey('media', $schema);
         $this->assertEquals(Media::class, $schema['media']);
         $this->assertArrayHasKey('deal', $schema);
-        $this->assertEquals(Deal::class, $schema['deal']);
+        $this->assertEquals('string', $schema['deal']);
+        $this->assertArrayHasKey('cid', $schema);
+        $this->assertEquals('string', $schema['cid']);
+        $this->assertArrayHasKey('tactic', $schema);
+        $this->assertEquals('string', $schema['tactic']);
+        $this->assertArrayHasKey('dealobj', $schema);
+        $this->assertEquals(Deal::class, $schema['dealobj']);
         $this->assertArrayHasKey('macro', $schema);
         $this->assertEquals([Macro::class], $schema['macro']);
     }
@@ -84,17 +90,25 @@ final class BidTest extends TestCase
     public function testSetDeal(): void
     {
         $bid = new Bid();
-        $deal = new Deal();
-        $bid->setDeal($deal);
-        $this->assertSame($deal, $bid->getDeal());
+        $dealId = 'deal-123';
+        $bid->setDeal($dealId);
+        $this->assertSame($dealId, $bid->getDeal());
     }
 
     public function testGetDeal(): void
     {
         $bid = new Bid();
+        $dealId = 'deal-456';
+        $bid->setDeal($dealId);
+        $this->assertSame($dealId, $bid->getDeal());
+    }
+
+    public function testSetDealobj(): void
+    {
+        $bid = new Bid();
         $deal = new Deal();
-        $bid->setDeal($deal);
-        $this->assertSame($deal, $bid->getDeal());
+        $bid->setDealobj($deal);
+        $this->assertSame($deal, $bid->getDealobj());
     }
 
     public function testSetMacro(): void

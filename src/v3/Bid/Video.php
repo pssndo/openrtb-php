@@ -26,6 +26,12 @@ class Video implements ObjectInterface
         'ctype' => 'string',
         'mime' => 'string',
         'dur' => 'int',
+        'w' => 'int',
+        'h' => 'int',
+        'wratio' => 'int',
+        'hratio' => 'int',
+        'priv' => 'string',
+        'event' => [Event::class],
     ];
 
     /**
@@ -96,5 +102,67 @@ class Video implements ObjectInterface
     public function setDur(int $dur): static
     {
         return $this->set('dur', $dur);
+    }
+
+    public function getW(): ?int
+    {
+        return $this->get('w');
+    }
+
+    public function setW(int $w): static
+    {
+        return $this->set('w', $w);
+    }
+
+    public function getH(): ?int
+    {
+        return $this->get('h');
+    }
+
+    public function setH(int $h): static
+    {
+        return $this->set('h', $h);
+    }
+
+    public function getWratio(): ?int
+    {
+        return $this->get('wratio');
+    }
+
+    public function setWratio(int $wratio): static
+    {
+        return $this->set('wratio', $wratio);
+    }
+
+    public function getHratio(): ?int
+    {
+        return $this->get('hratio');
+    }
+
+    public function setHratio(int $hratio): static
+    {
+        return $this->set('hratio', $hratio);
+    }
+
+    public function getPriv(): ?string
+    {
+        return $this->get('priv');
+    }
+
+    public function setPriv(string $priv): static
+    {
+        return $this->set('priv', $priv);
+    }
+
+    /** @return list<Event>|null */
+    public function getEvent(): ?array
+    {
+        return $this->get('event');
+    }
+
+    /** @param Collection<Event>|array<Event> $event */
+    public function setEvent(Collection|array $event): static
+    {
+        return $this->set('event', $event);
     }
 }
