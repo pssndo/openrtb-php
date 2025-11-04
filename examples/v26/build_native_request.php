@@ -79,8 +79,8 @@ $imp = new Imp();
 $imp
     ->setId('1')
     ->setNative($native)
-    ->set('bidfloor', 0.75) // Use generic set() for fields without dedicated setter
-    ->set('bidfloorcur', 'USD');
+    ->setBidfloor(0.75)
+    ->setBidfloorcur('USD');
 
 // Create context
 $site = new Site();
@@ -89,13 +89,13 @@ $site
     ->setName('News Publisher')
     ->setDomain('news.example.com')
     ->setPage('https://news.example.com/article/breaking-news')
-    ->set('cat', ['IAB12']); // News category
+    ->setCat(['IAB12']); // News category
 
 $device = new Device();
 $device
     ->setUa('Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15')
     ->setIp('192.168.1.1')
-    ->set('devicetype', 4); // Phone
+    ->setDeviceType(4); // Phone
 
 $user = new User();
 $user->setId('user-' . uniqid('', true));

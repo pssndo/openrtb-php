@@ -49,11 +49,11 @@ $media = (new Media())->setAd($ad);
 
 $bid = (new Bid())
     ->setId('bid-' . uniqid('', true))
+    ->setItem('1') // Link to the request item ID
     ->setPrice(1.25)
     ->setMedia($media);
 
 // Use the generic set() method for properties not yet implemented
-$bid->set('item', '1');  // Link to the request item ID
 $bid->set('cid', 'campaign123');  // Campaign ID
 $bid->set('burl', 'https://dsp.example.com/win?id=${AUCTION_ID}&price=${AUCTION_PRICE}');  // Billing URL
 $bid->set('lurl', 'https://dsp.example.com/loss?id=${AUCTION_ID}');  // Loss URL

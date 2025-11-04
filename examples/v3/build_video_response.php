@@ -62,11 +62,11 @@ $media = (new Media())->setAd($ad);
 
 $bid = (new Bid())
     ->setId('bid-video-' . uniqid('', true))
+    ->setItem('1')
     ->setPrice(3.50)
     ->setMedia($media);
 
 // Use the generic set() method for properties not yet implemented
-$bid->set('item', '1');
 $bid->set('cid', 'video-campaign-789');
 $bid->set('burl', 'https://dsp.example.com/win?id=${AUCTION_ID}&price=${AUCTION_PRICE}');
 

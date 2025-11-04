@@ -15,8 +15,12 @@ class Bid extends CommonBid
     protected static function getBaseSchema(): array
     {
         return [
+            'item' => 'string',
+            'deal' => 'string',
+            'cid' => 'string',
+            'tactic' => 'string',
             'media' => Media::class,
-            'deal' => Deal::class,
+            'dealobj' => Deal::class,
             'macro' => [Macro::class],
         ];
     }
@@ -36,14 +40,54 @@ class Bid extends CommonBid
         return $this->get('media');
     }
 
-    public function setDeal(Deal $deal): static
+    public function setItem(string $item): static
+    {
+        return $this->set('item', $item);
+    }
+
+    public function getItem(): ?string
+    {
+        return $this->get('item');
+    }
+
+    public function setDeal(string $deal): static
     {
         return $this->set('deal', $deal);
     }
 
-    public function getDeal(): ?Deal
+    public function getDeal(): ?string
     {
         return $this->get('deal');
+    }
+
+    public function setCid(string $cid): static
+    {
+        return $this->set('cid', $cid);
+    }
+
+    public function getCid(): ?string
+    {
+        return $this->get('cid');
+    }
+
+    public function setTactic(string $tactic): static
+    {
+        return $this->set('tactic', $tactic);
+    }
+
+    public function getTactic(): ?string
+    {
+        return $this->get('tactic');
+    }
+
+    public function setDealobj(Deal $dealobj): static
+    {
+        return $this->set('dealobj', $dealobj);
+    }
+
+    public function getDealobj(): ?Deal
+    {
+        return $this->get('dealobj');
     }
 
     /** @param Collection<Macro>|array<Macro> $macro */

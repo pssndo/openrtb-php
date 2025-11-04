@@ -10,7 +10,7 @@ use OpenRTB\v26\BidResponse;
 
 class Parser extends AbstractParser
 {
-    public function parseBidRequest(string $json): ?BidRequest
+    public function parseBidRequest(string $json): BidRequest
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         /** @var BidRequest $request */

@@ -16,6 +16,7 @@ class Data implements ObjectInterface
      */
     protected static array $schema = [
         'value' => 'string',
+        'type' => 'int',
     ];
 
     /**
@@ -34,5 +35,15 @@ class Data implements ObjectInterface
     public function getValue(): ?string
     {
         return $this->get('value');
+    }
+
+    public function setType(int $type): static
+    {
+        return $this->set('type', $type);
+    }
+
+    public function getType(): ?int
+    {
+        return $this->get('type');
     }
 }

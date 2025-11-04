@@ -113,7 +113,9 @@ class NativeAdsTest extends TestCase
 
         $bid = new Bid();
         $bid->setId('bid-1');
+        $bid->setItem('item-1');
         $bid->setPrice(1.50);
+        $this->assertEquals('item-1', $bid->getItem());
 
         $media = new Media();
         $ad = new Ad();
@@ -129,6 +131,8 @@ class NativeAdsTest extends TestCase
         $title->setText('Native Title');
         $asset->setTitle($title);
         $nativeAd->setAsset([$asset]);
+        $nativeAd->setImptrackers(['https://tracker1.example.com', 'https://tracker2.example.com']);
+        $this->assertEquals(['https://tracker1.example.com', 'https://tracker2.example.com'], $nativeAd->getImptrackers());
 
         $ad->setNative($nativeAd);
         $media->setAd($ad);

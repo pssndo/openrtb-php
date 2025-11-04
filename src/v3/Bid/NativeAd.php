@@ -14,17 +14,18 @@ class NativeAd implements ObjectInterface
     use HasData;
 
     /**
-     * @var array<string, class-string|array<class-string>|string>
+     * @var array<string, class-string|array<class-string>|array<string>|string>
      */
     protected static array $schema = [
         'link' => Link::class,
         'asset' => [Asset::class],
         'event' => [Event::class],
         'privacy' => 'string',
+        'imptrackers' => ['string'],
     ];
 
     /**
-     * @return array<string, class-string|array<class-string>|string>
+     * @return array<string, class-string|array<class-string>|array<string>|string>
      */
     public static function getSchema(): array
     {
@@ -89,5 +90,17 @@ class NativeAd implements ObjectInterface
     public function getPrivacy(): ?string
     {
         return $this->get('privacy');
+    }
+
+    /** @param array<string> $imptrackers */
+    public function setImptrackers(array $imptrackers): static
+    {
+        return $this->set('imptrackers', $imptrackers);
+    }
+
+    /** @return list<string>|null */
+    public function getImptrackers(): ?array
+    {
+        return $this->get('imptrackers');
     }
 }

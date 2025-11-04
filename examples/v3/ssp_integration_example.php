@@ -121,11 +121,11 @@ class SSPIntegration
 
         $bid = (new Bid())
             ->setId('ssp-bid-' . uniqid('', true))
+            ->setItem($item->getId()) // Link to the request item ID
             ->setPrice($bidPrice)
             ->setMedia($media);
 
         // Use the generic set() method for properties not yet implemented
-        $bid->set('item', $item->getId()); // Link to the request item ID
         $bid->set('cid', 'creative-id-12345'); // Campaign ID
 
         return $bid;

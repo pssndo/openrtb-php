@@ -18,7 +18,10 @@ class Restrictions implements ObjectInterface
      * @var array<string, class-string|array<class-string>|array<string>>
      */
     protected static array $schema = [
+        'bcat' => ['string'],
         'cattax' => ContentTaxonomy::class,
+        'badv' => ['string'],
+        'bapp' => ['string'],
         'battr' => [CreativeAttribute::class],
     ];
 

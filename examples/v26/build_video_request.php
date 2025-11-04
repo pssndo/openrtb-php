@@ -31,12 +31,12 @@ $video
     ->setProtocols([2, 3, 5, 6]) // VAST 2.0, 3.0, VAST 2.0 Wrapper, VAST 3.0 Wrapper
     ->setW(1280)
     ->setH(720)
-    ->set('startdelay', 0) // Pre-roll (use generic set() for fields without dedicated setter)
+    ->setStartdelay(0) // Pre-roll
     ->setLinearity(1) // Linear/In-Stream
-    ->set('skip', 1) // Skippable
-    ->set('skipmin', 5) // Skip after 5 seconds
-    ->set('skipafter', 5)
-    ->set('pos', 1) // Above the fold
+    ->setSkip(1) // Skippable
+    ->setSkipmin(5) // Skip after 5 seconds
+    ->setSkipafter(5)
+    ->setPos(1) // Above the fold
     ->setPlacement(1) // In-stream
     ->setApi([1, 2]); // VPAID 1.0, VPAID 2.0
 
@@ -44,8 +44,8 @@ $imp = new Imp();
 $imp
     ->setId('1')
     ->setVideo($video)
-    ->set('bidfloor', 2.0) // Use generic set() for fields without dedicated setter
-    ->set('bidfloorcur', 'USD');
+    ->setBidfloor(2.0)
+    ->setBidfloorcur('USD');
 
 // Create context
 $site = new Site();
@@ -59,7 +59,7 @@ $device = new Device();
 $device
     ->setUa('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36')
     ->setIp('192.168.1.1')
-    ->set('devicetype', 2); // Personal Computer
+    ->setDeviceType(2); // Personal Computer
 
 $user = new User();
 $user->setId('user-' . uniqid('', true));

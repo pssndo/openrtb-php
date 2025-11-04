@@ -189,7 +189,7 @@ class PlacementObjectsTest extends TestCase
 
         $placement = (new Placement())
             ->setTagid('placement-1')->setW(800)->setH(600)->setReward(1)->setSsai(1)->setSdk('sdk')->setSdkver('1.0')
-            ->setUnit(SizeUnit::DENSITY_INDEPENDENT_PIXELS)->setPriv(1)
+            ->setUnit(SizeUnit::DENSITY_INDEPENDENT_PIXELS)->setPos(AdPosition::ABOVE_FOLD)->setPriv(1)
             ->setDisplay($displayPlacement)->setVideo($videoPlacement)->setAudio($audioPlacement)
             ->setDisplayfmt([$displayFormat])->setEvent([$event])->setNativefmt($nativeFormat);
         $this->assertEquals('placement-1', $placement->getTagid());
@@ -200,6 +200,7 @@ class PlacementObjectsTest extends TestCase
         $this->assertEquals('sdk', $placement->getSdk());
         $this->assertEquals('1.0', $placement->getSdkver());
         $this->assertEquals(SizeUnit::DENSITY_INDEPENDENT_PIXELS, $placement->getUnit());
+        $this->assertEquals(AdPosition::ABOVE_FOLD, $placement->getPos());
         $this->assertEquals(1, $placement->getPriv());
         $this->assertSame($displayPlacement, $placement->getDisplay());
         $this->assertSame($videoPlacement, $placement->getVideo());

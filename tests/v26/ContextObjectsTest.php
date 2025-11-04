@@ -187,12 +187,22 @@ class ContextObjectsTest extends TestCase
         $publisher = new Publisher();
         $content = new Content();
         $ext = new Ext();
-        $site = (new Site())->setId('site-1')->setName('Test Site')->setDomain('example.com')->setPage('https://example.com/page')->setRef('https://referrer.com')->setPublisher($publisher)->setContent($content)->setExt($ext);
+        $site = (new Site())
+            ->setId('site-1')
+            ->setName('Test Site')
+            ->setDomain('example.com')
+            ->setPage('https://example.com/page')
+            ->setRef('https://referrer.com')
+            ->setCat(['IAB1', 'IAB2-1'])
+            ->setPublisher($publisher)
+            ->setContent($content)
+            ->setExt($ext);
         $this->assertEquals('site-1', $site->getId());
         $this->assertEquals('Test Site', $site->getName());
         $this->assertEquals('example.com', $site->getDomain());
         $this->assertEquals('https://example.com/page', $site->getPage());
         $this->assertEquals('https://referrer.com', $site->getRef());
+        $this->assertEquals(['IAB1', 'IAB2-1'], $site->getCat());
         $this->assertSame($publisher, $site->getPublisher());
         $this->assertSame($content, $site->getContent());
         $this->assertSame($ext, $site->getExt());

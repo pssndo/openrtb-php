@@ -47,6 +47,8 @@ class ImpressionObjectsTest extends TestCase
             ->setAudio($audio)
             ->setNative($native)
             ->setPmp($pmp)
+            ->setBidfloor(1.50)
+            ->setBidfloorcur('USD')
             ->setInstl(1)
             ->setClickbrowser(1)
             ->setSecure(1)
@@ -60,6 +62,8 @@ class ImpressionObjectsTest extends TestCase
         $this->assertSame($audio, $imp->getAudio());
         $this->assertSame($native, $imp->getNative());
         $this->assertSame($pmp, $imp->getPmp());
+        $this->assertEquals(1.50, $imp->getBidfloor());
+        $this->assertEquals('USD', $imp->getBidfloorcur());
         $this->assertEquals(1, $imp->getInstl());
         $this->assertEquals(1, $imp->getClickbrowser());
         $this->assertEquals(1, $imp->getSecure());
@@ -228,6 +232,11 @@ class ImpressionObjectsTest extends TestCase
             ->setH(1080)
             ->setLinearity(1)
             ->setPlacement(1)
+            ->setStartdelay(0)
+            ->setSkip(1)
+            ->setSkipmin(5)
+            ->setSkipafter(15)
+            ->setPos(1)
             ->setApi([3, 5])
             ->setExt($ext);
 
@@ -239,6 +248,11 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(1080, $video->getH());
         $this->assertEquals(1, $video->getLinearity());
         $this->assertEquals(1, $video->getPlacement());
+        $this->assertEquals(0, $video->getStartdelay());
+        $this->assertEquals(1, $video->getSkip());
+        $this->assertEquals(5, $video->getSkipmin());
+        $this->assertEquals(15, $video->getSkipafter());
+        $this->assertEquals(1, $video->getPos());
         $this->assertEquals([3, 5], $video->getApi());
         $this->assertSame($ext, $video->getExt());
     }
