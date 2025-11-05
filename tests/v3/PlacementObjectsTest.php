@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\CreativeType;
+use OpenRTB\v3\Enums\EventType;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
-use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\AdPosition;
 use OpenRTB\v3\Enums\Placement\ApiFramework;
 use OpenRTB\v3\Enums\Placement\BoxingAllowed;
 use OpenRTB\v3\Enums\Placement\ClickType;
 use OpenRTB\v3\Enums\Placement\CompanionType;
-use OpenRTB\v3\Enums\EventType;
+use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\FeedType;
 use OpenRTB\v3\Enums\Placement\Linearity;
 use OpenRTB\v3\Enums\Placement\PlacementType;
@@ -35,9 +36,8 @@ use OpenRTB\v3\Placement\NativeFormat;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\TitleFormat;
 use OpenRTB\v3\Placement\VideoPlacement;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
-use OpenRTB\Common\Collection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Placement\Placement
@@ -257,6 +257,6 @@ class PlacementObjectsTest extends TestCase
         $this->assertInstanceOf(Collection::class, $parsedVideo->getComp());
         $this->assertInstanceOf(Collection::class, $parsedVideo->getComptype());
 
-        $this->assertEquals($request->toArray(), $parsedRequest->toArray(), "The re-serialized object should match the original");
+        $this->assertEquals($request->toArray(), $parsedRequest->toArray(), 'The re-serialized object should match the original');
     }
 }

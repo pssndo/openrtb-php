@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Response;
 
-use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Common\Resources\Bid as CommonBid;
+use OpenRTB\Common\Resources\Ext;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=45

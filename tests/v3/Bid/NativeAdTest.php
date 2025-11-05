@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
-use OpenRTB\v3\Bid\NativeAd;
-use OpenRTB\v3\Bid\Link;
 use OpenRTB\v3\Bid\Asset;
 use OpenRTB\v3\Bid\Event;
+use OpenRTB\v3\Bid\Link;
+use OpenRTB\v3\Bid\NativeAd;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\NativeAd
@@ -100,7 +100,21 @@ final class NativeAdTest extends TestCase
         $this->assertEquals('another_privacy_string', $nativeAd->getPrivacy());
     }
 
-    // Note: imptrackers is not part of OpenRTB 3.0 NativeAd spec - removed tests
+    public function testSetImptrackers(): void
+    {
+        $nativeAd = new NativeAd();
+        $imptrackers = ['https://tracker1.example.com', 'https://tracker2.example.com'];
+        $nativeAd->setImptrackers($imptrackers);
+        $this->assertEquals($imptrackers, $nativeAd->getImptrackers());
+    }
+
+    public function testGetImptrackers(): void
+    {
+        $nativeAd = new NativeAd();
+        $imptrackers = ['https://tracker3.example.com'];
+        $nativeAd->setImptrackers($imptrackers);
+        $this->assertEquals($imptrackers, $nativeAd->getImptrackers());
+    }
 
     public function testGetAssetReturnsNullWhenNotSet(): void
     {
@@ -112,5 +126,29 @@ final class NativeAdTest extends TestCase
     {
         $nativeAd = new NativeAd();
         $this->assertEmpty($nativeAd->getEvent());
+    }
+
+    public function testGetAssetWithRawArray(): void
+    {
+        $nativeAd = new NativeAd();
+        $asset = new Asset();
+        // Use set() directly to store a raw array instead of Collection
+        $nativeAd->set('asset', [$asset]);
+
+        $assetCollection = $nativeAd->getAsset();
+        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $assetCollection);
+        $this->assertEquals([$asset], $assetCollection->all());
+    }
+
+    public function testGetEventWithRawArray(): void
+    {
+        $nativeAd = new NativeAd();
+        $event = new Event();
+        // Use set() directly to store a raw array instead of Collection
+        $nativeAd->set('event', [$event]);
+
+        $eventCollection = $nativeAd->getEvent();
+        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $eventCollection);
+        $this->assertEquals([$event], $eventCollection->all());
     }
 }

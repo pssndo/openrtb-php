@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\BidResponseInterface;
 use OpenRTB\v3\Bid\Seatbid;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\Common\Collection;
 
 class BidResponse implements BidResponseInterface
 {
@@ -89,13 +89,14 @@ class BidResponse implements BidResponseInterface
         if (is_array($seatbid)) {
             return new Collection($seatbid, Seatbid::class);
         }
+
         return $seatbid;
     }
 
     public function addSeatbid(Seatbid $seatbid): static
     {
         $seatbids = $this->getSeatbid();
-        if ($seatbids === null) {
+        if (null === $seatbids) {
             $seatbids = new Collection([], Seatbid::class);
         }
         $seatbids[] = $seatbid;

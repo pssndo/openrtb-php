@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace OpenRTB\Tests\Common;
 
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Bid;
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Producer;
+use OpenRTB\v26\Context\Content;
 use OpenRTB\v26\Impression\Deal;
 use OpenRTB\v26\Impression\Format;
 use OpenRTB\v26\Impression\Metric;
 use OpenRTB\v26\Impression\Pmp;
 use OpenRTB\v26\Response\SeatBid;
-use OpenRTB\v26\Context\Content;
-use OpenRTB\v3\Bid\NativeAd;
 use OpenRTB\v3\Bid\Asset;
 use OpenRTB\v3\Bid\Event;
-use OpenRTB\Common\Resources\Bid;
-use OpenRTB\Common\Resources\Producer;
+use OpenRTB\v3\Bid\NativeAd;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Batch test file to cover remaining uncovered lines across multiple classes
+ * Batch test file to cover remaining uncovered lines across multiple classes.
  */
 class CoveragePatchTest extends TestCase
 {
@@ -161,6 +161,17 @@ class CoveragePatchTest extends TestCase
         /** @var \OpenRTB\v26\BidRequest $request */
         $request = $builder();
         $this->assertEquals(0, $request->getTest());
+    }
+
+    public function testRequestBuilderSetExt(): void
+    {
+        $builder = new \OpenRTB\v26\Util\RequestBuilder();
+        $ext = new Ext();
+        $builder->setExt($ext);
+
+        /** @var \OpenRTB\v26\BidRequest $request */
+        $request = $builder();
+        $this->assertSame($ext, $request->getExt());
     }
 
     // v26/Util/Validator - missing error paths

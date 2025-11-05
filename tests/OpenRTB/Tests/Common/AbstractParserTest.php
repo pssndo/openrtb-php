@@ -29,7 +29,7 @@ class TestSubObject implements ObjectInterface
         if (empty($data)) {
             $this->data = new \stdClass();
         } else {
-            $this->data = (object)$data;
+            $this->data = (object) $data;
         }
     }
 
@@ -46,6 +46,7 @@ class TestSubObject implements ObjectInterface
     public function set(string $key, mixed $value): static
     {
         $this->data->$key = $value;
+
         return $this;
     }
 
@@ -67,7 +68,7 @@ class TestObject implements ObjectInterface
         if (empty($data)) {
             $this->data = new \stdClass();
         } else {
-            $this->data = (object)$data;
+            $this->data = (object) $data;
         }
     }
 
@@ -92,6 +93,7 @@ class TestObject implements ObjectInterface
     public function set(string $key, mixed $value): static
     {
         $this->data->$key = $value;
+
         return $this;
     }
 
@@ -105,8 +107,10 @@ class TestParser extends AbstractParser
 {
     /**
      * @template T of ObjectInterface
+     *
      * @param array<string, mixed> $data
-     * @param class-string<T> $class
+     * @param class-string<T>      $class
+     *
      * @return T
      */
     public function parse(array $data, string $class): ObjectInterface
@@ -293,7 +297,7 @@ class AbstractParserTest extends TestCase
             'enumArray' => [
                 1, // Valid enum
                 'not-an-enum', // Invalid enum - will cause TypeError
-            ]
+            ],
         ];
 
         $object = $this->parser->parse($data, TestObject::class);
@@ -456,5 +460,148 @@ class AbstractParserTest extends TestCase
         $this->assertInstanceOf(TestObject::class, $object);
         $this->assertInstanceOf(TestSubObject::class, $object->get('subObject'));
         $this->assertEquals('test-name', $object->get('subObject')->get('name'));
+    }
+
+    public function testHydrateCollectionItemWithStringScalarType(): void
+    {
+        // Line 110 in hydrateCollectionItem: When itemType is a string but not enum/object
+        // This happens with scalar types like 'string', 'int', 'float' in array schema
+        $data = [
+            'id' => 'test',
+            'stringArray' => ['value1', 'value2', 'value3'],
+        ];
+        $object = $this->parser->parse($data, TestObject::class);
+        $this->assertInstanceOf(TestObject::class, $object);
+        $stringArray = $object->get('stringArray');
+        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $stringArray);
+        $this->assertCount(3, $stringArray);
+        // Each item should be returned as-is (string)
+        $this->assertEquals('value1', $stringArray[0]);
+        $this->assertEquals('value2', $stringArray[1]);
+        $this->assertEquals('value3', $stringArray[2]);
+    }
+
+    public function testHydrateSingleValueWithScalarString(): void
+    {
+        // Line 136 in hydrateSingleValue: When type is a string but not object/enum
+        // This happens for scalar types like 'string', 'int', etc.
+        $data = [
+            'id' => 'scalar-id-value',
+            'scalarValue' => 'some-string-value',
+        ];
+        $object = $this->parser->parse($data, TestObject::class);
+        $this->assertInstanceOf(TestObject::class, $object);
+        $this->assertEquals('scalar-id-value', $object->get('id'));
+        $this->assertEquals('some-string-value', $object->get('scalarValue'));
+    }
+
+    public function testHydrateSingleValueWithObjectInterface(): void
+    {
+        // Lines 126-128 in hydrateSingleValue: When type is ObjectInterface
+        $data = [
+            'id' => 'object-test',
+            'subObject' => ['name' => 'nested-object'],
+        ];
+        $object = $this->parser->parse($data, TestObject::class);
+        $this->assertInstanceOf(TestObject::class, $object);
+        $subObject = $object->get('subObject');
+        $this->assertInstanceOf(TestSubObject::class, $subObject);
+        $this->assertEquals('nested-object', $subObject->get('name'));
+    }
+
+    public function testHydrateSingleValueWithBackedEnum(): void
+    {
+        // Lines 131-133 in hydrateSingleValue: When type is BackedEnum
+        $data = [
+            'id' => 'enum-test',
+            'enumValue' => 2,
+        ];
+        $object = $this->parser->parse($data, TestObject::class);
+        $this->assertInstanceOf(TestObject::class, $object);
+        $this->assertEquals(TestEnum::VALUE2, $object->get('enumValue'));
+    }
+
+    public function testHydrateSingleValueWithNonStringType(): void
+    {
+        // Line 123 in hydrateSingleValue: When type is int/float (not a string)
+        // This tests defensive programming for malformed schemas
+        // Create a custom object with int/float type in schema
+        $customObject = new class implements ObjectInterface {
+            use HasData;
+
+            public function __construct()
+            {
+                $this->data = new \stdClass();
+            }
+
+            public static function getSchema(): array
+            {
+                return [
+                    'numericField' => 42, // int type instead of string
+                ];
+            }
+
+            public function set(string $key, mixed $value): static
+            {
+                $this->data->$key = $value;
+
+                return $this;
+            }
+
+            public function get(string $key): mixed
+            {
+                return $this->data->$key ?? null;
+            }
+        };
+
+        $parser = new TestParser();
+        $data = ['numericField' => 'test-value'];
+        $result = $parser->parse($data, get_class($customObject));
+
+        // When type is not a string, value should be returned as-is
+        $this->assertEquals('test-value', $result->get('numericField'));
+    }
+
+    public function testHydrateCollectionItemWithNonStringType(): void
+    {
+        // Line 97 in hydrateCollectionItem: When itemType is int/float (not a string)
+        // This tests defensive programming for malformed array schemas
+        $customObject = new class implements ObjectInterface {
+            use HasData;
+
+            public function __construct()
+            {
+                $this->data = new \stdClass();
+            }
+
+            public static function getSchema(): array
+            {
+                return [
+                    'numericArray' => [99], // int type in array instead of string
+                ];
+            }
+
+            public function set(string $key, mixed $value): static
+            {
+                $this->data->$key = $value;
+
+                return $this;
+            }
+
+            public function get(string $key): mixed
+            {
+                return $this->data->$key ?? null;
+            }
+        };
+
+        $parser = new TestParser();
+        $data = ['numericArray' => ['item1', 'item2']];
+        $result = $parser->parse($data, get_class($customObject));
+
+        // When itemType is not a string, items should be returned as-is
+        $collection = $result->get('numericArray');
+        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $collection);
+        $this->assertEquals('item1', $collection[0]);
+        $this->assertEquals('item2', $collection[1]);
     }
 }

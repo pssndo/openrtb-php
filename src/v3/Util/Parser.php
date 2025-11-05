@@ -15,7 +15,6 @@ class Parser extends AbstractParser
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         $parser = new self();
         /** @var Request $request */
-
         $request = $parser->hydrate($data, Request::class);
 
         return $request;
@@ -27,6 +26,7 @@ class Parser extends AbstractParser
         $parser = new self();
         /** @var Response $response */
         $response = $parser->hydrate($data, Response::class);
+
         return $response;
     }
 }

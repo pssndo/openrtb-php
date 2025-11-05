@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Response\Bid;
 use OpenRTB\v26\Response\SeatBid;
 use PHPUnit\Framework\TestCase;
-use OpenRTB\Common\Collection;
 
 /**
  * @covers \OpenRTB\v26\Response\Bid

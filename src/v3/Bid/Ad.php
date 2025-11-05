@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\CreativeAttribute;
-use OpenRTB\Common\Collection;
 
 class Ad implements ObjectInterface
 {
@@ -31,7 +31,7 @@ class Ad implements ObjectInterface
         'video' => Video::class,
         'audio' => Audio::class,
         'native' => NativeAd::class,
-        'audit' => Audit::class
+        'audit' => Audit::class,
     ];
 
     /**

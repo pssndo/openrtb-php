@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\Common\Collection;
-use OpenRTB\Common\Resources\Publisher;
+use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Content;
+use OpenRTB\Common\Resources\Publisher;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
 class Dooh implements ObjectInterface

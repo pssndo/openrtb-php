@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Common\Resources;
 
-use OpenRTB\Common\HasData;
-use OpenRTB\Common\Resources\Bid;
-use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
 class SeatBid implements ObjectInterface
 {
@@ -43,6 +42,7 @@ class SeatBid implements ObjectInterface
     public function setBid(Collection|array $bid): static
     {
         $collection = $bid instanceof Collection ? $bid : new Collection($bid, Bid::class);
+
         return $this->set('bid', $collection);
     }
 

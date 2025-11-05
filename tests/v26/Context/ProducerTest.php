@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace OpenRTB\Tests\v26\Context;
 
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Producer as CommonProducer;
 use OpenRTB\v26\Context\Producer;
 use PHPUnit\Framework\TestCase;
-use OpenRTB\Common\Resources\Producer as CommonProducer;
 
 /**
  * @covers \OpenRTB\v26\Context\Producer

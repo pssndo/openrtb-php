@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\Resources\Content as CommonContent;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Content as CommonContent;
 
 class Content extends CommonContent
 {

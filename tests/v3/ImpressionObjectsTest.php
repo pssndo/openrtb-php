@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 use OpenRTB\v3\Enums\Impression\MetricType;
@@ -13,8 +13,8 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Metric;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Impression\Deal

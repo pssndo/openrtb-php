@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
-use OpenRTB\v3\Bid\Seatbid;
-use OpenRTB\v3\Bid\Bid;
-use OpenRTB\Common\Resources\Bid as CommonBid;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Bid as CommonBid;
+use OpenRTB\v3\Bid\Bid;
+use OpenRTB\v3\Bid\Seatbid;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Seatbid

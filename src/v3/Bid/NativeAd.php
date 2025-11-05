@@ -7,7 +7,6 @@ namespace OpenRTB\v3\Bid;
 use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\v26\Impression\Imp;
 
 class NativeAd implements ObjectInterface
 {
@@ -46,6 +45,7 @@ class NativeAd implements ObjectInterface
     public function setAsset(Collection|array $asset): static
     {
         $collection = $asset instanceof Collection ? $asset : new Collection($asset, Asset::class);
+
         return $this->set('asset', $collection);
     }
 
@@ -59,6 +59,7 @@ class NativeAd implements ObjectInterface
         if (is_array($value)) {
             return new Collection($value, Asset::class);
         }
+
         return null;
     }
 
@@ -66,6 +67,7 @@ class NativeAd implements ObjectInterface
     public function setEvent(Collection|array $event): static
     {
         $collection = $event instanceof Collection ? $event : new Collection($event, Event::class);
+
         return $this->set('event', $collection);
     }
 
@@ -79,6 +81,7 @@ class NativeAd implements ObjectInterface
         if (is_array($value)) {
             return new Collection($value, Event::class);
         }
+
         return null;
     }
 

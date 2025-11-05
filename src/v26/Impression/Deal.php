@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Impression;
 
-use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Common\Resources\Deal as CommonDeal;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Enums\AuctionType;
 
 /**
@@ -59,6 +59,10 @@ class Deal extends CommonDeal
         $at = $this->get('at');
         if ($at instanceof AuctionType) {
             return $at;
+        }
+
+        if (null === $at) {
+            return null;
         }
 
         return AuctionType::tryFrom($at);

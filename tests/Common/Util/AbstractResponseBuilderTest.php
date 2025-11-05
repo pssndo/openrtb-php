@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\Common\Util;
 
-use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Common\Resources\Bid;
+use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Interfaces\ObjectInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -75,8 +75,8 @@ class AbstractResponseBuilderTest extends TestCase
     public function testFluentInterface(): void
     {
         $builder = new class extends AbstractResponseBuilder {
-            /** @var \OpenRTB\Common\Resources\Bid */
-            protected \OpenRTB\Interfaces\ObjectInterface $response;
+            /** @var Bid */
+            protected ObjectInterface $response;
 
             public function __construct()
             {
@@ -85,17 +85,19 @@ class AbstractResponseBuilderTest extends TestCase
 
             public function setId(string $id): static
             {
-                /** @var \OpenRTB\Common\Resources\Bid $response */
+                /** @var Bid $response */
                 $response = $this->response;
                 $response->setId($id);
+
                 return $this;
             }
 
             public function setPrice(float $price): static
             {
-                /** @var \OpenRTB\Common\Resources\Bid $response */
+                /** @var Bid $response */
                 $response = $this->response;
                 $response->setPrice($price);
+
                 return $this;
             }
         };
@@ -106,7 +108,7 @@ class AbstractResponseBuilderTest extends TestCase
             ->setPrice(7.5)
             ->build();
 
-        /** @var \OpenRTB\Common\Resources\Bid $response */
+        /* @var \OpenRTB\Common\Resources\Bid $response */
         $this->assertEquals('fluent-id', $response->getId());
         $this->assertEquals(7.5, $response->getPrice());
     }

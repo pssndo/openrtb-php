@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\Factory;
 
-use InvalidArgumentException;
 use OpenRTB\Factory\ProviderRegistry;
 use PHPUnit\Framework\TestCase;
 
@@ -101,7 +100,7 @@ final class ProviderRegistryTest extends TestCase
     {
         $registry = ProviderRegistry::getInstance();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown provider: unknownprovider');
         $registry->getVersionForProvider('unknownprovider');
     }
@@ -113,7 +112,7 @@ final class ProviderRegistryTest extends TestCase
         try {
             $registry->getVersionForProvider('unknownprovider');
             $this->fail('Expected InvalidArgumentException was not thrown');
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $message = $e->getMessage();
             $this->assertStringContainsString('Available providers:', $message);
             $this->assertStringContainsString('epom', $message);

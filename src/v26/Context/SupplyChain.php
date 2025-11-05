@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Context;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\Context\SupplyChain\Node as SupplyChainNode;
-use OpenRTB\Common\Collection;
 
 class SupplyChain implements ObjectInterface
 {

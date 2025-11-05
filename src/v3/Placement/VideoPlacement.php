@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
@@ -18,7 +19,6 @@ use OpenRTB\v3\Enums\Placement\PlaybackCessationMode;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
 use OpenRTB\v3\Enums\Placement\VideoPlacementType;
-use OpenRTB\Common\Collection;
 
 class VideoPlacement implements ObjectInterface
 {
@@ -141,7 +141,7 @@ class VideoPlacement implements ObjectInterface
     /** @param Collection<string>|array<string> $mime */
     public function setMime(Collection|array $mime): static
     {
-        return $this->set('mime',  (array)$mime);
+        return $this->set('mime', (array) $mime);
     }
 
     /** @return Collection<string>|null */
@@ -153,7 +153,7 @@ class VideoPlacement implements ObjectInterface
     /** @param Collection<ApiFramework>|array<ApiFramework> $api */
     public function setApi(Collection|array $api): static
     {
-        return $this->set('api', (array)$api);
+        return $this->set('api', (array) $api);
     }
 
     /** @return Collection<ApiFramework>|null */
@@ -165,7 +165,7 @@ class VideoPlacement implements ObjectInterface
     /** @param Collection<CreativeType>|array<CreativeType> $ctype */
     public function setCtype(Collection|array $ctype): static
     {
-        return $this->set('ctype', (array)$ctype);
+        return $this->set('ctype', (array) $ctype);
     }
 
     /** @return Collection<CreativeType>|null */
@@ -257,7 +257,7 @@ class VideoPlacement implements ObjectInterface
     /** @param Collection<DeliveryMethod>|array<DeliveryMethod> $delivery */
     public function setDelivery(Collection|array $delivery): static
     {
-        return $this->set('delivery',  (array)$delivery);
+        return $this->set('delivery', (array) $delivery);
     }
 
     /** @return Collection<DeliveryMethod>|null */

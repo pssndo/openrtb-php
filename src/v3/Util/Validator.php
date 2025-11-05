@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace OpenRTB\v3\Util;
 
 use OpenRTB\Common\Util\AbstractValidator;
-use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\BidResponse as Response;
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Impression\Spec;
 
 /**
- * Validator - Validates OpenRTB objects
+ * Validator - Validates OpenRTB objects.
  */
 class Validator extends AbstractValidator
 {
-
     public function validateRequest(Request $request): bool
     {
         $this->reset();

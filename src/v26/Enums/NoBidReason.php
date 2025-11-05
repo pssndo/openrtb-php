@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Enums;
 
 /**
- * No-Bid Reason Codes - AdCOM List: No-Bid Reason Codes
+ * No-Bid Reason Codes - AdCOM List: No-Bid Reason Codes.
+ *
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf
  */
 enum NoBidReason: int

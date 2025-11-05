@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid\Display;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Bid\Link;
-use OpenRTB\Common\Collection;
 
 class Native implements ObjectInterface
 {

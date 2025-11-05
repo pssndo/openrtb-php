@@ -6,8 +6,6 @@ namespace OpenRTB\Common;
 
 use BackedEnum;
 use OpenRTB\Interfaces\ObjectInterface;
-use ValueError;
-use InvalidArgumentException;
 
 abstract class AbstractParser
 {
@@ -15,8 +13,10 @@ abstract class AbstractParser
      * Hydrates an object from array data using its schema.
      *
      * @template T of ObjectInterface
+     *
      * @param array<string, mixed> $data
-     * @param class-string<T> $class
+     * @param class-string<T>      $class
+     *
      * @return T
      */
     protected function hydrate(array $data, string $class): ObjectInterface
@@ -40,13 +40,11 @@ abstract class AbstractParser
     /**
      * Hydrates a value based on its schema type.
      *
-     * @param mixed $value
      * @param class-string|string|int|float|array<string|int|class-string> $type
-     * @return mixed
      */
     protected function hydrateValue(mixed $value, string|int|float|array $type): mixed
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -58,8 +56,8 @@ abstract class AbstractParser
     /**
      * Hydrates a collection of values.
      *
-     * @param mixed $value
      * @param array<string|int|class-string> $type
+     *
      * @return Collection|mixed
      */
     protected function hydrateCollection(mixed $value, array $type): mixed
@@ -76,7 +74,7 @@ abstract class AbstractParser
             try {
                 $hydratedItem = $this->hydrateCollectionItem($item, $itemType);
                 $collection->add($hydratedItem);
-            } catch (InvalidArgumentException) {
+            } catch (\InvalidArgumentException) {
                 $collection->add(null);
             }
         }
@@ -87,9 +85,7 @@ abstract class AbstractParser
     /**
      * Hydrates a single collection item.
      *
-     * @param mixed $item
      * @param string|int|class-string $itemType
-     * @return mixed
      */
     protected function hydrateCollectionItem(mixed $item, string|int $itemType): mixed
     {
@@ -98,12 +94,12 @@ abstract class AbstractParser
         }
 
         if ($this->isBackedEnum($itemType)) {
-            /** @var class-string<\BackedEnum> $itemType */
+            /* @var class-string<\BackedEnum> $itemType */
             return $this->hydrateEnum($item, $itemType);
         }
 
         if ($this->isObjectInterface($itemType) && is_array($item)) {
-            /** @var class-string<ObjectInterface> $itemType */
+            /* @var class-string<ObjectInterface> $itemType */
             return $this->hydrate($item, $itemType);
         }
 
@@ -113,9 +109,7 @@ abstract class AbstractParser
     /**
      * Hydrates a single value (object, enum, or scalar).
      *
-     * @param mixed $value
      * @param class-string|string|int|float $type
-     * @return mixed
      */
     protected function hydrateSingleValue(mixed $value, string|int|float $type): mixed
     {
@@ -124,12 +118,12 @@ abstract class AbstractParser
         }
 
         if ($this->isObjectInterface($type)) {
-            /** @var class-string<ObjectInterface> $type */
+            /* @var class-string<ObjectInterface> $type */
             return $this->hydrateObject($value, $type);
         }
 
         if ($this->isBackedEnum($type)) {
-            /** @var class-string<\BackedEnum> $type */
+            /* @var class-string<\BackedEnum> $type */
             return $this->hydrateEnum($value, $type);
         }
 
@@ -139,9 +133,7 @@ abstract class AbstractParser
     /**
      * Hydrates an object from array data.
      *
-     * @param mixed $value
      * @param class-string<ObjectInterface> $type
-     * @return mixed
      */
     protected function hydrateObject(mixed $value, string $type): mixed
     {
@@ -159,35 +151,29 @@ abstract class AbstractParser
     /**
      * Hydrates an enum value.
      *
-     * @param mixed $value
-     * @param class-string<BackedEnum> $type
-     * @return BackedEnum|mixed
+     * @param class-string<\BackedEnum> $type
+     *
+     * @return \BackedEnum|mixed
      */
     protected function hydrateEnum(mixed $value, string $type): mixed
     {
         try {
             return $type::from($value);
-        } catch (ValueError) {
+        } catch (\ValueError) {
             return $value;
         }
     }
 
     /**
      * Checks if a type is a BackedEnum.
-     *
-     * @param string $type
-     * @return bool
      */
     protected function isBackedEnum(string $type): bool
     {
-        return is_subclass_of($type, BackedEnum::class);
+        return is_subclass_of($type, \BackedEnum::class);
     }
 
     /**
      * Checks if a type is an ObjectInterface.
-     *
-     * @param string $type
-     * @return bool
      */
     protected function isObjectInterface(string $type): bool
     {

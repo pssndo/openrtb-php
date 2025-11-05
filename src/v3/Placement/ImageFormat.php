@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\Common\Collection;
+use OpenRTB\Interfaces\ObjectInterface;
 
 class ImageFormat implements ObjectInterface
 {

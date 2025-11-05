@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Enums;
 
 /**
- * Ad Position - AdCOM List: Placement Position
+ * Ad Position - AdCOM List: Placement Position.
+ *
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf
  */
 enum AdPosition: int

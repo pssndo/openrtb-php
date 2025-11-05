@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
@@ -14,7 +15,6 @@ use OpenRTB\v3\Enums\Placement\FeedType;
 use OpenRTB\v3\Enums\Placement\PlaybackCessationMode;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\VolumeNormalizationMode;
-use OpenRTB\Common\Collection;
 
 class AudioPlacement implements ObjectInterface
 {
@@ -257,7 +257,7 @@ class AudioPlacement implements ObjectInterface
     /** @param Collection<CompanionType>|array<CompanionType> $comptype */
     public function setComptype(Collection|array $comptype): static
     {
-        return $this->set('comptype', (array)$comptype);
+        return $this->set('comptype', (array) $comptype);
     }
 
     /** @return Collection<CompanionType>|null */

@@ -15,6 +15,7 @@ class Parser extends AbstractParser
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         /** @var BidRequest $request */
         $request = $this->hydrate($data, BidRequest::class);
+
         return $request;
     }
 
@@ -23,6 +24,7 @@ class Parser extends AbstractParser
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         /** @var BidResponse $response */
         $response = $this->hydrate($data, BidResponse::class);
+
         return $response;
     }
 }

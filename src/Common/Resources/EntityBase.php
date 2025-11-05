@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Common\Resources;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
-use OpenRTB\Common\Collection;
 
 /**
  * Base class for entities with common properties (id, name, domain, cat).

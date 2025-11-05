@@ -58,7 +58,7 @@ class BidResponseTest extends TestCase
             'cur' => 'USD',
             'nbr' => 0, // NoBidReason::UNKNOWN_ERROR->value
             'seatbid' => [
-                ['seat' => 'test-seat']
+                ['seat' => 'test-seat'],
             ],
             'ext' => ['key' => 'value'],
         ];
@@ -76,5 +76,39 @@ class BidResponseTest extends TestCase
         $json = $bidResponse->toJson();
         $this->assertIsString($json);
         $this->assertJsonStringEqualsJsonString($expectedJson, $json);
+    }
+
+    public function testGetSeatbidWithArrayValue(): void
+    {
+        $bidResponse = new BidResponse();
+        $seatbid = new Seatbid();
+
+        // Set seatbid as array directly (simulates parsed data)
+        $bidResponse->set('seatbid', [$seatbid]);
+
+        $result = $bidResponse->getSeatbid();
+        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $result);
+        $this->assertCount(1, $result);
+    }
+
+    public function testGetSeatbidWithCollectionValue(): void
+    {
+        $bidResponse = new BidResponse();
+        $seatbid = new Seatbid();
+        $collection = new \OpenRTB\Common\Collection([$seatbid], Seatbid::class);
+
+        // Set seatbid as Collection using setSeatbid
+        $bidResponse->setSeatbid($collection);
+
+        $result = $bidResponse->getSeatbid();
+        $this->assertSame($collection, $result);
+    }
+
+    public function testGetSeatbidReturnsNullWhenNotSet(): void
+    {
+        $bidResponse = new BidResponse();
+
+        $result = $bidResponse->getSeatbid();
+        $this->assertNull($result);
     }
 }

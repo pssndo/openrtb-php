@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\AuditStatus;
-use OpenRTB\Common\Collection;
 
 class Audit implements ObjectInterface
 {

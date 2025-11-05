@@ -6,7 +6,6 @@ namespace OpenRTB\v26\Response;
 
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
-use OpenRTB\v26\Response\Bid;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=44

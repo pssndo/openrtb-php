@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Context;
 
-use PHPUnit\Framework\TestCase;
-use OpenRTB\v3\Context\User;
 use OpenRTB\Common\Resources\Geo as CommonGeo;
+use OpenRTB\v3\Context\User;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Context\User

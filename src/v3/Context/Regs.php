@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\Resources\Regs as CommonRegs;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Regs as CommonRegs;
 
 class Regs extends CommonRegs
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace OpenRTB\Tests\v26\Context;
 
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Geo as CommonGeo;
 use OpenRTB\v26\Context\Geo;
 use PHPUnit\Framework\TestCase;
-use OpenRTB\Common\Resources\Geo as CommonGeo;
 
 /**
  * @covers \OpenRTB\v26\Context\Geo

@@ -6,7 +6,6 @@ namespace OpenRTB\Tests\Common;
 
 use OpenRTB\Common\HasData;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 /**
  * @covers \OpenRTB\Common\HasData

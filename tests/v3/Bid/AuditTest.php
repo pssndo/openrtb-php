@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Audit;
 use OpenRTB\v3\Enums\Bid\AuditStatus;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Audit

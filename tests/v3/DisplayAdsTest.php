@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\Placement\AdPosition;
 use OpenRTB\v3\Enums\Placement\ApiFramework;
 use OpenRTB\v3\Impression\Item;
@@ -12,9 +13,8 @@ use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\DisplayFormat;
 use OpenRTB\v3\Placement\DisplayPlacement;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
-use OpenRTB\Common\Collection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Placement\DisplayPlacement

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\Response\SeatBid;
-use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=43
@@ -43,7 +43,7 @@ class BidResponse implements ObjectInterface
     /** @param Collection<SeatBid>|array<SeatBid> $seatbid */
     public function setSeatbid(Collection|array $seatbid): static
     {
-        return $this->set('seatbid', (array)$seatbid);
+        return $this->set('seatbid', (array) $seatbid);
     }
 
     /** @return Collection<SeatBid>|null */
@@ -53,6 +53,7 @@ class BidResponse implements ObjectInterface
         if (is_array($seatbid)) {
             return new Collection($seatbid, SeatBid::class);
         }
+
         return $seatbid;
     }
 

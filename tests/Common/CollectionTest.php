@@ -7,7 +7,6 @@ namespace OpenRTB\Tests\Common;
 use OpenRTB\Common\Collection;
 use OpenRTB\Common\Resources\Bid;
 use PHPUnit\Framework\TestCase;
-use InvalidArgumentException;
 
 /**
  * @covers \OpenRTB\Common\Collection
@@ -60,7 +59,7 @@ class CollectionTest extends TestCase
 
     public function testAddWithInvalidTypeThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Collection expects items of type');
 
         $collection = new Collection([], Bid::class);
@@ -142,7 +141,7 @@ class CollectionTest extends TestCase
 
     public function testOffsetSetWithInvalidTypeThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Collection expects items of type');
 
         $collection = new Collection([], Bid::class);
@@ -186,7 +185,7 @@ class CollectionTest extends TestCase
 
         $count = 0;
         foreach ($collection as $item) {
-            $count++;
+            ++$count;
         }
 
         $this->assertEquals(0, $count);
@@ -301,7 +300,7 @@ class CollectionTest extends TestCase
 
     public function testGetTypeNameInErrorMessage(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/Collection expects items of type .*, .* given/');
 
         $collection = new Collection([], Bid::class);

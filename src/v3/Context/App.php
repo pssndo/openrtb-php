@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\Resources\App as CommonApp;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
-use OpenRTB\Common\Collection;
 
 class App extends CommonApp
 {

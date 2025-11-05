@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\NativeAdUnit;
-use OpenRTB\Common\Collection;
 
 class NativePlacement implements ObjectInterface
 {

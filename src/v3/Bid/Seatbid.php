@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
 
 class Seatbid extends CommonSeatBid
 {

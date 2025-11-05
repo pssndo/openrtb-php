@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\CreativeType;
@@ -13,7 +14,6 @@ use OpenRTB\v3\Enums\Placement\ClickType;
 use OpenRTB\v3\Enums\Placement\ContextType;
 use OpenRTB\v3\Enums\Placement\PlacementType;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
-use OpenRTB\Common\Collection;
 
 class DisplayPlacement implements ObjectInterface
 {
@@ -74,6 +74,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($ifrbust)) {
             $ifrbust = new Collection($ifrbust);
         }
+
         return $this->set('ifrbust', $ifrbust);
     }
 
@@ -129,6 +130,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($mime)) {
             $mime = new Collection($mime);
         }
+
         return $this->set('mime', $mime);
     }
 
@@ -144,6 +146,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($api)) {
             $api = new Collection($api, ApiFramework::class);
         }
+
         return $this->set('api', $api);
     }
 
@@ -159,6 +162,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($ctype)) {
             $ctype = new Collection($ctype, CreativeType::class);
         }
+
         return $this->set('ctype', $ctype);
     }
 
@@ -214,6 +218,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($displayfmt)) {
             $displayfmt = new Collection($displayfmt, DisplayFormat::class);
         }
+
         return $this->set('displayfmt', $displayfmt);
     }
 
@@ -239,6 +244,7 @@ class DisplayPlacement implements ObjectInterface
         if (is_array($event)) {
             $event = new Collection($event, Event::class);
         }
+
         return $this->set('event', $event);
     }
 

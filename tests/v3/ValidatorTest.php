@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\BidRequest as Request;
-use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Util\Validator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Util\Validator

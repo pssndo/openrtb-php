@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Asset;
-use OpenRTB\v3\Bid\Title;
-use OpenRTB\v3\Bid\Image;
 use OpenRTB\v3\Bid\Data;
+use OpenRTB\v3\Bid\Image;
 use OpenRTB\v3\Bid\Link;
+use OpenRTB\v3\Bid\Title;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Asset

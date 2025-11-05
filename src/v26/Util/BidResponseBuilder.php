@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26\Util;
 
-use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Util\AbstractResponseBuilder;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v26\BidResponse;
 use OpenRTB\v26\Response\SeatBid;
@@ -25,24 +25,28 @@ class BidResponseBuilder extends AbstractResponseBuilder
     public function setBidId(string $bidId): static
     {
         $this->response->setBidid($bidId);
+
         return $this;
     }
 
     public function setCur(string $cur): static
     {
         $this->response->setCur($cur);
+
         return $this;
     }
 
     public function setNbr(int $nbr): static
     {
         $this->response->setNbr($nbr);
+
         return $this;
     }
 
     public function setExt(Ext $ext): static
     {
         $this->response->setExt($ext);
+
         return $this;
     }
 
@@ -51,6 +55,7 @@ class BidResponseBuilder extends AbstractResponseBuilder
         $seatBids = $this->response->getSeatbid() ?? [];
         $seatBids[] = $seatBid;
         $this->response->setSeatbid($seatBids);
+
         return $this;
     }
 }

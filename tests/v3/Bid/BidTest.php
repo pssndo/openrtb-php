@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Bid as CommonBid;
 use OpenRTB\v3\Bid\Bid;
-use OpenRTB\v3\Bid\Media;
 use OpenRTB\v3\Bid\Deal;
 use OpenRTB\v3\Bid\Macro;
-use OpenRTB\Common\Resources\Bid as CommonBid;
+use OpenRTB\v3\Bid\Media;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Bid
@@ -103,7 +103,63 @@ final class BidTest extends TestCase
         $this->assertSame($dealId, $bid->getDeal());
     }
 
+    public function testSetItem(): void
+    {
+        $bid = new Bid();
+        $itemId = 'item-123';
+        $bid->setItem($itemId);
+        $this->assertEquals($itemId, $bid->getItem());
+    }
+
+    public function testGetItem(): void
+    {
+        $bid = new Bid();
+        $itemId = 'item-456';
+        $bid->setItem($itemId);
+        $this->assertEquals($itemId, $bid->getItem());
+    }
+
+    public function testSetCid(): void
+    {
+        $bid = new Bid();
+        $cid = 'campaign-123';
+        $bid->setCid($cid);
+        $this->assertEquals($cid, $bid->getCid());
+    }
+
+    public function testGetCid(): void
+    {
+        $bid = new Bid();
+        $cid = 'campaign-456';
+        $bid->setCid($cid);
+        $this->assertEquals($cid, $bid->getCid());
+    }
+
+    public function testSetTactic(): void
+    {
+        $bid = new Bid();
+        $tactic = 'retargeting';
+        $bid->setTactic($tactic);
+        $this->assertEquals($tactic, $bid->getTactic());
+    }
+
+    public function testGetTactic(): void
+    {
+        $bid = new Bid();
+        $tactic = 'prospecting';
+        $bid->setTactic($tactic);
+        $this->assertEquals($tactic, $bid->getTactic());
+    }
+
     public function testSetDealobj(): void
+    {
+        $bid = new Bid();
+        $deal = new Deal();
+        $bid->setDealobj($deal);
+        $this->assertSame($deal, $bid->getDealobj());
+    }
+
+    public function testGetDealobj(): void
     {
         $bid = new Bid();
         $deal = new Deal();

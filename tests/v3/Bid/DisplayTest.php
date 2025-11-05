@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Display;
 use OpenRTB\v3\Bid\Display\Banner;
 use OpenRTB\v3\Bid\Display\Native;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Display

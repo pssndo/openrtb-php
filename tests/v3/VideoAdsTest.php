@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\Placement\Linearity;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\VideoPlacementType;
@@ -12,9 +13,8 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\VideoPlacement;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
-use OpenRTB\Common\Collection;
+use PHPUnit\Framework\TestCase;
 
 class VideoAdsTest extends TestCase
 {

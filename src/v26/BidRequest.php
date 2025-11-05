@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v26;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
@@ -15,7 +16,6 @@ use OpenRTB\v26\Context\Source;
 use OpenRTB\v26\Context\User;
 use OpenRTB\v26\Enums\AuctionType;
 use OpenRTB\v26\Impression\Imp;
-use OpenRTB\Common\Collection;
 
 /**
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf#page=19
@@ -86,6 +86,7 @@ class BidRequest implements ObjectInterface
         if (is_array($value)) {
             return new Collection($value, Imp::class);
         }
+
         return null;
     }
 
@@ -93,6 +94,7 @@ class BidRequest implements ObjectInterface
     public function setImp(Collection|array $imp): static
     {
         $collection = $imp instanceof Collection ? $imp : new Collection($imp, Imp::class);
+
         return $this->set('imp', $collection);
     }
 
@@ -179,6 +181,7 @@ class BidRequest implements ObjectInterface
         if (is_array($wseat)) {
             return new Collection($wseat);
         }
+
         return $wseat;
     }
 
@@ -195,6 +198,7 @@ class BidRequest implements ObjectInterface
         if (is_array($bseat)) {
             return new Collection($bseat);
         }
+
         return $bseat;
     }
 
@@ -218,9 +222,10 @@ class BidRequest implements ObjectInterface
     public function getCur(): ?Collection
     {
         $cur = $this->get('cur');
-        if ($cur === null) {
+        if (null === $cur) {
             return null;
         }
+
         return new Collection($cur, 'string');
     }
 

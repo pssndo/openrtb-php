@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OpenRTB\Tests\v26\Impression;
 
 use OpenRTB\Common\Resources\Ext;

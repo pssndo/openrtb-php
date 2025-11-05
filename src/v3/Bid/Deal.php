@@ -55,7 +55,7 @@ class Deal implements ObjectInterface
     /** @param Collection<string>|array<string> $wseat */
     public function setWseat(Collection|array $wseat): static
     {
-        return $this->set('wseat', (array)$wseat);
+        return $this->set('wseat', (array) $wseat);
     }
 
     /** @return Collection<string>|null */
@@ -67,7 +67,7 @@ class Deal implements ObjectInterface
     /** @param Collection<string>|array<string> $wadomain */
     public function setWadomain(Collection|array $wadomain): static
     {
-        return $this->set('wadomain', (array)$wadomain);
+        return $this->set('wadomain', (array) $wadomain);
     }
 
     /** @return Collection<string>|null */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
@@ -150,7 +149,7 @@ JSON;
     public function testHydrateWithInvalidSchemaClass(): void
     {
         // Create a temporary request class with an invalid schema definition
-        $requestWithInvalidSchema = new class () extends Request {
+        $requestWithInvalidSchema = new class extends Request {
             protected static array $schema = [
                 'source' => InvalidSourceClassForTesting::class,
             ];

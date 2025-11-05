@@ -113,4 +113,43 @@ class BidRequestTest extends TestCase
 
         $this->assertSame($ext, $request->getExt());
     }
+
+    public function testSetWseatWithCollection(): void
+    {
+        $request = new BidRequest();
+        $collection = new \OpenRTB\Common\Collection(['seat-1', 'seat-2'], 'string');
+
+        // Call setWseat with Collection (not just set())
+        $request->setWseat($collection);
+
+        $result = $request->getWseat();
+        $this->assertNotNull($result);
+        $this->assertEquals(['seat-1', 'seat-2'], $result->toArray());
+    }
+
+    public function testSetBseatWithCollection(): void
+    {
+        $request = new BidRequest();
+        $collection = new \OpenRTB\Common\Collection(['blocked-1', 'blocked-2'], 'string');
+
+        // Call setBseat with Collection (not just set())
+        $request->setBseat($collection);
+
+        $result = $request->getBseat();
+        $this->assertNotNull($result);
+        $this->assertEquals(['blocked-1', 'blocked-2'], $result->toArray());
+    }
+
+    public function testSetCurWithCollection(): void
+    {
+        $request = new BidRequest();
+        $collection = new \OpenRTB\Common\Collection(['USD', 'EUR'], 'string');
+
+        // Call setCur with Collection
+        $request->setCur($collection);
+
+        $result = $request->getCur();
+        $this->assertNotNull($result);
+        $this->assertEquals(['USD', 'EUR'], $result->toArray());
+    }
 }

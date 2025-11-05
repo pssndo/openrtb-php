@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Producer;
+use OpenRTB\Common\Resources\Publisher;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\App;
 use OpenRTB\v3\Context\Content;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Device;
 use OpenRTB\v3\Context\Dooh;
 use OpenRTB\v3\Context\Geo;
-use OpenRTB\Common\Resources\Producer;
-use OpenRTB\Common\Resources\Publisher;
 use OpenRTB\v3\Context\Regs;
 use OpenRTB\v3\Context\Restrictions;
 use OpenRTB\v3\Context\Site;
@@ -25,8 +25,8 @@ use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 use OpenRTB\v3\Enums\Context\DeviceType;
 use OpenRTB\v3\Enums\Context\IpLocationService;
 use OpenRTB\v3\Enums\Context\LocationType;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Context\App
@@ -287,11 +287,11 @@ class ContextObjectsTest extends TestCase
 
     public function testRegsObject(): void
     {
-        $regs = (new Regs())->setGdpr(1)->setGpp('gpp-string')->setCoppa(1)->setGppSid([1,2]);
+        $regs = (new Regs())->setGdpr(1)->setGpp('gpp-string')->setCoppa(1)->setGppSid([1, 2]);
         $this->assertEquals(1, $regs->getGdpr());
         $this->assertEquals('gpp-string', $regs->getGpp());
         $this->assertEquals(1, $regs->getCoppa());
-        $this->assertEquals([1,2], $regs->getGppSid());
+        $this->assertEquals([1, 2], $regs->getGppSid());
 
         // Test schema
         $schema = Regs::getSchema();
@@ -323,13 +323,31 @@ class ContextObjectsTest extends TestCase
 
     public function testDoohObject(): void
     {
-        $dooh = (new Dooh())->setId('dooh-1')->setName('Times Square')->setVenuetype(['venue'])->setDomain('domain')->setCat(['cat'])->setCattax(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0);
+        $publisher = new Publisher();
+        $content = new Content();
+
+        $dooh = (new Dooh())
+            ->setId('dooh-1')
+            ->setName('Times Square')
+            ->setVenuetype(['venue'])
+            ->setDomain('domain')
+            ->setCat(['cat'])
+            ->setCattax(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0)
+            ->setPublisher($publisher)
+            ->setContent($content)
+            ->setKeywords('billboard,outdoor')
+            ->setKwarray(['billboard', 'outdoor', 'digital']);
+
         $this->assertEquals('dooh-1', $dooh->getId());
         $this->assertEquals('Times Square', $dooh->getName());
         $this->assertEquals(['venue'], $dooh->getVenuetype());
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
         $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $dooh->getCattax());
+        $this->assertSame($publisher, $dooh->getPublisher());
+        $this->assertSame($content, $dooh->getContent());
+        $this->assertEquals('billboard,outdoor', $dooh->getKeywords());
+        $this->assertEquals(['billboard', 'outdoor', 'digital'], $dooh->getKwarray());
 
         // Test schema
         $schema = Dooh::getSchema();

@@ -20,6 +20,7 @@ class AbstractValidatorTest extends TestCase
                 if (empty($data)) {
                     $this->addError('Data is empty');
                 }
+
                 return $this->isValid();
             }
         };
@@ -57,6 +58,7 @@ class AbstractValidatorTest extends TestCase
                 if (empty($data)) {
                     $this->addError('Data is empty');
                 }
+
                 return $this->isValid();
             }
         };

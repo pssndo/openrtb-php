@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Factory;
 
-use InvalidArgumentException;
-
 /**
- * Registry mapping ad exchange providers to their OpenRTB version
+ * Registry mapping ad exchange providers to their OpenRTB version.
  *
  * Configure provider mappings in your application bootstrap
  */
@@ -34,7 +32,7 @@ class ProviderRegistry
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -42,7 +40,7 @@ class ProviderRegistry
     }
 
     /**
-     * Register a provider with its OpenRTB version
+     * Register a provider with its OpenRTB version.
      */
     public function register(string $provider, string $version): void
     {
@@ -50,7 +48,7 @@ class ProviderRegistry
     }
 
     /**
-     * Register multiple providers at once
+     * Register multiple providers at once.
      *
      * @param array<string, string> $providers
      */
@@ -62,24 +60,21 @@ class ProviderRegistry
     }
 
     /**
-     * Get OpenRTB version for a provider
+     * Get OpenRTB version for a provider.
      */
     public function getVersionForProvider(string $provider): string
     {
         $provider = strtolower($provider);
 
         if (!isset($this->providers[$provider])) {
-            throw new InvalidArgumentException(
-                "Unknown provider: {$provider}. Available providers: " .
-                implode(', ', array_keys($this->providers))
-            );
+            throw new \InvalidArgumentException("Unknown provider: {$provider}. Available providers: ".implode(', ', array_keys($this->providers)));
         }
 
         return $this->providers[$provider];
     }
 
     /**
-     * Check if provider is registered
+     * Check if provider is registered.
      */
     public function hasProvider(string $provider): bool
     {
@@ -87,7 +82,7 @@ class ProviderRegistry
     }
 
     /**
-     * Get all registered providers
+     * Get all registered providers.
      *
      * @return array<string, string>
      */
@@ -97,7 +92,7 @@ class ProviderRegistry
     }
 
     /**
-     * Remove a provider from registry
+     * Remove a provider from registry.
      */
     public function unregister(string $provider): void
     {
@@ -105,7 +100,7 @@ class ProviderRegistry
     }
 
     /**
-     * Reset registry (useful for testing)
+     * Reset registry (useful for testing).
      */
     public function reset(): void
     {

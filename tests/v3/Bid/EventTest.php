@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Bid;
 
-use PHPUnit\Framework\TestCase;
 use OpenRTB\v3\Bid\Event;
 use OpenRTB\v3\Enums\EventType;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Bid\Event

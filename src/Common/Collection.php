@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace OpenRTB\Common;
 
-use ArrayAccess;
-use ArrayIterator;
-use Countable;
-use InvalidArgumentException;
-use IteratorAggregate;
-use Traversable;
 use OpenRTB\Interfaces\ObjectInterface;
 
 /**
  * @template T
- * @implements ArrayAccess<int, T>
- * @implements IteratorAggregate<int, T>
+ *
+ * @implements \ArrayAccess<int, T>
+ * @implements \IteratorAggregate<int, T>
  */
-class Collection implements ArrayAccess, Countable, IteratorAggregate
+class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /** @var array<int, T> */
     protected array $items = [];
@@ -38,7 +33,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         foreach ($this->extractItems($items) as $item) {
             try {
                 $this->add($item);
-            } catch (InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 // During construction, if an item doesn't match the expected type, add null instead.
                 // @phpstan-ignore-next-line - Intentionally adding null for invalid items during construction
                 $this->items[] = null;
@@ -48,6 +43,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * @param Collection<T>|array<int, T> $items
+     *
      * @return array<int, T>
      */
     protected function extractItems(Collection|array $items): array
@@ -57,8 +53,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * @param T $item
-     * @return void
-     * @throws InvalidArgumentException
+     *
+     * @throws \InvalidArgumentException
      */
     public function add(mixed $item): void
     {
@@ -68,13 +64,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @param mixed $item
-     * @return bool Returns true if the item is valid, false otherwise.
-     * @throws InvalidArgumentException
+     * @return bool returns true if the item is valid, false otherwise
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateItem(mixed $item): bool
     {
-        if ($this->itemType === null || $item === null) {
+        if (null === $this->itemType || null === $item) {
             return true;
         }
 
@@ -84,20 +80,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         if (!$item instanceof $this->itemType) {
-            throw new InvalidArgumentException(sprintf(
-                'Collection expects items of type %s, %s given.',
-                $this->itemType,
-                $this->getTypeName($item)
-            ));
+            throw new \InvalidArgumentException(sprintf('Collection expects items of type %s, %s given.', $this->itemType, $this->getTypeName($item)));
         }
 
         return true;
     }
 
-    /**
-     * @param mixed $value
-     * @return string
-     */
     protected function getTypeName(mixed $value): string
     {
         return get_debug_type($value);
@@ -118,15 +106,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * @param int|null $offset
-     * @param T $value
-     * @return void
-     * @throws InvalidArgumentException
+     * @param T        $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->validateItem($value);
 
-        if ($offset === null) {
+        if (null === $offset) {
             $this->items[] = $value;
         } else {
             $this->items[$offset] = $value;
@@ -144,15 +132,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * @return Traversable<int, T>
+     * @return \Traversable<int, T>
      */
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
-        return new ArrayIterator($this->items);
+        return new \ArrayIterator($this->items);
     }
 
     /**
-     * Get all items without conversion (returns raw objects)
+     * Get all items without conversion (returns raw objects).
+     *
      * @return array<int, T>
      */
     public function all(): array
@@ -161,7 +150,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * Convert collection to array (converts objects to arrays for serialization)
+     * Convert collection to array (converts objects to arrays for serialization).
+     *
      * @return array<int, mixed>
      */
     public function toArray(): array
@@ -196,7 +186,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * @param array{items: array<int, T>, itemType: class-string<T>|string|null} $data
-     * @return void
      */
     public function __unserialize(array $data): void
     {

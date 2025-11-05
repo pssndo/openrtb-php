@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3\Context;
 
-use PHPUnit\Framework\TestCase;
-use OpenRTB\v3\Context\Source;
 use OpenRTB\Common\Resources\Source as CommonSource;
+use OpenRTB\v3\Context\Source;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Context\Source

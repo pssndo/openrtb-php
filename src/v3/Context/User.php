@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\Common\Resources\User as CommonUser;
 use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\User as CommonUser;
 
 class User extends CommonUser
 {

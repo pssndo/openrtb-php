@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Placement\AdPosition;
 use OpenRTB\v3\Enums\Placement\SizeUnit;
-use OpenRTB\Common\Collection;
 
 class Placement implements ObjectInterface
 {

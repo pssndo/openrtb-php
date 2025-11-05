@@ -19,6 +19,7 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
     public function setId(string $id): static
     {
         $this->request->set('id', $id);
+
         return $this;
     }
 
@@ -32,12 +33,14 @@ abstract class AbstractRequestBuilder implements RequestBuilderInterface
         }
 
         $this->request->set('test', (int) $test);
+
         return $this;
     }
 
     public function setExt(Ext $ext): static
     {
         $this->request->set('ext', $ext);
+
         return $this;
     }
 

@@ -13,7 +13,6 @@ use OpenRTB\v26\Impression\Imp;
  */
 class Validator extends AbstractValidator
 {
-
     /**
      * Validates a BidRequest object.
      */
@@ -46,6 +45,7 @@ class Validator extends AbstractValidator
 
         if (empty($impressions)) {
             $this->addError('Request must contain at least one Imp object');
+
             return;
         }
 
@@ -100,5 +100,4 @@ class Validator extends AbstractValidator
             ));
         }
     }
-
 }

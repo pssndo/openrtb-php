@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\Placement\FeedType;
 use OpenRTB\v3\Enums\Placement\VolumeNormalizationMode;
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\AudioPlacement;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Util\Parser;
-use OpenRTB\Common\Collection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Placement\AudioPlacement

@@ -11,8 +11,10 @@ class TestParser extends AbstractParser
 {
     /**
      * @template T of ObjectInterface
+     *
      * @param array<string, mixed> $data
-     * @param class-string<T> $class
+     * @param class-string<T>      $class
+     *
      * @return T
      */
     public function parse(array $data, string $class): ObjectInterface

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\App;
@@ -16,9 +17,8 @@ use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Context\User;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\Util\RequestBuilder;
 use OpenRTB\v3\Util\Parser;
-use OpenRTB\Common\Collection;
+use OpenRTB\v3\Util\RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -77,7 +77,6 @@ class BuilderTest extends TestCase
             ->addItem($item)
             ->setExt($ext)();
 
-
         $this->assertInstanceOf(Request::class, $request);
         $this->assertEquals('req-123', $request->getId());
         $this->assertEquals(1, $request->getTest());
@@ -129,5 +128,28 @@ class BuilderTest extends TestCase
         $request->setWseat($collection);
 
         $this->assertEquals(['seat1', 'seat2'], $request->getWseat()?->toArray());
+    }
+
+    public function testGetItemWithArrayValue(): void
+    {
+        // Test getItem when item is stored as a raw array
+        $request = new Request();
+        $item = new Item();
+
+        // Set item as array directly (simulates parsed data)
+        $request->set('item', [$item]);
+
+        $result = $request->getItem();
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertCount(1, $result);
+    }
+
+    public function testGetItemReturnsNullWhenNotSet(): void
+    {
+        // Test getItem when item is not set
+        $request = new Request();
+
+        $result = $request->getItem();
+        $this->assertNull($result);
     }
 }

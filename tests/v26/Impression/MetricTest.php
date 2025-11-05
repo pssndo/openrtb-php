@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OpenRTB\Tests\v26\Impression;
 
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v26\Impression\Metric;
-use OpenRTB\v3\Bid\Asset;
-use OpenRTB\v3\Bid\Event;
-use OpenRTB\v3\Bid\Link;
 use PHPUnit\Framework\TestCase;
 
 class MetricTest extends TestCase

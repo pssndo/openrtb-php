@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3;
 
+use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\BidRequestInterface;
@@ -11,7 +12,6 @@ use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\Common\Collection;
 
 class BidRequest implements BidRequestInterface
 {
@@ -194,6 +194,7 @@ class BidRequest implements BidRequestInterface
         if (is_array($value)) {
             return new Collection($value, Item::class);
         }
+
         return null;
     }
 

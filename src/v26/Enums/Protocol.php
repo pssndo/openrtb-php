@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace OpenRTB\v26\Enums;
 
 /**
- * Protocols - AdCOM List: Creative Subtypes - Video/Audio
+ * Protocols - AdCOM List: Creative Subtypes - Video/Audio.
+ *
  * @see https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf
  */
 enum Protocol: int

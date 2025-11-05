@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v26\Context;
 
+use OpenRTB\Common\Resources\Content as CommonContent;
 use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Common\Resources\Publisher as CommonPublisher;
+use OpenRTB\v26\Context\Content as V26Content;
 use OpenRTB\v26\Context\Site;
 use PHPUnit\Framework\TestCase;
-use OpenRTB\Common\Resources\Publisher as CommonPublisher;
-use OpenRTB\Common\Resources\Content as CommonContent;
-use OpenRTB\v26\Context\Content as V26Content;
 
 /**
  * @covers \OpenRTB\v26\Context\Site
