@@ -15,9 +15,8 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR12' => true,
-        'declare_strict_types' => true,
-        'array_syntax' => ['syntax' => 'short'],
+        '@Symfony' => true, // Includes PSR-12, array_syntax, and much more
+        'declare_strict_types' => true, // Still need this, as it's risky
     ])
     ->setFinder($finder)
     ->setRiskyAllowed(true)

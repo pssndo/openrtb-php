@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
 
-class Seatbid extends BaseObject
+class Seatbid extends CommonSeatBid
 {
-    /** @var array<string, array<class-string>> */
-    protected static array $schema = [
-        'bid' => [Bid::class],
-    ];
-
-    public function setSeat(string $seat): static
+    /**
+     * @return array<string, string|int>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('seat', $seat);
+        return [
+            'package' => 'int',
+        ];
     }
 
-    public function getSeat(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('seat');
+        return array_merge(CommonSeatBid::getSchema(), static::getBaseSchema());
     }
 
     public function setPackage(int $package): static
@@ -35,14 +36,9 @@ class Seatbid extends BaseObject
 
     public function addBid(Bid $bid): static
     {
-        $items = $this->get('bid') ?? [];
-        $items[] = $bid;
-        return $this->set('bid', $items);
-    }
+        $bids = $this->getBid() ?: new Collection([], Bid::class);
+        $bids->add($bid);
 
-    /** @return list<Bid>|null */
-    public function getBid(): ?array
-    {
-        return $this->get('bid');
+        return $this->setBid($bids);
     }
 }

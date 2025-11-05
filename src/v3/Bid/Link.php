@@ -4,10 +4,31 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Link extends BaseObject
+class Link implements ObjectInterface
 {
+    use HasData;
+
+    /**
+     * @var array<string, string|array<string>>
+     */
+    protected static array $schema = [
+        'url' => 'string',
+        'trkr' => 'array',
+        'fallback' => 'string',
+    ];
+
+    /**
+     * @return array<string, string|array<string>>
+     */
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
     public function setUrl(string $url): static
     {
         return $this->set('url', $url);
@@ -18,8 +39,8 @@ class Link extends BaseObject
         return $this->get('url');
     }
 
-    /** @param list<string> $trkr */
-    public function setTrkr(array $trkr): static
+    /** @param Collection<string>|array<string> $trkr */
+    public function setTrkr(Collection|array $trkr): static
     {
         return $this->set('trkr', $trkr);
     }

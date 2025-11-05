@@ -4,62 +4,44 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Content as CommonContent;
 
-class Content extends BaseObject
+class Content extends CommonContent
 {
+    /**
+     * @var array<string, string|array<string>|int>
+     */
     protected static array $schema = [
-        'producer' => Producer::class,
+        'artist' => 'string',
+        'genre' => 'string',
+        'album' => 'string',
+        'isrc' => 'string',
+        'cat' => 'array',
+        'cattax' => 'int',
+        'prodq' => 'int',
+        'context' => 'int',
+        'userrating' => 'string',
+        'qagmediarating' => 'int',
+        'livestream' => 'int',
+        'sourcerelationship' => 'int',
+        'len' => 'int',
+        'language' => 'string',
+        'embeddable' => 'int',
+        'data' => 'array',
     ];
 
-    public function setId(string $id): static
+    /**
+     * @return array<string, string|array<string>|int>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('id', $id);
+        return static::$schema;
     }
 
-    public function getId(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('id');
-    }
-
-    public function setEpisode(int $episode): static
-    {
-        return $this->set('episode', $episode);
-    }
-
-    public function getEpisode(): ?int
-    {
-        return $this->get('episode');
-    }
-
-    public function setTitle(string $title): static
-    {
-        return $this->set('title', $title);
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->get('title');
-    }
-
-    public function setSeries(string $series): static
-    {
-        return $this->set('series', $series);
-    }
-
-    public function getSeries(): ?string
-    {
-        return $this->get('series');
-    }
-
-    public function setSeason(string $season): static
-    {
-        return $this->set('season', $season);
-    }
-
-    public function getSeason(): ?string
-    {
-        return $this->get('season');
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
     public function setArtist(string $artist): static
@@ -102,18 +84,8 @@ class Content extends BaseObject
         return $this->get('isrc');
     }
 
-    public function setUrl(string $url): static
-    {
-        return $this->set('url', $url);
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->get('url');
-    }
-
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }
@@ -154,16 +126,6 @@ class Content extends BaseObject
         return $this->get('context');
     }
 
-    public function setContentrating(string $contentrating): static
-    {
-        return $this->set('contentrating', $contentrating);
-    }
-
-    public function getContentrating(): ?string
-    {
-        return $this->get('contentrating');
-    }
-
     public function setUserrating(string $userrating): static
     {
         return $this->set('userrating', $userrating);
@@ -182,16 +144,6 @@ class Content extends BaseObject
     public function getQagmediarating(): ?int
     {
         return $this->get('qagmediarating');
-    }
-
-    public function setKeywords(string $keywords): static
-    {
-        return $this->set('keywords', $keywords);
-    }
-
-    public function getKeywords(): ?string
-    {
-        return $this->get('keywords');
     }
 
     public function setLivestream(int $livestream): static
@@ -254,15 +206,5 @@ class Content extends BaseObject
     public function getData(): ?array
     {
         return $this->get('data');
-    }
-
-    public function setProducer(Producer $producer): static
-    {
-        return $this->set('producer', $producer);
-    }
-
-    public function getProducer(): ?Producer
-    {
-        return $this->get('producer');
     }
 }

@@ -1,37 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Complete Native Ad Request & Response Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 // Core Utilities
-use src\v3\Bid\{Media};
-use src\v3\Bid\Ad;
-use src\v3\Bid\Asset;
-use src\v3\Bid\Bid;
-use src\v3\Bid\Data;
-use src\v3\Bid\Image;
-use src\v3\Bid\Link;
-use src\v3\Bid\NativeAd;
-use src\v3\Bid\Seatbid;
-use src\v3\Bid\Title;
-use src\v3\Context\Context;
-use src\v3\Context\Site;
-use src\v3\Enums\AuctionType;
-use src\v3\Enums\Placement\AdPosition;
-use src\v3\Impression\{Spec};
-use src\v3\Impression\Item;
-use src\v3\Placement\{ImageFormat};
-use src\v3\Placement\AssetFormat;
-use src\v3\Placement\DataFormat;
-use src\v3\Placement\NativeFormat;
-use src\v3\Placement\Placement;
-use src\v3\Placement\TitleFormat;
-use src\v3\Util\{ResponseBuilder};
-use src\v3\Util\RequestBuilder;
+use OpenRTB\v3\Bid\{Media};
+use OpenRTB\v3\Bid\Ad;
+use OpenRTB\v3\Bid\Asset;
+use OpenRTB\v3\Bid\Bid;
+use OpenRTB\v3\Bid\Data;
+use OpenRTB\v3\Bid\Image;
+use OpenRTB\v3\Bid\Link;
+use OpenRTB\v3\Bid\NativeAd;
+use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\Bid\Title;
+use OpenRTB\v3\Context\Context;
+use OpenRTB\v3\Context\Site;
+use OpenRTB\v3\Enums\AuctionType;
+use OpenRTB\v3\Enums\Placement\AdPosition;
+use OpenRTB\v3\Impression\{Spec};
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Placement\{ImageFormat};
+use OpenRTB\v3\Placement\AssetFormat;
+use OpenRTB\v3\Placement\DataFormat;
+use OpenRTB\v3\Placement\NativeFormat;
+use OpenRTB\v3\Placement\Placement;
+use OpenRTB\v3\Placement\TitleFormat;
+use OpenRTB\v3\Util\{ResponseBuilder};
+use OpenRTB\v3\Util\RequestBuilder;
 
 // Request-side objects
 
@@ -64,22 +66,21 @@ $sponsoredByAsset = (new AssetFormat())
 $nativeFormat = (new NativeFormat())
     ->setAsset([$titleAsset, $imageAsset, $sponsoredByAsset]);
 
-// Create the main Placement object.
 $placement = (new Placement())
     ->setTagid('native-ad-slot-1')
-    ->setPos(AdPosition::IN_FEED)
+    ->setPos(AdPosition::BELOW_FOLD)
     ->setNativefmt($nativeFormat);
+// Create the main Placement object.
 
 $spec = (new Spec())->setPlacement($placement);
 $item = (new Item())->setId('native-item-1')->setSpec($spec);
 
 // Build the full request.
 $requestBuilder = new RequestBuilder();
-$request = $requestBuilder
-    ->setAuctionType(AuctionType::SECOND_PRICE)
+$request = ($requestBuilder
+    ->setAt(AuctionType::SECOND_PRICE)
     ->addItem($item)
-    ->setContext((new Context())->setSite((new Site())->setDomain('native-publisher.com')))
-    ->build();
+    ->setContext((new Context())->setSite((new Site())->setDomain('native-publisher.com'))))();
 
 echo "--- Native Ad Request --- \n";
 echo $request->toJson(JSON_PRETTY_PRINT);
@@ -128,7 +129,7 @@ $media = (new Media())->setAd($ad);
 
 $bid = (new Bid())
     ->setId('native-bid-1')
-    ->setItem('native-item-1') // Corresponds to the Item ID in the request
+    ->setItem('native-item-1') // Link to the request item ID
     ->setPrice(2.50)
     ->setMedia($media);
 

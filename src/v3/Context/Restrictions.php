@@ -4,27 +4,42 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\CreativeAttribute;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class Restrictions extends BaseObject
+class Restrictions implements ObjectInterface
 {
+    use HasData;
+
+    /**
+     * @var array<string, class-string|array<class-string>|array<string>>
+     */
     protected static array $schema = [
+        'bcat' => ['string'],
         'cattax' => ContentTaxonomy::class,
+        'badv' => ['string'],
+        'bapp' => ['string'],
         'battr' => [CreativeAttribute::class],
     ];
 
-    /** @param list<string> $bcat */
-    public function setBcat(array $bcat): static
+    public static function getSchema(): array
     {
-        return $this->set('bcat', $bcat);
+        return static::$schema;
     }
 
-    /** @return list<string>|null */
-    public function getBcat(): ?array
+    /** @param Collection<string>|array<string> $bcat */
+    public function setBcat(Collection|array $bcat): static
     {
-        return $this->get('bcat');
+        return $this->set('bcat', is_array($bcat) ? $bcat : $bcat->toArray());
+    }
+
+    /** @return Collection<string>|null */
+    public function getBcat(): ?Collection
+    {
+        return new Collection($this->get('bcat') ?? [], 'string');
     }
 
     public function setCattax(ContentTaxonomy $cattax): static
@@ -37,39 +52,39 @@ class Restrictions extends BaseObject
         return $this->get('cattax');
     }
 
-    /** @param list<string> $badv */
-    public function setBadv(array $badv): static
+    /** @param Collection<string>|array<string> $badv */
+    public function setBadv(Collection|array $badv): static
     {
-        return $this->set('badv', $badv);
+        return $this->set('badv', is_array($badv) ? $badv : $badv->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBadv(): ?array
+    /** @return Collection<string>|null */
+    public function getBadv(): ?Collection
     {
-        return $this->get('badv');
+        return new Collection($this->get('badv') ?? [], 'string');
     }
 
-    /** @param list<string> $bapp */
-    public function setBapp(array $bapp): static
+    /** @param Collection<string>|array<string> $bapp */
+    public function setBapp(Collection|array $bapp): static
     {
-        return $this->set('bapp', $bapp);
+        return $this->set('bapp', is_array($bapp) ? $bapp : $bapp->toArray());
     }
 
-    /** @return list<string>|null */
-    public function getBapp(): ?array
+    /** @return Collection<string>|null */
+    public function getBapp(): ?Collection
     {
-        return $this->get('bapp');
+        return new Collection($this->get('bapp') ?? [], 'string');
     }
 
-    /** @param list<CreativeAttribute> $battr */
-    public function setBattr(array $battr): static
+    /** @param Collection<CreativeAttribute>|array<CreativeAttribute> $battr */
+    public function setBattr(Collection|array $battr): static
     {
-        return $this->set('battr', $battr);
+        return $this->set('battr', is_array($battr) ? $battr : $battr->toArray());
     }
 
-    /** @return list<CreativeAttribute>|null */
-    public function getBattr(): ?array
+    /** @return Collection<CreativeAttribute>|null */
+    public function getBattr(): ?Collection
     {
-        return $this->get('battr');
+        return new Collection($this->get('battr') ?? [], CreativeAttribute::class);
     }
 }

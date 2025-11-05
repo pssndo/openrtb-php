@@ -4,11 +4,27 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class TitleFormat extends BaseObject
+class TitleFormat implements ObjectInterface
 {
-    public function setLen(int $len): self
+    use HasData;
+
+    /**
+     * @var array<string, class-string|array<class-string>>
+     */
+    protected static array $schema = [];
+
+    /**
+     * @return array<string, class-string|array<class-string>>
+     */
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setLen(int $len): static
     {
         return $this->set('len', $len);
     }

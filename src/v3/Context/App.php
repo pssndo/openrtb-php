@@ -4,66 +4,37 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\App as CommonApp;
 use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 
-class App extends BaseObject
+class App extends CommonApp
 {
-    /** @var array<string, class-string> */
+    /** @var array<string, class-string|string|array<string>> */
     protected static array $schema = [
+        'storeid' => 'string',
+        'cat' => 'array<string>',
+        'sectioncat' => 'array<string>',
+        'pagecat' => 'array<string>',
         'cattax' => ContentTaxonomy::class,
-        'publisher' => Publisher::class,
-        'content' => Content::class,
+        'ver' => 'string',
+        'privacypolicy' => 'int',
+        'paid' => 'int',
+        'keywords' => 'string',
+        'kwarray' => 'array<string>',
     ];
 
-    public function setId(string $id): static
+    /**
+     * @return array<string, class-string|string|array<string>>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('id', $id);
+        return self::$schema;
     }
 
-    public function getId(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('id');
-    }
-
-    public function setName(string $name): static
-    {
-        return $this->set('name', $name);
-    }
-
-    public function getName(): ?string
-    {
-        return $this->get('name');
-    }
-
-    public function setBundle(string $bundle): static
-    {
-        return $this->set('bundle', $bundle);
-    }
-
-    public function getBundle(): ?string
-    {
-        return $this->get('bundle');
-    }
-
-    public function setDomain(string $domain): static
-    {
-        return $this->set('domain', $domain);
-    }
-
-    public function getDomain(): ?string
-    {
-        return $this->get('domain');
-    }
-
-    public function setStoreurl(string $storeurl): static
-    {
-        return $this->set('storeurl', $storeurl);
-    }
-
-    public function getStoreurl(): ?string
-    {
-        return $this->get('storeurl');
+        return array_merge(parent::getSchema(), self::getBaseSchema());
     }
 
     public function setStoreid(string $storeid): static
@@ -76,8 +47,8 @@ class App extends BaseObject
         return $this->get('storeid');
     }
 
-    /** @param list<string> $cat */
-    public function setCat(array $cat): static
+    /** @param Collection<string>|array<string> $cat */
+    public function setCat(Collection|array $cat): static
     {
         return $this->set('cat', $cat);
     }
@@ -88,8 +59,8 @@ class App extends BaseObject
         return $this->get('cat');
     }
 
-    /** @param list<string> $sectioncat */
-    public function setSectioncat(array $sectioncat): static
+    /** @param Collection<string>|array<string> $sectioncat */
+    public function setSectioncat(Collection|array $sectioncat): static
     {
         return $this->set('sectioncat', $sectioncat);
     }
@@ -100,8 +71,8 @@ class App extends BaseObject
         return $this->get('sectioncat');
     }
 
-    /** @param list<string> $pagecat */
-    public function setPagecat(array $pagecat): static
+    /** @param Collection<string>|array<string> $pagecat */
+    public function setPagecat(Collection|array $pagecat): static
     {
         return $this->set('pagecat', $pagecat);
     }
@@ -162,8 +133,8 @@ class App extends BaseObject
         return $this->get('keywords');
     }
 
-    /** @param list<string> $kwarray */
-    public function setKwarray(array $kwarray): static
+    /** @param Collection<string>|array<string> $kwarray */
+    public function setKwarray(Collection|array $kwarray): static
     {
         return $this->set('kwarray', $kwarray);
     }
@@ -172,25 +143,5 @@ class App extends BaseObject
     public function getKwarray(): ?array
     {
         return $this->get('kwarray');
-    }
-
-    public function setPublisher(Publisher $publisher): static
-    {
-        return $this->set('publisher', $publisher);
-    }
-
-    public function getPublisher(): ?Publisher
-    {
-        return $this->get('publisher');
-    }
-
-    public function setContent(Content $content): static
-    {
-        return $this->set('content', $content);
-    }
-
-    public function getContent(): ?Content
-    {
-        return $this->get('content');
     }
 }

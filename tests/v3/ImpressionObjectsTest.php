@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 use OpenRTB\v3\Enums\Impression\MetricType;
@@ -13,8 +13,8 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Metric;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Impression\Deal
@@ -43,12 +43,17 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(AuctionType::FIRST_PRICE, $deal->getAt());
         $this->assertEquals(2.50, $deal->getFlr());
         $this->assertEquals('USD', $deal->getFlrcur());
-        $this->assertEquals(['seat-1'], $deal->getWseat());
-        $this->assertEquals(['adv-1'], $deal->getWadv());
+        $wseat = $deal->getWseat();
+        $this->assertNotNull($wseat);
+        $this->assertEquals(['seat-1'], $wseat->toArray());
+        $wadv = $deal->getWadv();
+        $this->assertNotNull($wadv);
+        $this->assertEquals(['adv-1'], $wadv->toArray());
 
         $spec = (new Spec())->setPlacement((new Placement())->setTagid('p1'));
-        $this->assertNotNull($spec->getPlacement());
-        $this->assertEquals('p1', $spec->getPlacement()->getTagid());
+        $placement = $spec->getPlacement();
+        $this->assertNotNull($placement);
+        $this->assertEquals('p1', $placement->getTagid());
 
         $item = (new Item())
             ->setId('item-123')
@@ -71,10 +76,16 @@ class ImpressionObjectsTest extends TestCase
         $this->assertEquals(300, $item->getExp());
         $this->assertEquals(12345, $item->getDt());
         $this->assertEquals(DeliveryMethod::TAG, $item->getDlvy());
-        $this->assertIsArray($item->getMetric());
-        $this->assertCount(1, $item->getMetric());
-        $this->assertIsArray($item->getDeal());
-        $this->assertCount(1, $item->getDeal());
+        $metric = $item->getMetric();
+        $this->assertNotNull($metric);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($metric->toArray());
+        $this->assertCount(1, $metric);
+        $dealColl = $item->getDeal();
+        $this->assertNotNull($dealColl);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($dealColl->toArray());
+        $this->assertCount(1, $dealColl);
         $this->assertEquals(1, $item->getPrivate());
         $this->assertSame($spec, $item->getSpec());
 
@@ -83,32 +94,114 @@ class ImpressionObjectsTest extends TestCase
         // 2. Serialize to JSON and back to test the Parser and schema.
         $json = $request->toJson();
         $this->assertIsString($json);
-        $parsedRequest = Parser::parseRequest($json);
+        $parsedRequest = Parser::parseBidRequest($json);
 
         // 3. Assert deep equality on the deserialized object.
         $this->assertInstanceOf(Request::class, $parsedRequest);
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());
 
         $parsedItems = $parsedRequest->getItem();
-        $this->assertIsArray($parsedItems);
+        $this->assertNotNull($parsedItems);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($parsedItems->toArray());
         $this->assertCount(1, $parsedItems);
-        $parsedItem = $parsedItems[0];
+        $parsedItem = $parsedItems->offsetGet(0);
         $this->assertInstanceOf(Item::class, $parsedItem);
 
         $parsedMetrics = $parsedItem->getMetric();
-        $this->assertIsArray($parsedMetrics);
+        $this->assertNotNull($parsedMetrics);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($parsedMetrics->toArray());
         $this->assertCount(1, $parsedMetrics);
-        $this->assertEquals(MetricType::CLICKS, $parsedMetrics[0]->getType());
+        $metricItem = $parsedMetrics->offsetGet(0);
+        $this->assertNotNull($metricItem);
+        $this->assertEquals(MetricType::CLICKS, $metricItem->getType());
 
         $parsedDeals = $parsedItem->getDeal();
-        $this->assertIsArray($parsedDeals);
+        $this->assertNotNull($parsedDeals);
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($parsedDeals->toArray());
         $this->assertCount(1, $parsedDeals);
-        $this->assertEquals(AuctionType::FIRST_PRICE, $parsedDeals[0]->getAt());
+        $dealItem = $parsedDeals->offsetGet(0);
+        $this->assertNotNull($dealItem);
+        $this->assertEquals(AuctionType::FIRST_PRICE, $dealItem->getAt());
 
         $parsedSpec = $parsedItem->getSpec();
         $this->assertInstanceOf(Spec::class, $parsedSpec);
         $parsedPlacement = $parsedSpec->getPlacement();
         $this->assertInstanceOf(Placement::class, $parsedPlacement);
         $this->assertEquals('p1', $parsedPlacement->getTagid());
+    }
+
+    public function testSpecObject(): void
+    {
+        // Test all Spec object fields including the newly added ones
+        $placement = (new Placement())->setTagid('placement-1');
+
+        $spec = (new Spec())
+            ->setPlacement($placement)
+            ->setSecure(1)
+            ->setAdmx(0)
+            ->setCurlx(1)
+            ->setQty(5);
+
+        // Assert all getters
+        $this->assertSame($placement, $spec->getPlacement());
+        $this->assertEquals(1, $spec->getSecure());
+        $this->assertEquals(0, $spec->getAdmx());
+        $this->assertEquals(1, $spec->getCurlx());
+        $this->assertEquals(5, $spec->getQty());
+
+        // Test schema
+        $schema = Spec::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('placement', $schema);
+        $this->assertArrayHasKey('secure', $schema);
+        $this->assertArrayHasKey('admx', $schema);
+        $this->assertArrayHasKey('curlx', $schema);
+        $this->assertArrayHasKey('qty', $schema);
+    }
+
+    public function testSpecSerialization(): void
+    {
+        // Test that Spec serializes and deserializes correctly
+        $placement = (new Placement())->setTagid('test-tag');
+        $spec = (new Spec())
+            ->setPlacement($placement)
+            ->setSecure(1)
+            ->setAdmx(1)
+            ->setCurlx(0)
+            ->setQty(10);
+
+        $item = (new Item())
+            ->setId('item-1')
+            ->setSpec($spec);
+
+        $request = (new Request())->addItem($item);
+
+        // Serialize and parse
+        $json = $request->toJson();
+        $this->assertIsString($json);
+        $parsedRequest = Parser::parseBidRequest($json);
+
+        // Get the parsed spec
+        $items = $parsedRequest->getItem();
+        $this->assertNotNull($items);
+        $parsedItem = $items->offsetGet(0);
+        $this->assertInstanceOf(Item::class, $parsedItem);
+
+        $parsedSpec = $parsedItem->getSpec();
+        $this->assertInstanceOf(Spec::class, $parsedSpec);
+
+        // Verify all fields were preserved
+        $this->assertEquals(1, $parsedSpec->getSecure());
+        $this->assertEquals(1, $parsedSpec->getAdmx());
+        $this->assertEquals(0, $parsedSpec->getCurlx());
+        $this->assertEquals(10, $parsedSpec->getQty());
+
+        $parsedPlacement = $parsedSpec->getPlacement();
+        $this->assertInstanceOf(Placement::class, $parsedPlacement);
+        $this->assertEquals('test-tag', $parsedPlacement->getTagid());
     }
 }

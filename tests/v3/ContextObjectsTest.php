@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Resources\Producer;
+use OpenRTB\Common\Resources\Publisher;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\App;
 use OpenRTB\v3\Context\Content;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Device;
 use OpenRTB\v3\Context\Dooh;
 use OpenRTB\v3\Context\Geo;
-use OpenRTB\v3\Context\Producer;
-use OpenRTB\v3\Context\Publisher;
 use OpenRTB\v3\Context\Regs;
 use OpenRTB\v3\Context\Restrictions;
 use OpenRTB\v3\Context\Site;
@@ -25,8 +25,8 @@ use OpenRTB\v3\Enums\Context\ContentTaxonomy;
 use OpenRTB\v3\Enums\Context\DeviceType;
 use OpenRTB\v3\Enums\Context\IpLocationService;
 use OpenRTB\v3\Enums\Context\LocationType;
-use OpenRTB\v3\Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Context\App
@@ -34,14 +34,14 @@ use OpenRTB\v3\Util\Parser;
  * @covers \OpenRTB\v3\Context\Device
  * @covers \OpenRTB\v3\Context\Dooh
  * @covers \OpenRTB\v3\Context\Geo
- * @covers \OpenRTB\v3\Context\Publisher
+ * @covers \OpenRTB\Common\Resources\Publisher
  * @covers \OpenRTB\v3\Context\Regs
  * @covers \OpenRTB\v3\Context\Restrictions
  * @covers \OpenRTB\v3\Context\Site
  * @covers \OpenRTB\v3\Context\Source
  * @covers \OpenRTB\v3\Context\User
  * @covers \OpenRTB\v3\Context\Content
- * @covers \OpenRTB\v3\Context\Producer
+ * @covers \OpenRTB\Common\Resources\Producer
  * @covers \OpenRTB\v3\Context\Sua
  */
 class ContextObjectsTest extends TestCase
@@ -67,6 +67,8 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('501', $geo->getMetro());
         $this->assertEquals('10001', $geo->getZip());
         $this->assertEquals(300, $geo->getUtcoffset());
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray(Geo::getSchema());
     }
 
     public function testSuaObject(): void
@@ -77,6 +79,11 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals([['brand' => 'Chrome', 'version' => '108']], $sua->getBrowsers());
         $this->assertEquals([['brand' => 'Android', 'version' => '13']], $sua->getPlatform());
         $this->assertEquals(1, $sua->getMobile());
+
+        // Test schema
+        $schema = Sua::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testDeviceObject(): void
@@ -114,6 +121,13 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals('310-410', $device->getMccmnc());
         $this->assertSame($geo, $device->getGeo());
         $this->assertSame($sua, $device->getSua());
+
+        // Test schema
+        $schema = Device::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('type', $schema);
+        $this->assertArrayHasKey('ip', $schema);
     }
 
     public function testUserObject(): void
@@ -185,6 +199,12 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $content->getEmbeddable());
         $this->assertEquals([['name' => 'data']], $content->getData());
         $this->assertSame($producer, $content->getProducer());
+
+        // Test schema methods
+        $schema = Content::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('artist', $schema);
     }
 
     public function testPublisherObject(): void
@@ -222,6 +242,13 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(1, $site->getAmp());
         $this->assertSame($publisher, $site->getPublisher());
         $this->assertSame($content, $site->getContent());
+
+        // Test schema
+        $schema = Site::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('cattax', $schema);
+        $this->assertArrayHasKey('cat', $schema);
     }
 
     public function testAppObject(): void
@@ -250,15 +277,28 @@ class ContextObjectsTest extends TestCase
         $this->assertEquals(['kw1'], $app->getKwarray());
         $this->assertSame($publisher, $app->getPublisher());
         $this->assertSame($content, $app->getContent());
+
+        // Test schema methods
+        $schema = App::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('storeid', $schema);
     }
 
     public function testRegsObject(): void
     {
-        $regs = (new Regs())->setGdpr(1)->setGpp('gpp-string')->setCoppa(1)->setGppSid([1,2]);
+        $regs = (new Regs())->setGdpr(1)->setGpp('gpp-string')->setCoppa(1)->setGppSid([1, 2]);
         $this->assertEquals(1, $regs->getGdpr());
         $this->assertEquals('gpp-string', $regs->getGpp());
         $this->assertEquals(1, $regs->getCoppa());
-        $this->assertEquals([1,2], $regs->getGppSid());
+        $this->assertEquals([1, 2], $regs->getGppSid());
+
+        // Test schema
+        $schema = Regs::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
+        $this->assertArrayHasKey('gpp', $schema);
+        $this->assertArrayHasKey('gpp_sid', $schema);
     }
 
     public function testRestrictionsObject(): void
@@ -269,22 +309,50 @@ class ContextObjectsTest extends TestCase
             ->setBadv(['adv.com'])
             ->setBapp(['com.app.banned'])
             ->setBattr([CreativeAttribute::ONE_POOR]);
-        $this->assertEquals(['IAB25'], $restrictions->getBcat());
-        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $restrictions->getCattax());
-        $this->assertEquals(['adv.com'], $restrictions->getBadv());
-        $this->assertEquals(['com.app.banned'], $restrictions->getBapp());
-        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr());
+        $this->assertEquals(['IAB25'], $restrictions->getBcat()?->toArray());
+        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $restrictions->getCattax()); // This should be an enum
+        $this->assertEquals(['adv.com'], $restrictions->getBadv()?->toArray()); // This is an array of strings
+        $this->assertEquals(['com.app.banned'], $restrictions->getBapp()?->toArray()); // This is an array of strings
+        $this->assertEquals([CreativeAttribute::ONE_POOR], $restrictions->getBattr()?->toArray()); // This is a collection of enums
+
+        // Test schema
+        $schema = Restrictions::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testDoohObject(): void
     {
-        $dooh = (new Dooh())->setId('dooh-1')->setName('Times Square')->setVenuetype(['venue'])->setDomain('domain')->setCat(['cat'])->setCattax(1);
+        $publisher = new Publisher();
+        $content = new Content();
+
+        $dooh = (new Dooh())
+            ->setId('dooh-1')
+            ->setName('Times Square')
+            ->setVenuetype(['venue'])
+            ->setDomain('domain')
+            ->setCat(['cat'])
+            ->setCattax(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0)
+            ->setPublisher($publisher)
+            ->setContent($content)
+            ->setKeywords('billboard,outdoor')
+            ->setKwarray(['billboard', 'outdoor', 'digital']);
+
         $this->assertEquals('dooh-1', $dooh->getId());
         $this->assertEquals('Times Square', $dooh->getName());
         $this->assertEquals(['venue'], $dooh->getVenuetype());
         $this->assertEquals('domain', $dooh->getDomain());
         $this->assertEquals(['cat'], $dooh->getCat());
-        $this->assertEquals(1, $dooh->getCattax());
+        $this->assertEquals(ContentTaxonomy::IAB_CONTENT_CATEGORY_1_0, $dooh->getCattax());
+        $this->assertSame($publisher, $dooh->getPublisher());
+        $this->assertSame($content, $dooh->getContent());
+        $this->assertEquals('billboard,outdoor', $dooh->getKeywords());
+        $this->assertEquals(['billboard', 'outdoor', 'digital'], $dooh->getKwarray());
+
+        // Test schema
+        $schema = Dooh::getSchema();
+        // @phpstan-ignore-next-line - Testing return type
+        $this->assertIsArray($schema);
     }
 
     public function testSourceObject(): void
@@ -333,7 +401,7 @@ class ContextObjectsTest extends TestCase
 
         $json = $request->toJson();
         $this->assertIsString($json);
-        $parsedRequest = Parser::parseRequest($json);
+        $parsedRequest = Parser::parseBidRequest($json);
 
         $this->assertInstanceOf(Request::class, $parsedRequest);
         $this->assertEquals($request->toArray(), $parsedRequest->toArray());

@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\Placement\FeedType;
 use OpenRTB\v3\Enums\Placement\VolumeNormalizationMode;
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\AudioPlacement;
 use OpenRTB\v3\Placement\Placement;
-use OpenRTB\v3\Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OpenRTB\v3\Placement\AudioPlacement
@@ -62,11 +63,11 @@ class AudioAdsTest extends TestCase
 }
 JSON;
 
-        $request = Parser::parseRequest($json);
+        $request = Parser::parseBidRequest($json);
         $this->assertInstanceOf(Request::class, $request);
 
         $items = $request->getItem();
-        $this->assertIsArray($items);
+        $this->assertInstanceOf(Collection::class, $items);
         $this->assertCount(1, $items);
         $item = $items[0];
         $this->assertInstanceOf(Item::class, $item);
