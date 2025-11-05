@@ -4,17 +4,29 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class AssetFormat extends BaseObject
+class AssetFormat implements ObjectInterface
 {
+    use HasData;
+
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'title' => TitleFormat::class,
         'img' => ImageFormat::class,
+        'video' => VideoPlacement::class,
         'data' => DataFormat::class,
     ];
 
-    public function setId(int $id): self
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setId(int $id): static
     {
         return $this->set('id', $id);
     }
@@ -24,7 +36,7 @@ class AssetFormat extends BaseObject
         return $this->get('id');
     }
 
-    public function setReq(int $req): self
+    public function setReq(int $req): static
     {
         return $this->set('req', $req);
     }
@@ -34,7 +46,7 @@ class AssetFormat extends BaseObject
         return $this->get('req');
     }
 
-    public function setTitle(TitleFormat $title): self
+    public function setTitle(TitleFormat $title): static
     {
         return $this->set('title', $title);
     }
@@ -44,7 +56,7 @@ class AssetFormat extends BaseObject
         return $this->get('title');
     }
 
-    public function setImg(ImageFormat $img): self
+    public function setImg(ImageFormat $img): static
     {
         return $this->set('img', $img);
     }
@@ -54,7 +66,17 @@ class AssetFormat extends BaseObject
         return $this->get('img');
     }
 
-    public function setData(DataFormat $data): self
+    public function setVideo(VideoPlacement $video): static
+    {
+        return $this->set('video', $video);
+    }
+
+    public function getVideo(): ?VideoPlacement
+    {
+        return $this->get('video');
+    }
+
+    public function setData(DataFormat $data): static
     {
         return $this->set('data', $data);
     }

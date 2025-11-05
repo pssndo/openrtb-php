@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Building a Multi-Item Request Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Context\{Device};
-use src\v3\Context\Context;
-use src\v3\Context\Site;
-use src\v3\Enums\AuctionType;
-use src\v3\Enums\Placement\AdPosition;
-use src\v3\Impression\{Spec};
-use src\v3\Impression\Item;
-use src\v3\Placement\{DisplayPlacement};
-use src\v3\Placement\Placement;
-use src\v3\Util\RequestBuilder;
+use OpenRTB\v3\Context\{Device};
+use OpenRTB\v3\Context\Context;
+use OpenRTB\v3\Context\Site;
+use OpenRTB\v3\Enums\AuctionType;
+use OpenRTB\v3\Enums\Placement\AdPosition;
+use OpenRTB\v3\Impression\{Spec};
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Placement\{DisplayPlacement};
+use OpenRTB\v3\Placement\Placement;
+use OpenRTB\v3\Util\RequestBuilder;
 
 // 1. Create the first item (e.g., a leaderboard banner)
 $displayPlacement1 = (new DisplayPlacement())
@@ -64,14 +66,13 @@ $context = (new Context())
 
 // 4. Build the request with multiple items
 $builder = new RequestBuilder();
-$request = $builder
-    ->setTimeout(100)
-    ->setAuctionType(AuctionType::SECOND_PRICE)
-    ->setCurrencies(['USD'])
+$request = ($builder
+    ->setTmax(100)
+    ->setAt(AuctionType::SECOND_PRICE)
+    ->setCur(['USD'])
     ->addItem($item1)
     ->addItem($item2)
-    ->setContext($context)
-    ->build();
+    ->setContext($context))();
 
 // Output the JSON
 header('Content-Type: application/json');

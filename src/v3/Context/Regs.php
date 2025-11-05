@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Regs as CommonRegs;
 
-class Regs extends BaseObject
+class Regs extends CommonRegs
 {
-    public function setCoppa(int $coppa): static
+    /**
+     * @return array<string, string|array<string>>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('coppa', $coppa);
+        return [
+            'gpp' => 'string',
+            'gpp_sid' => ['int'],
+        ];
     }
 
-    public function getCoppa(): ?int
+    public static function getSchema(): array
     {
-        return $this->get('coppa');
-    }
-
-    public function setGdpr(int $gdpr): static
-    {
-        return $this->set('gdpr', $gdpr);
-    }
-
-    public function getGdpr(): ?int
-    {
-        return $this->get('gdpr');
+        return array_merge(parent::getSchema(), static::getBaseSchema());
     }
 
     public function setGpp(string $gpp): static
@@ -38,8 +35,8 @@ class Regs extends BaseObject
         return $this->get('gpp');
     }
 
-    /** @param list<int> $gppSid */
-    public function setGppSid(array $gppSid): static
+    /** @param Collection<int>|array<int> $gppSid */
+    public function setGppSid(Collection|array $gppSid): static
     {
         return $this->set('gpp_sid', $gppSid);
     }

@@ -4,23 +4,40 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Bid as CommonBid;
 
-class Bid extends BaseObject
+class Bid extends CommonBid
 {
-    /** @var array<string, class-string> */
-    protected static array $schema = [
-        'media' => Media::class,
-    ];
-
-    public function setId(string $id): static
+    /**
+     * @return array<string, string|class-string|array<class-string>>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('id', $id);
+        return [
+            'item' => 'string',
+            'deal' => 'string',
+            'cid' => 'string',
+            'tactic' => 'string',
+            'media' => Media::class,
+            'dealobj' => Deal::class,
+            'macro' => [Macro::class],
+        ];
     }
 
-    public function getId(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('id');
+        return array_merge(CommonBid::getBaseSchema(), static::getBaseSchema());
+    }
+
+    public function setMedia(Media $media): static
+    {
+        return $this->set('media', $media);
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->get('media');
     }
 
     public function setItem(string $item): static
@@ -31,16 +48,6 @@ class Bid extends BaseObject
     public function getItem(): ?string
     {
         return $this->get('item');
-    }
-
-    public function setPrice(float $price): static
-    {
-        return $this->set('price', $price);
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->get('price');
     }
 
     public function setDeal(string $deal): static
@@ -73,65 +80,25 @@ class Bid extends BaseObject
         return $this->get('tactic');
     }
 
-    public function setPurl(string $purl): static
+    public function setDealobj(Deal $dealobj): static
     {
-        return $this->set('purl', $purl);
+        return $this->set('dealobj', $dealobj);
     }
 
-    public function getPurl(): ?string
+    public function getDealobj(): ?Deal
     {
-        return $this->get('purl');
+        return $this->get('dealobj');
     }
 
-    public function setBurl(string $burl): static
-    {
-        return $this->set('burl', $burl);
-    }
-
-    public function getBurl(): ?string
-    {
-        return $this->get('burl');
-    }
-
-    public function setLurl(string $lurl): static
-    {
-        return $this->set('lurl', $lurl);
-    }
-
-    public function getLurl(): ?string
-    {
-        return $this->get('lurl');
-    }
-
-    public function setMid(string $mid): static
-    {
-        return $this->set('mid', $mid);
-    }
-
-    public function getMid(): ?string
-    {
-        return $this->get('mid');
-    }
-
-    /** @param list<string> $macro */
-    public function setMacro(array $macro): static
+    /** @param Collection<Macro>|array<Macro> $macro */
+    public function setMacro(Collection|array $macro): static
     {
         return $this->set('macro', $macro);
     }
 
-    /** @return list<string>|null */
+    /** @return list<Macro>|null */
     public function getMacro(): ?array
     {
         return $this->get('macro');
-    }
-
-    public function setMedia(Media $media): static
-    {
-        return $this->set('media', $media);
-    }
-
-    public function getMedia(): ?Media
-    {
-        return $this->get('media');
     }
 }

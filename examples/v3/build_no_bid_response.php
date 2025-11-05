@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Building a No-Bid Response Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Enums\NoBidReason;
-use src\v3\Util\ResponseBuilder;
+use OpenRTB\v3\Enums\NoBidReason;
+use OpenRTB\v3\Util\ResponseBuilder;
 
 // The ID of the bid request to which this is a response.
 $requestId = 'test-request-789';

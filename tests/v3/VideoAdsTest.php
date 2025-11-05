@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v3;
 
-use PHPUnit\Framework\TestCase;
+use OpenRTB\Common\Collection;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Enums\Placement\Linearity;
 use OpenRTB\v3\Enums\Placement\PlaybackMethod;
 use OpenRTB\v3\Enums\Placement\VideoPlacementType;
@@ -12,14 +13,14 @@ use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
 use OpenRTB\v3\Placement\Placement;
 use OpenRTB\v3\Placement\VideoPlacement;
-use OpenRTB\v3\Request;
 use OpenRTB\v3\Util\Parser;
+use PHPUnit\Framework\TestCase;
 
 class VideoAdsTest extends TestCase
 {
-    public function testVideoRequestSerialization(): void
+    public function testVideoBidRequestSerialization(): void
     {
-        $request = new Request();
+        $BidRequest = new Request();
         $item = new Item();
         $spec = new Spec();
         $placement = new Placement();
@@ -33,9 +34,9 @@ class VideoAdsTest extends TestCase
         $placement->setVideo($video);
         $spec->setPlacement($placement);
         $item->setSpec($spec);
-        $request->addItem($item);
+        $BidRequest->addItem($item);
 
-        $result = $request->toArray();
+        $result = $BidRequest->toArray();
 
         $videoArray = $result['item'][0]['spec']['placement']['video'];
         $this->assertEquals(1, $videoArray['ptype']);
@@ -43,7 +44,7 @@ class VideoAdsTest extends TestCase
         $this->assertEquals([3], $videoArray['playmethod']);
     }
 
-    public function testVideoRequestDeserialization(): void
+    public function testVideoBidRequestDeserialization(): void
     {
         $json = <<<'JSON'
 {
@@ -63,11 +64,11 @@ class VideoAdsTest extends TestCase
 }
 JSON;
 
-        $request = Parser::parseRequest($json);
-        $this->assertInstanceOf(Request::class, $request);
+        $BidRequest = Parser::parseBidRequest($json);
+        $this->assertInstanceOf(Request::class, $BidRequest);
 
-        $items = $request->getItem();
-        $this->assertIsArray($items);
+        $items = $BidRequest->getItem();
+        $this->assertInstanceOf(Collection::class, $items);
         $this->assertCount(1, $items);
         $item = $items[0];
         $this->assertInstanceOf(Item::class, $item);
@@ -83,7 +84,7 @@ JSON;
 
         $this->assertEquals(VideoPlacementType::INSTREAM, $video->getPtype());
         $this->assertEquals(Linearity::LINEAR, $video->getLinear());
-        $this->assertIsArray($video->getPlaymethod());
+        $this->assertInstanceOf(Collection::class, $video->getPlaymethod());
         $this->assertEquals(PlaybackMethod::ON_CLICK_SOUND_ON, $video->getPlaymethod()[0]);
     }
 }

@@ -4,10 +4,33 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Placement;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class DisplayFormat extends BaseObject
+class DisplayFormat implements ObjectInterface
 {
+    use HasData;
+
+    /**
+     * @var array<string, string|array<string>>
+     */
+    protected static array $schema = [
+        'w' => 'int',
+        'h' => 'int',
+        'wratio' => 'int',
+        'hratio' => 'int',
+        'expdir' => ['int'],
+    ];
+
+    /**
+     * @return array<string, string|array<string>>
+     */
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
     public function setW(int $w): static
     {
         return $this->set('w', $w);
@@ -48,8 +71,8 @@ class DisplayFormat extends BaseObject
         return $this->get('hratio');
     }
 
-    /** @param list<int> $expdir */
-    public function setExpdir(array $expdir): static
+    /** @param Collection<int>|array<int> $expdir */
+    public function setExpdir(Collection|array $expdir): static
     {
         return $this->set('expdir', $expdir);
     }

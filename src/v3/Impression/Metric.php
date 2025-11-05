@@ -4,42 +4,38 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Resources\Metric as CommonMetric;
 use OpenRTB\v3\Enums\Impression\MetricType;
 
-class Metric extends BaseObject
+class Metric extends CommonMetric
 {
-    protected static array $schema = [
-        'type' => MetricType::class,
-    ];
-
-    public function setType(MetricType $type): self
+    /**
+     * @return array<string, class-string|string|float>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('type', $type);
+        return [
+            'type' => MetricType::class,
+        ];
+    }
+
+    public static function getSchema(): array
+    {
+        return array_merge(CommonMetric::getBaseSchema(), static::getBaseSchema());
+    }
+
+    public function setType(MetricType $type): static
+    {
+        return $this->set('type', $type->value);
     }
 
     public function getType(): ?MetricType
     {
-        return $this->get('type');
-    }
+        $type = $this->get('type');
+        if ($type instanceof MetricType) {
+            return $type;
+        }
 
-    public function setValue(float $value): self
-    {
-        return $this->set('value', $value);
-    }
-
-    public function getValue(): ?float
-    {
-        return $this->get('value');
-    }
-
-    public function setVendor(string $vendor): self
-    {
-        return $this->set('vendor', $vendor);
-    }
-
-    public function getVendor(): ?string
-    {
-        return $this->get('vendor');
+        return MetricType::tryFrom($type);
     }
 }

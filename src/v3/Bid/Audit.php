@@ -4,15 +4,33 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Bid\AuditStatus;
 
-class Audit extends BaseObject
+class Audit implements ObjectInterface
 {
-    /** @var array<string, class-string> */
+    use HasData;
+
+    /**
+     * @var array<string, class-string|string|array<class-string>>
+     */
     protected static array $schema = [
         'status' => AuditStatus::class,
+        'feedback' => 'array',
+        'init' => 'int',
+        'lastmod' => 'int',
+        'corr' => 'array',
     ];
+
+    /**
+     * @return array<string, class-string|string|array<class-string>>
+     */
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setStatus(AuditStatus $status): static
     {
@@ -24,8 +42,8 @@ class Audit extends BaseObject
         return $this->get('status');
     }
 
-    /** @param list<string> $feedback */
-    public function setFeedback(array $feedback): static
+    /** @param Collection<string>|array<string> $feedback */
+    public function setFeedback(Collection|array $feedback): static
     {
         return $this->set('feedback', $feedback);
     }

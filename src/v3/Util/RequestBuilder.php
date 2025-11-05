@@ -4,108 +4,120 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Util;
 
+use OpenRTB\Common\AbstractRequestBuilder;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\v3\BidRequest as Request;
 use OpenRTB\v3\Context\Context;
 use OpenRTB\v3\Context\Source;
 use OpenRTB\v3\Enums\AuctionType;
 use OpenRTB\v3\Impression\Item;
-use OpenRTB\v3\Request;
 
-class RequestBuilder
+/**
+ * @extends AbstractRequestBuilder<Request>
+ */
+class RequestBuilder extends AbstractRequestBuilder
 {
-    private Request $request;
-
     public function __construct()
     {
         $this->request = new Request();
-        $this->request->setId($this->generateId());
+        $this->request->setId(uniqid('req_', true));
     }
 
-    private function generateId(): string
+    public function setTmax(int $tmax): static
     {
-        return uniqid('req_', true);
-    }
+        $this->request->setTmax($tmax);
 
-    public function setId(string $id): self
-    {
-        $this->request->setId($id);
         return $this;
     }
 
-    public function setTest(bool $test): self
+    public function setAt(AuctionType $at): static
     {
-        $this->request->setTest($test ? 1 : 0);
+        $this->request->setAt($at);
+
         return $this;
     }
 
-    public function setTimeout(int $milliseconds): self
+    /** @param Collection<string>|array<string> $cur */
+    public function setCur(Collection|array $cur): static
     {
-        $this->request->setTmax($milliseconds);
+        $this->request->setCur($cur);
+
         return $this;
     }
 
-    public function setAuctionType(AuctionType $type): self
-    {
-        $this->request->setAt($type);
-        return $this;
-    }
-
-    /** @param list<string> $currencies */
-    public function setCurrencies(array $currencies): self
-    {
-        $this->request->setCur($currencies);
-        return $this;
-    }
-
-    /** @param list<string> $seats */
-    public function setSeat(array $seats): self
-    {
-        $this->request->setSeat($seats);
-        return $this;
-    }
-
-    public function setWseat(int $wseat): self
+    /** @param Collection<string>|array<string> $wseat */
+    public function setWseat(Collection|array $wseat): static
     {
         $this->request->setWseat($wseat);
+
         return $this;
     }
 
-    public function setCdata(string $cdata): self
+    /** @param Collection<string>|array<string> $bseat */
+    public function setBseat(Collection|array $bseat): static
+    {
+        $this->request->setBseat($bseat);
+
+        return $this;
+    }
+
+    /** @param Collection<string>|array<string> $badv */
+    public function setBadv(Collection|array $badv): static
+    {
+        $this->request->setBadv($badv);
+
+        return $this;
+    }
+
+    /** @param Collection<string>|array<string> $bapp */
+    public function setBapp(Collection|array $bapp): static
+    {
+        $this->request->setBapp($bapp);
+
+        return $this;
+    }
+
+    /** @param Collection<string>|array<string> $bcat */
+    public function setBcat(Collection|array $bcat): static
+    {
+        $this->request->setBcat($bcat);
+
+        return $this;
+    }
+
+    public function setCdata(string $cdata): static
     {
         $this->request->setCdata($cdata);
+
         return $this;
     }
 
-    public function addItem(Item $item): self
-    {
-        $this->request->addItem($item);
-        return $this;
-    }
-
-    public function setSource(Source $source): self
+    public function setSource(Source $source): static
     {
         $this->request->setSource($source);
+
         return $this;
     }
 
-    public function setContext(Context $context): self
+    public function setContext(Context $context): static
     {
         $this->request->setContext($context);
+
         return $this;
     }
 
-    public function build(): Request
+    public function addItem(Item $item): static
     {
-        return $this->request;
+        $this->request->addItem($item);
+
+        return $this;
     }
 
-    public function toJson(): string|false
+    public function setExt(Ext $ext): static
     {
-        return $this->request->toJson();
-    }
+        $this->request->setExt($ext);
 
-    /** @return array<string, mixed> */
-    public function toArray(): array
-    {
-        return $this->request->toArray();
+        return $this;
     }
 }

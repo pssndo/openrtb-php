@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Complete SSP Integration Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\{Bid\Bid, Util\Parser};
-use src\v3\Bid\{Media};
-use src\v3\Bid\Ad;
-use src\v3\Bid\DisplayAd;
-use src\v3\Bid\Seatbid;
-use src\v3\Enums\NoBidReason;
-use src\v3\Impression\Item;
-use src\v3\Util\{Validator};
-use src\v3\Util\ResponseBuilder;
+use OpenRTB\v3\Bid\Ad;
+use OpenRTB\v3\Bid\{Media};
+use OpenRTB\v3\Bid\Display;
+use OpenRTB\v3\Bid\Bid;
+use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\Enums\NoBidReason;
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Util\Parser;
+use OpenRTB\v3\Util\ResponseBuilder;
+use OpenRTB\v3\Util\Validator;
 
 class SSPIntegration
 {
@@ -32,12 +35,7 @@ class SSPIntegration
     public function handleBidRequest(string $jsonRequest): string
     {
         // 1. Parse the incoming JSON into a Request object.
-        $request = Parser::parseRequest($jsonRequest);
-
-        if ($request === null) {
-            // In a real SSP, you would log this error and return a specific HTTP status.
-            return $this->buildErrorResponse('Invalid JSON format');
-        }
+        $request = Parser::parseBidRequest($jsonRequest);
 
         // 2. Validate the request against the OpenRTB specification.
         if (!$this->validator->validateRequest($request)) {
@@ -48,37 +46,48 @@ class SSPIntegration
         $requestId = $request->getId();
         $items = $request->getItem();
 
-        // If there are no items, there's nothing to bid on.
-        if (empty($items)) {
+        // If there are no items, there's nothing to bid on. A Collection object is never "empty".
+        if ($items === null || $items->count() === 0) {
             return $this->buildNoBidResponse($requestId, NoBidReason::INVALID_REQUEST, 'Request contains no items');
         }
 
         // 3. Process each item and decide whether to create a bid.
+        // The bids must be grouped by seat ID into Seatbid objects.
         $responseBuilder = new ResponseBuilder($requestId);
-        $seatbid = new Seatbid();
-        $seatbid->setSeat('my-ssp-seat-1');
+        $bidsBySeat = [];
 
-        $hasBids = false;
         foreach ($items as $item) {
             // In a real SSP, this is where you would run your internal auction,
             // query demand partners, and apply business logic.
             $bid = $this->createBidForItem($item);
 
             if ($bid !== null) {
-                $seatbid->addBid($bid);
-                $hasBids = true;
+                // Group bids by seat. For simplicity, all bids go to a single seat.
+                // In a real SSP, you might have different seats for different demand partners.
+                $seatId = 'default-seat';
+                if (!isset($bidsBySeat[$seatId])) {
+                    $bidsBySeat[$seatId] = [];
+                }
+                $bidsBySeat[$seatId][] = $bid;
             }
         }
 
         // 4. If we have bids, build a complete response. Otherwise, send a no-bid.
-        if ($hasBids) {
-            $responseBuilder->addSeatbid($seatbid);
+        if (!empty($bidsBySeat)) {
+            foreach ($bidsBySeat as $seatId => $bids) {
+                $seatbid = new Seatbid();
+                $seatbid->setSeat($seatId);
+                foreach ($bids as $bid) {
+                    $seatbid->addBid($bid);
+                }
+                $responseBuilder->addSeatbid($seatbid);
+            }
             $responseBuilder->setCurrency('USD');
             $response = $responseBuilder->build();
-            return $response->toJson();
-        } else {
-            return $this->buildNoBidResponse($requestId, NoBidReason::UNMATCHED_USER, 'No matching demand for the requested items');
+            return json_encode($response, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         }
+
+        return $this->buildNoBidResponse($requestId, NoBidReason::UNMATCHED_USER, 'No matching demand for the requested items');
     }
 
     /**
@@ -96,23 +105,28 @@ class SSPIntegration
         $bidPrice = $floorPrice * 1.5;
 
         // Create a simple display ad for the bid.
-        $displayAd = (new DisplayAd())
+        $banner = (new Display\Banner())
+            ->setImg('https://cdn.example.com/ad.jpg')
             ->setW(300)
-            ->setH(250)
-            ->setAdm('<a href="https://example.com"><img src="https://cdn.example.com/ad.jpg"/></a>');
+            ->setH(250);
+
+        $displayAd = (new Display())->setBanner($banner);
 
         $ad = (new Ad())
-            ->setId('ad-' . uniqid())
+            ->setId('ad-' . uniqid('', true))
             ->setAdomain(['example.com'])
             ->setDisplay($displayAd);
 
         $media = (new Media())->setAd($ad);
 
         $bid = (new Bid())
-            ->setId('ssp-bid-' . uniqid())
-            ->setItem($item->getId()) // Link the bid to the request item
+            ->setId('ssp-bid-' . uniqid('', true))
+            ->setItem($item->getId()) // Link to the request item ID
             ->setPrice($bidPrice)
             ->setMedia($media);
+
+        // Use the generic set() method for properties not yet implemented
+        $bid->set('cid', 'creative-id-12345'); // Campaign ID
 
         return $bid;
     }
@@ -121,11 +135,14 @@ class SSPIntegration
     {
         $builder = new ResponseBuilder($requestId);
         $builder->setNoBidReason($reason);
+        $response = $builder->build();
+
         // You can add custom extensions to provide more details.
         if ($details) {
-            $builder->build()->set('ext', ['details' => $details]);
+            $response->set('ext', ['details' => $details]);
         }
-        return $builder->build()->toJson();
+
+        return json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     private function buildErrorResponse(string $message): string
@@ -133,7 +150,7 @@ class SSPIntegration
         // Note: This is not a valid OpenRTB response, but a simple error message.
         // A real SSP might return an empty 204 or a specific error format.
         http_response_code(400);
-        return json_encode(['error' => $message]);
+        return json_encode(['error' => $message], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 }
 
@@ -163,6 +180,5 @@ JSON;
 $responseJson = $ssp->handleBidRequest($incomingJson);
 
 // Output the result
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo $responseJson;
-

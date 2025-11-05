@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Util;
 
+use OpenRTB\Common\Util\AbstractResponseBuilder;
+use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\Interfaces\ResponseBuilderInterface;
 use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Enums\NoBidReason;
-use OpenRTB\v3\Response;
 
-class ResponseBuilder
+class ResponseBuilder extends AbstractResponseBuilder implements ResponseBuilderInterface
 {
-    private Response $response;
+    /** @var Response */
+    protected ObjectInterface $response;
 
     public function __construct(string $requestId)
     {
@@ -18,49 +22,38 @@ class ResponseBuilder
         $this->response->setId($requestId);
     }
 
-    public function setBidId(string $bidId): self
+    public function setBidId(string $bidId): static
     {
         $this->response->setBidid($bidId);
+
         return $this;
     }
 
-    public function setNoBidReason(NoBidReason $nbr): self
+    public function setNoBidReason(NoBidReason $nbr): static
     {
         $this->response->setNbr($nbr);
+
         return $this;
     }
 
-    public function setCurrency(string $currency): self
+    public function setCurrency(string $currency): static
     {
         $this->response->setCur($currency);
+
         return $this;
     }
 
-    public function setCdata(string $cdata): self
+    public function setCdata(string $cdata): static
     {
         $this->response->setCdata($cdata);
+
         return $this;
     }
 
-    public function addSeatbid(Seatbid $seatbid): self
+    public function addSeatbid(Seatbid $seatbid): static
     {
         $this->response->addSeatbid($seatbid);
+
         return $this;
-    }
-
-    public function build(): Response
-    {
-        return $this->response;
-    }
-
-    public function toJson(): string|false
-    {
-        return $this->response->toJson();
-    }
-
-    /** @return array<string, mixed> */
-    public function toArray(): array
-    {
-        return $this->response->toArray();
     }
 }

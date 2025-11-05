@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Bid;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class NativeAd extends BaseObject
+class NativeAd implements ObjectInterface
 {
-    /** @var array<string, class-string|array<class-string>> */
+    use HasData;
+
+    /**
+     * @var array<string, class-string|array<class-string>|array<string>|string>
+     */
     protected static array $schema = [
-        'asset' => [Asset::class],
         'link' => Link::class,
+        'asset' => [Asset::class],
+        'event' => [Event::class],
+        'privacy' => 'string',
+        'imptrackers' => ['string'],
     ];
 
-    /** @param list<Asset> $asset */
-    public function setAsset(array $asset): static
+    /**
+     * @return array<string, class-string|array<class-string>|array<string>|string>
+     */
+    public static function getSchema(): array
     {
-        return $this->set('asset', $asset);
-    }
-
-    /** @return list<Asset>|null */
-    public function getAsset(): ?array
-    {
-        return $this->get('asset');
+        return static::$schema;
     }
 
     public function setLink(Link $link): static
@@ -36,17 +41,61 @@ class NativeAd extends BaseObject
         return $this->get('link');
     }
 
-    public function setJstracker(string $jstracker): static
+    /** @param Collection<Asset>|array<Asset> $asset */
+    public function setAsset(Collection|array $asset): static
     {
-        return $this->set('jstracker', $jstracker);
+        $collection = $asset instanceof Collection ? $asset : new Collection($asset, Asset::class);
+
+        return $this->set('asset', $collection);
     }
 
-    public function getJstracker(): ?string
+    /** @return Collection<Asset>|null */
+    public function getAsset(): ?Collection
     {
-        return $this->get('jstracker');
+        $value = $this->get('asset');
+        if ($value instanceof Collection) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return new Collection($value, Asset::class);
+        }
+
+        return null;
     }
 
-    /** @param list<string> $imptrackers */
+    /** @param Collection<Event>|array<Event> $event */
+    public function setEvent(Collection|array $event): static
+    {
+        $collection = $event instanceof Collection ? $event : new Collection($event, Event::class);
+
+        return $this->set('event', $collection);
+    }
+
+    /** @return Collection<Event>|null */
+    public function getEvent(): ?Collection
+    {
+        $value = $this->get('event');
+        if ($value instanceof Collection) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return new Collection($value, Event::class);
+        }
+
+        return null;
+    }
+
+    public function setPrivacy(string $privacy): static
+    {
+        return $this->set('privacy', $privacy);
+    }
+
+    public function getPrivacy(): ?string
+    {
+        return $this->get('privacy');
+    }
+
+    /** @param array<string> $imptrackers */
     public function setImptrackers(array $imptrackers): static
     {
         return $this->set('imptrackers', $imptrackers);
@@ -56,15 +105,5 @@ class NativeAd extends BaseObject
     public function getImptrackers(): ?array
     {
         return $this->get('imptrackers');
-    }
-
-    public function setVer(string $ver): static
-    {
-        return $this->set('ver', $ver);
-    }
-
-    public function getVer(): ?string
-    {
-        return $this->get('ver');
     }
 }

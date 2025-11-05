@@ -1,29 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpenRTB 3.0 PHP Library - Video VAST Request Example
  */
 
 // In a real project, you would include Composer's autoloader.
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use src\v3\Context\{Device};
-use src\v3\Context\Context;
-use src\v3\Context\Site;
-use src\v3\Enums\AuctionType;
-use src\v3\Enums\Context\DeviceType;
-use src\v3\Enums\Placement\{Linearity};
-use src\v3\Enums\Placement\AdPosition;
-use src\v3\Enums\Placement\ApiFramework;
-use src\v3\Enums\Placement\BoxingAllowed;
-use src\v3\Enums\Placement\PlaybackCessationMode;
-use src\v3\Enums\Placement\PlaybackMethod;
-use src\v3\Enums\Placement\VideoPlacementType;
-use src\v3\Impression\{Spec};
-use src\v3\Impression\Item;
-use src\v3\Placement\{VideoPlacement};
-use src\v3\Placement\Placement;
-use src\v3\Util\RequestBuilder;
+use OpenRTB\v3\Context\{Device};
+use OpenRTB\v3\Context\Context;
+use OpenRTB\v3\Context\Site;
+use OpenRTB\v3\Enums\AuctionType;
+use OpenRTB\v3\Enums\Context\DeviceType;
+use OpenRTB\v3\Enums\Placement\{Linearity};
+use OpenRTB\v3\Enums\Placement\AdPosition;
+use OpenRTB\v3\Enums\Placement\ApiFramework;
+use OpenRTB\v3\Enums\Placement\BoxingAllowed;
+use OpenRTB\v3\Enums\Placement\PlaybackCessationMode;
+use OpenRTB\v3\Enums\Placement\PlaybackMethod;
+use OpenRTB\v3\Enums\Placement\VideoPlacementType;
+use OpenRTB\v3\Impression\{Spec};
+use OpenRTB\v3\Impression\Item;
+use OpenRTB\v3\Placement\{VideoPlacement};
+use OpenRTB\v3\Placement\Placement;
+use OpenRTB\v3\Util\RequestBuilder;
 
 // Create video placement
 $videoPlacement = new VideoPlacement();
@@ -89,13 +91,12 @@ $context
 
 // Build request
 $builder = new RequestBuilder();
-$request = $builder
-    ->setTimeout(150)
-    ->setAuctionType(AuctionType::SECOND_PRICE)
-    ->setCurrencies(['USD'])
+$request = ($builder
+    ->setTmax(150)
+    ->setAt(AuctionType::SECOND_PRICE)
+    ->setCur(['USD'])
     ->addItem($item)
-    ->setContext($context)
-    ->build();
+    ->setContext($context))();
 
 // Output the JSON
 header('Content-Type: application/json');

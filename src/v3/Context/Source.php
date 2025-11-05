@@ -4,21 +4,28 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Resources\Source as CommonSource;
 
-class Source extends BaseObject
+class Source extends CommonSource
 {
-    public function setTid(string $tid): self
+    /**
+     * @return array<string, string|int>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('tid', $tid);
+        return [
+            'ts' => 'int',
+            'ds' => 'string',
+            'dsmap' => 'string',
+        ];
     }
 
-    public function getTid(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('tid');
+        return array_merge(CommonSource::getBaseSchema(), static::getBaseSchema());
     }
 
-    public function setTs(int $ts): self
+    public function setTs(int $ts): static
     {
         return $this->set('ts', $ts);
     }
@@ -28,7 +35,7 @@ class Source extends BaseObject
         return $this->get('ts');
     }
 
-    public function setDs(string $ds): self
+    public function setDs(string $ds): static
     {
         return $this->set('ds', $ds);
     }
@@ -38,7 +45,7 @@ class Source extends BaseObject
         return $this->get('ds');
     }
 
-    public function setDsmap(string $dsmap): self
+    public function setDsmap(string $dsmap): static
     {
         return $this->set('dsmap', $dsmap);
     }

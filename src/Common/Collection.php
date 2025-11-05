@@ -1,0 +1,195 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OpenRTB\Common;
+
+use OpenRTB\Interfaces\ObjectInterface;
+
+/**
+ * @template T
+ *
+ * @implements \ArrayAccess<int, T>
+ * @implements \IteratorAggregate<int, T>
+ */
+class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
+{
+    /** @var array<int, T> */
+    protected array $items = [];
+
+    /** @var class-string<T>|string|null */
+    protected ?string $itemType = null;
+
+    /**
+     * @param Collection<T>|array<int, T> $items
+     * @param class-string<T>|string|null $itemType
+     */
+    public function __construct(Collection|array $items = [], ?string $itemType = null)
+    {
+        $this->itemType = $items instanceof Collection
+            ? ($items->itemType ?? $itemType)
+            : $itemType;
+
+        foreach ($this->extractItems($items) as $item) {
+            try {
+                $this->add($item);
+            } catch (\InvalidArgumentException $e) {
+                // During construction, if an item doesn't match the expected type, add null instead.
+                // @phpstan-ignore-next-line - Intentionally adding null for invalid items during construction
+                $this->items[] = null;
+            }
+        }
+    }
+
+    /**
+     * @param Collection<T>|array<int, T> $items
+     *
+     * @return array<int, T>
+     */
+    protected function extractItems(Collection|array $items): array
+    {
+        return $items instanceof self ? $items->items : $items;
+    }
+
+    /**
+     * @param T $item
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function add(mixed $item): void
+    {
+        if ($this->validateItem($item)) {
+            $this->items[] = $item;
+        }
+    }
+
+    /**
+     * @return bool returns true if the item is valid, false otherwise
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateItem(mixed $item): bool
+    {
+        if (null === $this->itemType || null === $item) {
+            return true;
+        }
+
+        // If the expected type is a scalar, we can skip instance validation.
+        if (!class_exists($this->itemType) || !is_subclass_of($this->itemType, ObjectInterface::class)) {
+            return true;
+        }
+
+        if (!$item instanceof $this->itemType) {
+            throw new \InvalidArgumentException(sprintf('Collection expects items of type %s, %s given.', $this->itemType, $this->getTypeName($item)));
+        }
+
+        return true;
+    }
+
+    protected function getTypeName(mixed $value): string
+    {
+        return get_debug_type($value);
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return isset($this->items[$offset]);
+    }
+
+    /**
+     * @return T|null
+     */
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->items[$offset] ?? null;
+    }
+
+    /**
+     * @param int|null $offset
+     * @param T        $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->validateItem($value);
+
+        if (null === $offset) {
+            $this->items[] = $value;
+        } else {
+            $this->items[$offset] = $value;
+        }
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        unset($this->items[$offset]);
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
+    }
+
+    /**
+     * @return \Traversable<int, T>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->items);
+    }
+
+    /**
+     * Get all items without conversion (returns raw objects).
+     *
+     * @return array<int, T>
+     */
+    public function all(): array
+    {
+        return $this->items;
+    }
+
+    /**
+     * Convert collection to array (converts objects to arrays for serialization).
+     *
+     * @return array<int, mixed>
+     */
+    public function toArray(): array
+    {
+        return array_map(static function ($item) {
+            if ($item instanceof ObjectInterface) {
+                return $item->toArray();
+            }
+
+            return $item;
+        }, $this->items);
+    }
+
+    /**
+     * @return array<int, T>
+     */
+    public function __debugInfo(): array
+    {
+        return $this->items;
+    }
+
+    /**
+     * @return array{items: array<int, T>, itemType: class-string<T>|string|null}
+     */
+    public function __serialize(): array
+    {
+        return [
+            'items' => $this->items,
+            'itemType' => $this->itemType,
+        ];
+    }
+
+    /**
+     * @param array{items: array<int, T>, itemType: class-string<T>|string|null} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->items = $data['items'];
+        $this->itemType = $data['itemType'];
+    }
+}

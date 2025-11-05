@@ -1,0 +1,126 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OpenRTB\v3;
+
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Common\Resources\Ext;
+use OpenRTB\Interfaces\BidResponseInterface;
+use OpenRTB\v3\Bid\Seatbid;
+use OpenRTB\v3\Enums\NoBidReason;
+
+class BidResponse implements BidResponseInterface
+{
+    use HasData;
+
+    /**
+     * @var array<string, string|class-string|array<class-string>>
+     */
+    protected static array $schema = [
+        'id' => 'string',
+        'bidid' => 'string',
+        'cur' => 'string',
+        'nbr' => NoBidReason::class,
+        'seatbid' => [Seatbid::class],
+        'ext' => Ext::class,
+        'cdata' => 'string',
+    ];
+
+    /**
+     * @return array<string, string|class-string|array<class-string>>
+     */
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setId(string $id): static
+    {
+        return $this->set('id', $id);
+    }
+
+    public function getId(): ?string
+    {
+        return $this->get('id');
+    }
+
+    public function setBidid(string $bidid): static
+    {
+        return $this->set('bidid', $bidid);
+    }
+
+    public function getBidid(): ?string
+    {
+        return $this->get('bidid');
+    }
+
+    public function setCur(string $cur): static
+    {
+        return $this->set('cur', $cur);
+    }
+
+    public function getCur(): ?string
+    {
+        return $this->get('cur');
+    }
+
+    public function setNbr(NoBidReason $nbr): static
+    {
+        return $this->set('nbr', $nbr);
+    }
+
+    public function getNbr(): ?NoBidReason
+    {
+        return $this->get('nbr');
+    }
+
+    /** @param Collection<Seatbid>|array<Seatbid> $seatbid */
+    public function setSeatbid(Collection|array $seatbid): static
+    {
+        return $this->set('seatbid', $seatbid);
+    }
+
+    /** @return Collection<Seatbid>|null */
+    public function getSeatbid(): ?Collection
+    {
+        $seatbid = $this->get('seatbid');
+        if (is_array($seatbid)) {
+            return new Collection($seatbid, Seatbid::class);
+        }
+
+        return $seatbid;
+    }
+
+    public function addSeatbid(Seatbid $seatbid): static
+    {
+        $seatbids = $this->getSeatbid();
+        if (null === $seatbids) {
+            $seatbids = new Collection([], Seatbid::class);
+        }
+        $seatbids[] = $seatbid;
+
+        return $this->setSeatbid($seatbids);
+    }
+
+    public function setExt(Ext $ext): static
+    {
+        return $this->set('ext', $ext);
+    }
+
+    public function getExt(): ?Ext
+    {
+        return $this->get('ext');
+    }
+
+    public function setCdata(string $cdata): static
+    {
+        return $this->set('cdata', $cdata);
+    }
+
+    public function getCdata(): ?string
+    {
+        return $this->get('cdata');
+    }
+}

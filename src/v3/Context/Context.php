@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 
-class Context extends BaseObject
+class Context implements ObjectInterface
 {
+    use HasData;
+
+    /**
+     * @var array<string, class-string>
+     */
     protected static array $schema = [
         'site' => Site::class,
         'app' => App::class,
@@ -18,7 +24,12 @@ class Context extends BaseObject
         'dooh' => Dooh::class,
     ];
 
-    public function setSite(Site $site): self
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
+
+    public function setSite(Site $site): static
     {
         return $this->set('site', $site);
     }
@@ -28,7 +39,7 @@ class Context extends BaseObject
         return $this->get('site');
     }
 
-    public function setApp(App $app): self
+    public function setApp(App $app): static
     {
         return $this->set('app', $app);
     }
@@ -38,7 +49,7 @@ class Context extends BaseObject
         return $this->get('app');
     }
 
-    public function setDevice(Device $device): self
+    public function setDevice(Device $device): static
     {
         return $this->set('device', $device);
     }
@@ -48,7 +59,7 @@ class Context extends BaseObject
         return $this->get('device');
     }
 
-    public function setUser(User $user): self
+    public function setUser(User $user): static
     {
         return $this->set('user', $user);
     }
@@ -58,7 +69,7 @@ class Context extends BaseObject
         return $this->get('user');
     }
 
-    public function setRegs(Regs $regs): self
+    public function setRegs(Regs $regs): static
     {
         return $this->set('regs', $regs);
     }
@@ -68,7 +79,7 @@ class Context extends BaseObject
         return $this->get('regs');
     }
 
-    public function setRestrictions(Restrictions $restrictions): self
+    public function setRestrictions(Restrictions $restrictions): static
     {
         return $this->set('restrictions', $restrictions);
     }
@@ -78,7 +89,7 @@ class Context extends BaseObject
         return $this->get('restrictions');
     }
 
-    public function setDooh(Dooh $dooh): self
+    public function setDooh(Dooh $dooh): static
     {
         return $this->set('dooh', $dooh);
     }

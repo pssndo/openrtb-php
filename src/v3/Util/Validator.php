@@ -4,46 +4,47 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Util;
 
+use OpenRTB\Common\Util\AbstractValidator;
+use OpenRTB\v3\BidRequest as Request;
+use OpenRTB\v3\BidResponse as Response;
 use OpenRTB\v3\Impression\Item;
 use OpenRTB\v3\Impression\Spec;
-use OpenRTB\v3\Request;
-use OpenRTB\v3\Response;
 
 /**
- * Validator - Validates OpenRTB objects
+ * Validator - Validates OpenRTB objects.
  */
-class Validator
+class Validator extends AbstractValidator
 {
-    /** @var list<string> */
-    private array $errors = [];
-
     public function validateRequest(Request $request): bool
     {
-        $this->errors = [];
+        $this->reset();
 
         if (!$request->getId()) {
-            $this->errors[] = 'Request ID is required';
+            $this->addError('Request ID is required');
         }
 
         $items = $request->getItem();
         if (empty($items)) {
-            $this->errors[] = 'Request must contain at least one Item';
+            $this->addError('Request must contain at least one Item');
         } else {
             foreach ($items as $item) {
-                $this->validateItem($item);
+                // @phpstan-ignore-next-line - Defensive runtime check
+                if ($item instanceof Item) {
+                    $this->validateItem($item);
+                }
             }
         }
 
-        return empty($this->errors);
+        return $this->isValid();
     }
 
     private function validateItem(Item $item): void
     {
         if (!$item->getId()) {
-            $this->errors[] = 'Item ID is required';
+            $this->addError('Item ID is required');
         }
         if (!$item->getSpec()) {
-            $this->errors[] = 'Item Spec is required';
+            $this->addError('Item Spec is required');
         } else {
             $this->validateSpec($item->getSpec());
         }
@@ -52,24 +53,18 @@ class Validator
     private function validateSpec(Spec $spec): void
     {
         if (!$spec->getPlacement()) {
-            $this->errors[] = 'Spec Placement is required';
+            $this->addError('Spec Placement is required');
         }
     }
 
     public function validateResponse(Response $response): bool
     {
-        $this->errors = [];
+        $this->reset();
 
         if (!$response->getId()) {
-            $this->errors[] = 'Response ID is required';
+            $this->addError('Response ID is required');
         }
 
-        return empty($this->errors);
-    }
-
-    /** @return list<string> */
-    public function getErrors(): array
-    {
-        return $this->errors;
+        return $this->isValid();
     }
 }

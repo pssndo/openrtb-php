@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-dom": "*",
         "ext-json": "*"
     },
@@ -21,16 +21,15 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenRTB\\v3\\": "src/v3/",
-            "OpenRTB\\v26\\": "src/v26/",
-            "OpenRTB\\v24\\": "src/v24/"
+            "OpenRTB\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "OpenRTB\\Tests\\v3\\": "tests/v3/",
             "OpenRTB\\Tests\\v26\\": "tests/v26/",
-            "OpenRTB\\Tests\\v24\\": "tests/v24/"
+            "OpenRTB\\Tests\\Common\\": "tests/Common/",
+            "OpenRTB\\Tests\\Factory\\": "tests/Factory/"
         }
     },
     "config": {

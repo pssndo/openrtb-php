@@ -4,67 +4,31 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Context;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\User as CommonUser;
 
-class User extends BaseObject
+class User extends CommonUser
 {
-    /** @var array<string, class-string> */
-    protected static array $schema = [
-        'geo' => Geo::class,
-    ];
-
-    public function setId(string $id): static
+    /**
+     * @return array<string, string|array<string>|array<array<string, mixed>>>
+     */
+    protected static function getBaseSchema(): array
     {
-        return $this->set('id', $id);
+        return [
+            'kwarray' => 'array',
+            'consent' => 'string',
+            'data' => 'array',
+            'eids' => 'array',
+        ];
     }
 
-    public function getId(): ?string
+    public static function getSchema(): array
     {
-        return $this->get('id');
+        return array_merge(CommonUser::getBaseSchema(), static::getBaseSchema());
     }
 
-    public function setBuyeruid(string $buyeruid): static
-    {
-        return $this->set('buyeruid', $buyeruid);
-    }
-
-    public function getBuyeruid(): ?string
-    {
-        return $this->get('buyeruid');
-    }
-
-    public function setYob(int $yob): static
-    {
-        return $this->set('yob', $yob);
-    }
-
-    public function getYob(): ?int
-    {
-        return $this->get('yob');
-    }
-
-    public function setGender(string $gender): static
-    {
-        return $this->set('gender', $gender);
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->get('gender');
-    }
-
-    public function setKeywords(string $keywords): static
-    {
-        return $this->set('keywords', $keywords);
-    }
-
-    public function getKeywords(): ?string
-    {
-        return $this->get('keywords');
-    }
-
-    /** @param list<string> $kwarray */
-    public function setKwarray(array $kwarray): static
+    /** @param Collection<string>|array<string> $kwarray */
+    public function setKwarray(Collection|array $kwarray): static
     {
         return $this->set('kwarray', $kwarray);
     }
@@ -83,16 +47,6 @@ class User extends BaseObject
     public function getConsent(): ?string
     {
         return $this->get('consent');
-    }
-
-    public function setGeo(Geo $geo): static
-    {
-        return $this->set('geo', $geo);
-    }
-
-    public function getGeo(): ?Geo
-    {
-        return $this->get('geo');
     }
 
     /** @param list<array<string, mixed>> $data */

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace OpenRTB\v3\Impression;
 
-use OpenRTB\v3\BaseObject;
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\HasData;
+use OpenRTB\Interfaces\ObjectInterface;
 use OpenRTB\v3\Enums\Impression\DeliveryMethod;
 
-class Item extends BaseObject
+class Item implements ObjectInterface
 {
+    use HasData;
+
     /** @var array<string, class-string|array<class-string>> */
     protected static array $schema = [
         'dlvy' => DeliveryMethod::class,
@@ -16,6 +20,11 @@ class Item extends BaseObject
         'deal' => [Deal::class],
         'spec' => Spec::class,
     ];
+
+    public static function getSchema(): array
+    {
+        return static::$schema;
+    }
 
     public function setId(string $id): static
     {
@@ -97,28 +106,40 @@ class Item extends BaseObject
         return $this->get('dlvy');
     }
 
-    /** @param list<Metric> $metric */
-    public function setMetric(array $metric): static
+    /** @param Collection<Metric>|array<Metric> $metric */
+    public function setMetric(Collection|array $metric): static
     {
         return $this->set('metric', $metric);
     }
 
-    /** @return list<Metric>|null */
-    public function getMetric(): ?array
+    /** @return Collection<Metric>|null */
+    public function getMetric(): ?Collection
     {
-        return $this->get('metric');
+        $metric = $this->get('metric');
+
+        if (is_array($metric)) {
+            return new Collection($metric);
+        }
+
+        return $metric;
     }
 
-    /** @param list<Deal> $deal */
-    public function setDeal(array $deal): static
+    /** @param Collection<Deal>|array<Deal> $deal */
+    public function setDeal(Collection|array $deal): static
     {
         return $this->set('deal', $deal);
     }
 
-    /** @return list<Deal>|null */
-    public function getDeal(): ?array
+    /** @return Collection<Deal>|null */
+    public function getDeal(): ?Collection
     {
-        return $this->get('deal');
+        $deal = $this->get('deal');
+
+        if (is_array($deal)) {
+            return new Collection($deal);
+        }
+
+        return $deal;
     }
 
     public function setPrivate(int $private): static
