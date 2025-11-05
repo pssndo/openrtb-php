@@ -108,7 +108,6 @@ class RequestBuilderTest extends TestCase
 
         $parser = new Parser();
         $parsedRequest = $parser->parseBidRequest($json);
-        $this->assertNotNull($parsedRequest);
         $this->assertEquals($expectedArray, $parsedRequest->toArray());
     }
 }

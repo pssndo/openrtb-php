@@ -125,7 +125,6 @@ final class ParserTest extends TestCase
     {
         $json = '{"id":"scalar_test"}';
         $request = $this->parser->parseBidRequest($json);
-        $this->assertNotNull($request);
         $this->assertEquals('scalar_test', $request->getId());
     }
 
@@ -133,7 +132,6 @@ final class ParserTest extends TestCase
     {
         $json = '{"id":"array_scalar_test","wseat":["seat1","seat2"]}';
         $request = $this->parser->parseBidRequest($json);
-        $this->assertNotNull($request);
         $this->assertEquals(['seat1', 'seat2'], $request->getWseat()?->toArray());
     }
 }

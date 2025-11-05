@@ -160,7 +160,6 @@ final class ProviderRegistryTest extends TestCase
 
         $providers = $registry->getProviders();
 
-        $this->assertIsArray($providers);
         $this->assertArrayHasKey('epom', $providers);
         $this->assertArrayHasKey('dianomi', $providers);
         $this->assertArrayHasKey('google', $providers);

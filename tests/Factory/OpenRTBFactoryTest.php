@@ -183,7 +183,6 @@ final class OpenRTBFactoryTest extends TestCase
     public function testGetSupportedVersions(): void
     {
         $versions = OpenRTBFactory::getSupportedVersions();
-        $this->assertIsArray($versions);
         $this->assertContains('2.5', $versions);
         $this->assertContains('2.6', $versions);
         $this->assertContains('3.0', $versions);

@@ -182,6 +182,7 @@ class ImpressionObjectsTest extends TestCase
 
         // Serialize and parse
         $json = $request->toJson();
+        $this->assertIsString($json);
         $parsedRequest = Parser::parseBidRequest($json);
 
         // Get the parsed spec

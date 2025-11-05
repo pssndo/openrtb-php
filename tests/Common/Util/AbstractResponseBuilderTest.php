@@ -108,7 +108,7 @@ class AbstractResponseBuilderTest extends TestCase
             ->setPrice(7.5)
             ->build();
 
-        /* @var \OpenRTB\Common\Resources\Bid $response */
+        $this->assertInstanceOf(Bid::class, $response);
         $this->assertEquals('fluent-id', $response->getId());
         $this->assertEquals(7.5, $response->getPrice());
     }

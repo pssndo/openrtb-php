@@ -94,12 +94,10 @@ abstract class AbstractParser
         }
 
         if ($this->isBackedEnum($itemType)) {
-            /* @var class-string<\BackedEnum> $itemType */
             return $this->hydrateEnum($item, $itemType);
         }
 
         if ($this->isObjectInterface($itemType) && is_array($item)) {
-            /* @var class-string<ObjectInterface> $itemType */
             return $this->hydrate($item, $itemType);
         }
 
@@ -118,12 +116,10 @@ abstract class AbstractParser
         }
 
         if ($this->isObjectInterface($type)) {
-            /* @var class-string<ObjectInterface> $type */
             return $this->hydrateObject($value, $type);
         }
 
         if ($this->isBackedEnum($type)) {
-            /* @var class-string<\BackedEnum> $type */
             return $this->hydrateEnum($value, $type);
         }
 
@@ -167,6 +163,9 @@ abstract class AbstractParser
     /**
      * Checks if a type is a BackedEnum.
      */
+    /**
+     * @phpstan-assert-if-true class-string<\BackedEnum> $type
+     */
     protected function isBackedEnum(string $type): bool
     {
         return is_subclass_of($type, \BackedEnum::class);
@@ -174,6 +173,7 @@ abstract class AbstractParser
 
     /**
      * Checks if a type is an ObjectInterface.
+     * @phpstan-assert-if-true class-string<ObjectInterface> $type
      */
     protected function isObjectInterface(string $type): bool
     {
