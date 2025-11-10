@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v25;
 
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v25\BidResponse;
 use OpenRTB\v25\Response\Bid;
 use OpenRTB\v25\Response\SeatBid;
@@ -74,5 +75,45 @@ class BidResponseTest extends TestCase
         $this->assertEquals('test-serialize', $decoded['id']);
         $this->assertEquals('EUR', $decoded['cur']);
         $this->assertEquals('bidid-123', $decoded['bidid']);
+    }
+
+    public function testGetSchema(): void
+    {
+        $schema = BidResponse::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        $this->assertIsArray($schema);
+    }
+
+    public function testGetBidid(): void
+    {
+        $response = new BidResponse();
+        $response->setId('test-resp');
+        $response->setBidid('bidid-456');
+
+        $this->assertEquals('bidid-456', $response->getBidid());
+    }
+
+    public function testSetExt(): void
+    {
+        $ext = new Ext();
+        $response = new BidResponse();
+        $response->setId('test-resp');
+        $response->setExt($ext);
+
+        $this->assertSame($ext, $response->getExt());
+    }
+
+    public function testGetExt(): void
+    {
+        $response = new BidResponse();
+        $this->assertNull($response->getExt());
+    }
+
+    public function testGetSeatbidWhenNull(): void
+    {
+        $response = new BidResponse();
+        $response->setId('test-resp');
+
+        $this->assertNull($response->getSeatbid());
     }
 }

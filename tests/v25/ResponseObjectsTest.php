@@ -18,6 +18,7 @@ class ResponseObjectsTest extends TestCase
     public function testBidGetSchema(): void
     {
         $schema = Bid::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -177,6 +178,7 @@ class ResponseObjectsTest extends TestCase
     public function testSeatBidGetSchema(): void
     {
         $schema = SeatBid::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 

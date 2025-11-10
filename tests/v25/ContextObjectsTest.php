@@ -38,6 +38,7 @@ class ContextObjectsTest extends TestCase
     public function testGeoGetSchema(): void
     {
         $schema = Geo::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -72,6 +73,7 @@ class ContextObjectsTest extends TestCase
     public function testPublisherGetSchema(): void
     {
         $schema = Publisher::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -110,6 +112,7 @@ class ContextObjectsTest extends TestCase
     public function testProducerGetSchema(): void
     {
         $schema = Producer::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -147,6 +150,7 @@ class ContextObjectsTest extends TestCase
     public function testContentGetSchema(): void
     {
         $schema = Content::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -215,6 +219,7 @@ class ContextObjectsTest extends TestCase
     public function testSiteGetSchema(): void
     {
         $schema = Site::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -291,6 +296,7 @@ class ContextObjectsTest extends TestCase
     public function testAppGetSchema(): void
     {
         $schema = App::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -348,6 +354,7 @@ class ContextObjectsTest extends TestCase
     public function testDeviceGetSchema(): void
     {
         $schema = Device::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -446,6 +453,7 @@ class ContextObjectsTest extends TestCase
     public function testUserGetSchema(): void
     {
         $schema = User::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -502,6 +510,7 @@ class ContextObjectsTest extends TestCase
     public function testRegsGetSchema(): void
     {
         $schema = Regs::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -539,6 +548,7 @@ class ContextObjectsTest extends TestCase
     public function testSourceGetSchema(): void
     {
         $schema = Source::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -627,8 +637,11 @@ class ContextObjectsTest extends TestCase
     public function testSupplyChainSetNodes(): void
     {
         $schain = new SupplyChain();
-        $nodes = [['asi' => 'example.com', 'sid' => 'seller-1', 'hp' => 1]];
-        $schain->setNodes($nodes);
+        $node = new Node();
+        $node->setAsi('example.com');
+        $node->setSid('seller-1');
+        $node->setHp(1);
+        $schain->setNodes([$node]);
         $result = $schain->getNodes();
         $this->assertNotNull($result);
     }
@@ -656,6 +669,7 @@ class ContextObjectsTest extends TestCase
     public function testSupplyChainGetSchema(): void
     {
         $schema = SupplyChain::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -663,6 +677,7 @@ class ContextObjectsTest extends TestCase
     public function testNodeGetSchema(): void
     {
         $schema = Node::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 

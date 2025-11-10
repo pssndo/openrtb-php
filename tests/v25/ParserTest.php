@@ -33,6 +33,7 @@ class ParserTest extends TestCase
         $request->addImp($imp);
 
         $json = $request->toJson();
+        $this->assertIsString($json);
         $parsed = $this->parser->parseBidRequest($json);
 
         $this->assertInstanceOf(BidRequest::class, $parsed);
@@ -46,6 +47,7 @@ class ParserTest extends TestCase
         $response->setCur('USD');
 
         $json = $response->toJson();
+        $this->assertIsString($json);
         $parsed = $this->parser->parseBidResponse($json);
 
         $this->assertInstanceOf(BidResponse::class, $parsed);
@@ -70,6 +72,7 @@ class ParserTest extends TestCase
         $request->addImp($imp);
 
         $json = $request->toJson();
+        $this->assertIsString($json);
         $parsed = $this->parser->parseBidRequest($json);
 
         $this->assertInstanceOf(BidRequest::class, $parsed);
@@ -106,6 +109,7 @@ class ParserTest extends TestCase
         $response->setSeatbid([$seatBid]);
 
         $json = $response->toJson();
+        $this->assertIsString($json);
         $parsed = $this->parser->parseBidResponse($json);
 
         $this->assertInstanceOf(BidResponse::class, $parsed);

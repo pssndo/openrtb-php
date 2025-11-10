@@ -103,6 +103,7 @@ class ValidatorTest extends TestCase
         $this->validator->validateBidRequest($request);
 
         $errors = $this->validator->getErrors();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($errors);
     }
 
@@ -135,5 +136,40 @@ class ValidatorTest extends TestCase
         $result = $this->validator->validateBidRequest($request);
         $this->assertTrue($result);
         $this->assertEmpty($this->validator->getErrors());
+    }
+
+    public function testValidateBidRequestWithInvalidImpInCollection(): void
+    {
+        $request = new BidRequest();
+        $request->setId('req-1');
+
+        // Create a Collection and use reflection to inject null/invalid item
+        $imp = (new Imp())->setId('imp-1')->setBanner(new Banner());
+        $collection = new \OpenRTB\Common\Collection([$imp], Imp::class);
+
+        // Use reflection to add null to the collection's items
+        $reflection = new \ReflectionClass($collection);
+        $itemsProperty = $reflection->getProperty('items');
+        $items = $itemsProperty->getValue($collection);
+        $items[] = null; // Add null which is not an Imp instance
+        $itemsProperty->setValue($collection, $items);
+
+        // Set the collection with null item
+        $request->setImp($collection);
+
+        $result = $this->validator->validateBidRequest($request);
+        $this->assertFalse($result);
+        $errors = $this->validator->getErrors();
+        $this->assertNotEmpty($errors);
+
+        // Should have error about invalid Imp object
+        $foundError = false;
+        foreach ($errors as $error) {
+            if (str_contains($error, 'Invalid Imp object at index')) {
+                $foundError = true;
+                break;
+            }
+        }
+        $this->assertTrue($foundError, 'Expected error about invalid Imp object');
     }
 }

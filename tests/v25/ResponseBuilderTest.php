@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v25;
 
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v25\BidResponse;
 use OpenRTB\v25\Response\Bid;
 use OpenRTB\v25\Response\SeatBid;
@@ -30,6 +31,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setBidid('bid-789')();
 
+        /** @var BidResponse $response */
         $this->assertEquals('req-456', $response->getId());
         $this->assertEquals('bid-789', $response->getBidid());
     }
@@ -40,6 +42,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setCur('EUR')();
 
+        /** @var BidResponse $response */
         $this->assertEquals('EUR', $response->getCur());
     }
 
@@ -49,6 +52,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setNbr(2)();
 
+        /** @var BidResponse $response */
         $this->assertEquals(2, $response->getNbr());
     }
 
@@ -67,6 +71,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->addSeatBid($seatBid)();
 
+        /** @var BidResponse $response */
         $seatbids = $response->getSeatbid();
         $this->assertNotNull($seatbids);
         $this->assertCount(1, $seatbids);
@@ -85,6 +90,7 @@ class ResponseBuilderTest extends TestCase
             ->addSeatBid($seatBid1)
             ->addSeatBid($seatBid2)();
 
+        /** @var BidResponse $response */
         $seatbids = $response->getSeatbid();
         $this->assertNotNull($seatbids);
         $this->assertCount(2, $seatbids);
@@ -112,6 +118,7 @@ class ResponseBuilderTest extends TestCase
             ->setCur('USD')
             ->addSeatBid($seatBid)();
 
+        /** @var BidResponse $response */
         $this->assertEquals('req-full', $response->getId());
         $this->assertEquals('bidid-full', $response->getBidid());
         $this->assertEquals('USD', $response->getCur());
@@ -119,5 +126,17 @@ class ResponseBuilderTest extends TestCase
         $seatbids = $response->getSeatbid();
         $this->assertNotNull($seatbids);
         $this->assertCount(1, $seatbids);
+    }
+
+    public function testBuildResponseWithExt(): void
+    {
+        $ext = new Ext();
+        $builder = new BidResponseBuilder('req-555');
+        $response = $builder
+            ->setExt($ext)();
+
+        /** @var BidResponse $response */
+        $this->assertEquals('req-555', $response->getId());
+        $this->assertSame($ext, $response->getExt());
     }
 }

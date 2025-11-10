@@ -32,6 +32,7 @@ class ImpressionObjectsTest extends TestCase
     public function testImpGetSchema(): void
     {
         $schema = Imp::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -297,6 +298,7 @@ class ImpressionObjectsTest extends TestCase
     public function testBannerGetSchema(): void
     {
         $schema = Banner::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -461,6 +463,7 @@ class ImpressionObjectsTest extends TestCase
     public function testFormatGetSchema(): void
     {
         $schema = Format::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -479,6 +482,7 @@ class ImpressionObjectsTest extends TestCase
     public function testVideoGetSchema(): void
     {
         $schema = Video::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -595,6 +599,7 @@ class ImpressionObjectsTest extends TestCase
     public function testAudioGetSchema(): void
     {
         $schema = Audio::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -687,6 +692,7 @@ class ImpressionObjectsTest extends TestCase
     public function testNativeGetSchema(): void
     {
         $schema = Native::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -754,6 +760,7 @@ class ImpressionObjectsTest extends TestCase
     public function testDealGetSchema(): void
     {
         $schema = Deal::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -803,13 +810,32 @@ class ImpressionObjectsTest extends TestCase
     public function testDealSetAt(): void
     {
         $deal = (new Deal())->setAt(2);
-        $this->assertNotNull($deal->getAt());
+        $at = $deal->getAt();
+        $this->assertNotNull($at);
+        $this->assertInstanceOf(\OpenRTB\v25\Enums\AuctionType::class, $at);
+        $this->assertEquals(2, $at->value);
     }
 
     public function testDealGetAt(): void
     {
         $deal = new Deal();
         $this->assertNull($deal->getAt());
+    }
+
+    public function testDealGetAtReturnsAuctionTypeInstance(): void
+    {
+        $deal = new Deal();
+
+        // Use reflection to set at as AuctionType instance directly
+        $auctionType = \OpenRTB\v25\Enums\AuctionType::FIRST_PRICE;
+        $reflection = new \ReflectionClass($deal);
+        $dataProperty = $reflection->getProperty('data');
+        $data = $dataProperty->getValue($deal);
+        $data->at = $auctionType;
+        $dataProperty->setValue($deal, $data);
+
+        $result = $deal->getAt();
+        $this->assertSame($auctionType, $result);
     }
 
     public function testDealGetExt(): void
@@ -833,6 +859,7 @@ class ImpressionObjectsTest extends TestCase
     public function testPmpGetSchema(): void
     {
         $schema = Pmp::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -877,6 +904,7 @@ class ImpressionObjectsTest extends TestCase
     public function testMetricGetSchema(): void
     {
         $schema = Metric::getSchema();
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 

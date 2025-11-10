@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OpenRTB\Tests\v25;
 
+use OpenRTB\Common\Collection;
+use OpenRTB\Common\Resources\Ext;
 use OpenRTB\v25\BidRequest;
 use OpenRTB\v25\Context\Device;
 use OpenRTB\v25\Context\Site;
@@ -119,5 +121,78 @@ class BidRequestTest extends TestCase
         $cur = $request->getCur();
         $this->assertNotNull($cur);
         $this->assertCount(2, $cur);
+    }
+
+    public function testGetImpReturnsCollection(): void
+    {
+        $request = new BidRequest();
+        $request->setId('test-imp-collection');
+
+        $imp1 = new Imp();
+        $imp1->setId('imp-1');
+        $imp2 = new Imp();
+        $imp2->setId('imp-2');
+
+        $collection = new Collection([$imp1, $imp2], Imp::class);
+        $request->setImp($collection);
+
+        $result = $request->getImp();
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertCount(2, $result);
+    }
+
+    public function testGetWseatWhenNull(): void
+    {
+        $request = new BidRequest();
+        $request->setId('test-wseat-null');
+
+        $this->assertNull($request->getWseat());
+    }
+
+    public function testGetBseatWhenNull(): void
+    {
+        $request = new BidRequest();
+        $request->setId('test-bseat-null');
+
+        $this->assertNull($request->getBseat());
+    }
+
+    public function testGetCurWhenNull(): void
+    {
+        $request = new BidRequest();
+        $request->setId('test-cur-null');
+
+        $this->assertNull($request->getCur());
+    }
+
+    public function testSetExt(): void
+    {
+        $ext = new Ext();
+        $request = new BidRequest();
+        $request->setId('test-ext');
+        $request->setExt($ext);
+
+        $this->assertSame($ext, $request->getExt());
+    }
+
+    public function testGetImpConvertsArrayToCollection(): void
+    {
+        $request = new BidRequest();
+        $request->setId('test-imp-array');
+
+        $imp = new Imp();
+        $imp->setId('imp-1');
+
+        // Use reflection to set imp as raw array (simulating parsed JSON data)
+        $reflection = new \ReflectionClass($request);
+        $dataProperty = $reflection->getProperty('data');
+        $data = $dataProperty->getValue($request);
+        $data->imp = [$imp]; // Set as array, not Collection
+        $dataProperty->setValue($request, $data);
+
+        // getImp should convert array to Collection
+        $result = $request->getImp();
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertCount(1, $result);
     }
 }
