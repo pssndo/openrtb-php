@@ -1,6 +1,6 @@
 {
     "name": "passendo/openrtb-php",
-    "description": "A modern, PSR-4 compliant PHP library for OpenRTB specifications 2.4, 2.6, and 3.0.",
+    "description": "A modern, PSR-4 compliant PHP library for OpenRTB specifications 2.5, 2.6, and 3.0.",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "authors": [
@@ -28,6 +28,7 @@
         "psr-4": {
             "OpenRTB\\Tests\\v3\\": "tests/v3/",
             "OpenRTB\\Tests\\v26\\": "tests/v26/",
+            "OpenRTB\\Tests\\v25\\": "tests/v25/",
             "OpenRTB\\Tests\\Common\\": "tests/Common/",
             "OpenRTB\\Tests\\Factory\\": "tests/Factory/"
         }

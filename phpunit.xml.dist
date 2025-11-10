@@ -15,6 +15,9 @@
         <testsuite name="OpenRTB v2.6 Test Suite">
             <directory suffix="Test.php">./tests/v26</directory>
         </testsuite>
+        <testsuite name="OpenRTB v2. Test Suite">
+            <directory suffix="Test.php">./tests/v25</directory>
+        </testsuite>
     </testsuites>
 
     <coverage>
@@ -24,6 +27,7 @@
         <exclude>
             <directory suffix=".php">./src/v3/Enums</directory>
             <directory suffix=".php">./src/v26/Enums</directory>
+            <directory suffix=".php">./src/v25/Enums</directory>
             <directory suffix=".php">./src/Interfaces</directory>
         </exclude>
         <report>

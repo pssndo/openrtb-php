@@ -30,10 +30,10 @@ final class OpenRTBFactoryTest extends TestCase
         $this->assertEquals('3.0', $factory->getVersion());
     }
 
-    public function testConstructorWithVersion25MapsTo26(): void
+    public function testConstructorWithVersion25(): void
     {
         $factory = new OpenRTBFactory('2.5');
-        $this->assertEquals('2.6', $factory->getVersion());
+        $this->assertEquals('2.5', $factory->getVersion());
     }
 
     public function testConstructorWithUnsupportedVersionThrowsException(): void
@@ -50,6 +50,13 @@ final class OpenRTBFactoryTest extends TestCase
         new OpenRTBFactory('1.0');
     }
 
+    public function testCreateRequestBuilderForVersion25(): void
+    {
+        $factory = new OpenRTBFactory('2.5');
+        $builder = $factory->createRequestBuilder();
+        $this->assertInstanceOf(\OpenRTB\v25\Util\RequestBuilder::class, $builder);
+    }
+
     public function testCreateRequestBuilderForVersion26(): void
     {
         $factory = new OpenRTBFactory('2.6');
@@ -64,6 +71,13 @@ final class OpenRTBFactoryTest extends TestCase
         $this->assertInstanceOf(RequestBuilder::class, $builder);
     }
 
+    public function testCreateParserForVersion25(): void
+    {
+        $factory = new OpenRTBFactory('2.5');
+        $parser = $factory->createParser();
+        $this->assertInstanceOf(\OpenRTB\v25\Util\Parser::class, $parser);
+    }
+
     public function testCreateParserForVersion26(): void
     {
         $factory = new OpenRTBFactory('2.6');
@@ -76,6 +90,13 @@ final class OpenRTBFactoryTest extends TestCase
         $factory = new OpenRTBFactory('3.0');
         $parser = $factory->createParser();
         $this->assertInstanceOf(Parser::class, $parser);
+    }
+
+    public function testCreateResponseBuilderForVersion25(): void
+    {
+        $factory = new OpenRTBFactory('2.5');
+        $builder = $factory->createResponseBuilder('request-123');
+        $this->assertInstanceOf(\OpenRTB\v25\Util\BidResponseBuilder::class, $builder);
     }
 
     public function testCreateResponseBuilderForVersion26(): void
@@ -97,6 +118,13 @@ final class OpenRTBFactoryTest extends TestCase
         $factory = new OpenRTBFactory('2.6');
         $builder = $factory->createResponseBuilder();
         $this->assertInstanceOf(BidResponseBuilder::class, $builder);
+    }
+
+    public function testCreateValidatorForVersion25(): void
+    {
+        $factory = new OpenRTBFactory('2.5');
+        $validator = $factory->createValidator();
+        $this->assertInstanceOf(\OpenRTB\v25\Util\Validator::class, $validator);
     }
 
     public function testCreateValidatorForVersion26(): void
@@ -187,6 +215,18 @@ final class OpenRTBFactoryTest extends TestCase
         $this->assertContains('2.6', $versions);
         $this->assertContains('3.0', $versions);
         $this->assertCount(3, $versions);
+    }
+
+    public function testFullWorkflowForVersion25(): void
+    {
+        $factory = new OpenRTBFactory('2.5');
+
+        // Test all factory methods work correctly
+        $this->assertInstanceOf(\OpenRTB\v25\Util\RequestBuilder::class, $factory->createRequestBuilder());
+        $this->assertInstanceOf(\OpenRTB\v25\Util\Parser::class, $factory->createParser());
+        $this->assertInstanceOf(\OpenRTB\v25\Util\BidResponseBuilder::class, $factory->createResponseBuilder('req-1'));
+        $this->assertInstanceOf(\OpenRTB\v25\Util\Validator::class, $factory->createValidator());
+        $this->assertEquals('2.5', $factory->getVersion());
     }
 
     public function testFullWorkflowForVersion26(): void

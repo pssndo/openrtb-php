@@ -173,6 +173,7 @@ abstract class AbstractParser
 
     /**
      * Checks if a type is an ObjectInterface.
+     *
      * @phpstan-assert-if-true class-string<ObjectInterface> $type
      */
     protected function isObjectInterface(string $type): bool

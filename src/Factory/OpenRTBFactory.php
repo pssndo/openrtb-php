@@ -21,10 +21,10 @@ class OpenRTBFactory
     private string $version;
 
     /**
-     * Supported OpenRTB versions (with backward compatibility mapping).
+     * Supported OpenRTB versions.
      */
     private const SUPPORTED_VERSIONS = [
-        '2.5' => '2.6', // Map 2.5 to 2.6 (backward compatible)
+        '2.5' => '2.5',
         '2.6' => '2.6',
         '3.0' => '3.0',
     ];
@@ -57,6 +57,7 @@ class OpenRTBFactory
     public function createRequestBuilder(): object
     {
         return match ($this->version) {
+            '2.5' => new \OpenRTB\v25\Util\RequestBuilder(),
             '2.6' => new \OpenRTB\v26\Util\RequestBuilder(),
             '3.0' => new \OpenRTB\v3\Util\RequestBuilder(),
             default => throw new \InvalidArgumentException("No builder for version {$this->version}"),
@@ -69,6 +70,7 @@ class OpenRTBFactory
     public function createParser(): object
     {
         return match ($this->version) {
+            '2.5' => new \OpenRTB\v25\Util\Parser(),
             '2.6' => new \OpenRTB\v26\Util\Parser(),
             '3.0' => new \OpenRTB\v3\Util\Parser(),
             default => throw new \InvalidArgumentException("No parser for version {$this->version}"),
@@ -81,6 +83,7 @@ class OpenRTBFactory
     public function createResponseBuilder(string $requestId = ''): object
     {
         return match ($this->version) {
+            '2.5' => new \OpenRTB\v25\Util\BidResponseBuilder($requestId),
             '2.6' => new \OpenRTB\v26\Util\BidResponseBuilder($requestId),
             '3.0' => new \OpenRTB\v3\Util\ResponseBuilder($requestId),
             default => throw new \InvalidArgumentException("No response builder for version {$this->version}"),
@@ -93,6 +96,7 @@ class OpenRTBFactory
     public function createValidator(): object
     {
         return match ($this->version) {
+            '2.5' => new \OpenRTB\v25\Util\Validator(),
             '2.6' => new \OpenRTB\v26\Util\Validator(),
             '3.0' => new \OpenRTB\v3\Util\Validator(),
             default => throw new \InvalidArgumentException("No validator for version {$this->version}"),
