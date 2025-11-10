@@ -31,7 +31,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setBidid('bid-789')();
 
-        /** @var BidResponse $response */
+        /* @var BidResponse $response */
         $this->assertEquals('req-456', $response->getId());
         $this->assertEquals('bid-789', $response->getBidid());
     }
@@ -42,7 +42,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setCur('EUR')();
 
-        /** @var BidResponse $response */
+        /* @var BidResponse $response */
         $this->assertEquals('EUR', $response->getCur());
     }
 
@@ -52,7 +52,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setNbr(2)();
 
-        /** @var BidResponse $response */
+        /* @var BidResponse $response */
         $this->assertEquals(2, $response->getNbr());
     }
 
@@ -118,7 +118,7 @@ class ResponseBuilderTest extends TestCase
             ->setCur('USD')
             ->addSeatBid($seatBid)();
 
-        /** @var BidResponse $response */
+        /* @var BidResponse $response */
         $this->assertEquals('req-full', $response->getId());
         $this->assertEquals('bidid-full', $response->getBidid());
         $this->assertEquals('USD', $response->getCur());
@@ -135,7 +135,7 @@ class ResponseBuilderTest extends TestCase
         $response = $builder
             ->setExt($ext)();
 
-        /** @var BidResponse $response */
+        /* @var BidResponse $response */
         $this->assertEquals('req-555', $response->getId());
         $this->assertSame($ext, $response->getExt());
     }

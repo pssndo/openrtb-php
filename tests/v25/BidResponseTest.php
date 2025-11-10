@@ -80,7 +80,7 @@ class BidResponseTest extends TestCase
     public function testGetSchema(): void
     {
         $schema = BidResponse::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 

@@ -103,7 +103,7 @@ class ValidatorTest extends TestCase
         $this->validator->validateBidRequest($request);
 
         $errors = $this->validator->getErrors();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($errors);
     }
 

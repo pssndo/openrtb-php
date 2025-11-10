@@ -32,7 +32,7 @@ class ImpressionObjectsTest extends TestCase
     public function testImpGetSchema(): void
     {
         $schema = Imp::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -298,7 +298,7 @@ class ImpressionObjectsTest extends TestCase
     public function testBannerGetSchema(): void
     {
         $schema = Banner::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -463,7 +463,7 @@ class ImpressionObjectsTest extends TestCase
     public function testFormatGetSchema(): void
     {
         $schema = Format::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -482,7 +482,7 @@ class ImpressionObjectsTest extends TestCase
     public function testVideoGetSchema(): void
     {
         $schema = Video::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -599,7 +599,7 @@ class ImpressionObjectsTest extends TestCase
     public function testAudioGetSchema(): void
     {
         $schema = Audio::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -692,7 +692,7 @@ class ImpressionObjectsTest extends TestCase
     public function testNativeGetSchema(): void
     {
         $schema = Native::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -760,7 +760,7 @@ class ImpressionObjectsTest extends TestCase
     public function testDealGetSchema(): void
     {
         $schema = Deal::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -859,7 +859,7 @@ class ImpressionObjectsTest extends TestCase
     public function testPmpGetSchema(): void
     {
         $schema = Pmp::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
@@ -904,7 +904,7 @@ class ImpressionObjectsTest extends TestCase
     public function testMetricGetSchema(): void
     {
         $schema = Metric::getSchema();
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
+        /* @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($schema);
     }
 
