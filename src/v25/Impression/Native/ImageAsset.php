@@ -200,7 +200,7 @@ class ImageAsset extends NativeAsset
     {
         $imgData = $data['img'] ?? [];
 
-        $asset = new static(
+        $asset = new self(
             $data['id'],
             $imgData['type'] ?? null,
             $imgData['wmin'] ?? null,
@@ -240,6 +240,7 @@ class ImageAsset extends NativeAsset
             $asset->setExt($data['ext']);
         }
 
+        /** @var static */
         return $asset;
     }
 }

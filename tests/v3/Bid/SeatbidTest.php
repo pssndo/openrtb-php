@@ -23,7 +23,8 @@ final class SeatbidTest extends TestCase
         $this->assertArrayHasKey('seat', $schema);
         $this->assertEquals('string', $schema['seat']);
         $this->assertArrayHasKey('bid', $schema);
-        $this->assertEquals([CommonBid::class], $schema['bid']);
+        // v3 overrides to use v3 Bid instead of CommonBid
+        $this->assertEquals([Bid::class], $schema['bid']);
 
         // Assertions for properties unique to v3 Seatbid
         $this->assertArrayHasKey('package', $schema);

@@ -81,6 +81,35 @@ echo $json;
 
 ### Creating a Bid Response
 
+#### Method 1: Using fromArray() (Recommended for Provider Responses)
+
+If you're receiving a response from a provider, use the automatic hydration method:
+
+```php
+<?php
+use OpenRTB\v25\BidResponse;
+
+// Receive response from provider
+$jsonResponse = file_get_contents('php://input');
+$rawData = json_decode($jsonResponse, true);
+
+// Automatic hydration - creates all nested objects automatically
+$response = BidResponse::fromArray($rawData);
+
+// Access with full type safety
+$seatbids = $response->getSeatbid();
+foreach ($seatbids as $seatbid) {
+    foreach ($seatbid->getBid() as $bid) {
+        echo $bid->getPrice();
+        echo $bid->getCrid();
+    }
+}
+```
+
+#### Method 2: Using Manual Construction
+
+For building responses from scratch:
+
 ```php
 <?php
 use OpenRTB\v25\BidResponse;
@@ -113,6 +142,21 @@ $response->setId('request-123')
 // Convert to JSON
 $json = $response->toJson();
 echo $json;
+```
+
+#### Method 3: Hybrid - fromArray() with Modifications
+
+You can also hydrate from an array and then modify:
+
+```php
+<?php
+use OpenRTB\v25\BidResponse;
+
+// Start with provider data
+$response = BidResponse::fromArray($rawProviderData);
+
+// Modify as needed
+$response->setCur('EUR'); // Override currency
 ```
 
 ---
@@ -187,6 +231,32 @@ echo $response->toJson();
 ---
 
 ## Parsing JSON
+
+### Option 1: Using fromArray() (Recommended)
+
+The modern approach uses automatic hydration:
+
+```php
+<?php
+use OpenRTB\v25\BidResponse;
+
+// Parse JSON to array first
+$jsonResponse = '{"id":"req-1","seatbid":[{"bid":[{"id":"bid-1","impid":"imp-1","price":2.5}]}]}';
+$rawData = json_decode($jsonResponse, true);
+
+// Automatic hydration - all nested objects created automatically
+$response = BidResponse::fromArray($rawData);
+
+echo $response->getId(); // "req-1"
+$seatbids = $response->getSeatbid();
+foreach ($seatbids as $seatbid) {
+    foreach ($seatbid->getBid() as $bid) {
+        echo $bid->getPrice(); // 2.5
+    }
+}
+```
+
+### Option 2: Using the Parser
 
 Use the Parser to convert JSON strings into strongly-typed PHP objects:
 

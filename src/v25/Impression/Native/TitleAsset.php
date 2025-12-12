@@ -41,7 +41,7 @@ class TitleAsset extends NativeAsset
 
     public static function fromArray(array $data): static
     {
-        $asset = new static(
+        $asset = new self(
             $data['id'],
             $data['title']['len'] ?? 90,
             ($data['required'] ?? 0) === 1
@@ -51,6 +51,7 @@ class TitleAsset extends NativeAsset
             $asset->setExt($data['ext']);
         }
 
+        /** @var static */
         return $asset;
     }
 }

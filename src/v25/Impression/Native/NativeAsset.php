@@ -93,26 +93,31 @@ abstract class NativeAsset implements JsonSerializable
     }
 
     /**
-     * Create asset from array
+     * Create asset from array (factory method)
      *
      * @param array<string, mixed> $data
+     * @return static
      */
-    public static function fromArray(array $data): static
+    public static function fromArray(array $data): self
     {
-        // Determine asset type from data
+        // Determine asset type from data (factory method)
         if (isset($data['title'])) {
+            // @phpstan-ignore-next-line return.type
             return TitleAsset::fromArray($data);
         }
 
         if (isset($data['img'])) {
+            // @phpstan-ignore-next-line return.type
             return ImageAsset::fromArray($data);
         }
 
         if (isset($data['data'])) {
+            // @phpstan-ignore-next-line return.type
             return DataAsset::fromArray($data);
         }
 
         if (isset($data['video'])) {
+            // @phpstan-ignore-next-line return.type
             return VideoAsset::fromArray($data);
         }
 

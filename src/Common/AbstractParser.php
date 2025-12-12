@@ -19,7 +19,7 @@ abstract class AbstractParser
      *
      * @return T
      */
-    protected function hydrate(array $data, string $class): ObjectInterface
+    public function hydrate(array $data, string $class): ObjectInterface
     {
         // @phpstan-ignore-next-line - Defensive check for invalid data
         if (array_is_list($data)) {
@@ -58,7 +58,7 @@ abstract class AbstractParser
      *
      * @param array<string|int|class-string> $type
      *
-     * @return Collection|mixed
+     * @return Collection|array<mixed>|mixed
      */
     protected function hydrateCollection(mixed $value, array $type): mixed
     {
@@ -67,6 +67,12 @@ abstract class AbstractParser
         }
 
         $itemType = $type[0];
+
+        // For primitive types (string, int, float, bool), keep as regular array
+        // instead of wrapping in Collection
+        if (in_array($itemType, ['string', 'int', 'float', 'bool'], true)) {
+            return $value;
+        }
 
         $collection = new Collection([], is_string($itemType) ? $itemType : null);
 
