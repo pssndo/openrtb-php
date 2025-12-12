@@ -100,7 +100,7 @@ class VideoAsset extends NativeAsset
     {
         $videoData = $data['video'] ?? [];
 
-        $asset = new static(
+        $asset = new self(
             $data['id'],
             ($data['required'] ?? 0) === 1
         );
@@ -125,6 +125,7 @@ class VideoAsset extends NativeAsset
             $asset->setExt($data['ext']);
         }
 
+        /** @var static */
         return $asset;
     }
 }

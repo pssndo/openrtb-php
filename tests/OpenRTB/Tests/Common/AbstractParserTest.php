@@ -276,10 +276,11 @@ class AbstractParserTest extends TestCase
         ];
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
-        // stringArray schema is ['string'], so it returns a Collection
+        // stringArray schema is ['string'], primitive arrays are kept as regular arrays
         $stringArray = $object->get('stringArray');
-        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $stringArray);
+        $this->assertIsArray($stringArray);
         $this->assertCount(3, $stringArray);
+        $this->assertEquals(['str1', 'str2', 'str3'], $stringArray);
     }
 
     public function testHydrateWithArrayOfMixedTypes(): void
@@ -464,8 +465,8 @@ class AbstractParserTest extends TestCase
 
     public function testHydrateCollectionItemWithStringScalarType(): void
     {
-        // Line 110 in hydrateCollectionItem: When itemType is a string but not enum/object
-        // This happens with scalar types like 'string', 'int', 'float' in array schema
+        // Scalar types like 'string', 'int', 'float' in array schema are kept as regular arrays
+        // for consistency with primitive type handling
         $data = [
             'id' => 'test',
             'stringArray' => ['value1', 'value2', 'value3'],
@@ -473,7 +474,7 @@ class AbstractParserTest extends TestCase
         $object = $this->parser->parse($data, TestObject::class);
         $this->assertInstanceOf(TestObject::class, $object);
         $stringArray = $object->get('stringArray');
-        $this->assertInstanceOf(\OpenRTB\Common\Collection::class, $stringArray);
+        $this->assertIsArray($stringArray);
         $this->assertCount(3, $stringArray);
         // Each item should be returned as-is (string)
         $this->assertEquals('value1', $stringArray[0]);

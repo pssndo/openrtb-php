@@ -20,6 +20,31 @@ trait HasData
         }
     }
 
+    /**
+     * Create an instance from raw array data with automatic hydration of nested objects.
+     *
+     * This method automatically converts raw response data into fully typed objects
+     * based on the class schema. It handles:
+     * - Nested objects (instantiates them recursively)
+     * - Arrays/Collections of objects
+     * - Enums (creates from values)
+     * - Simple types (strings, ints, etc.)
+     *
+     * Uses AbstractParser::hydrate() for consistent hydration logic across the codebase.
+     *
+     * @param array<string, mixed> $data Raw data from provider response
+     * @return static Fully hydrated object
+     */
+    public static function fromArray(array $data): static
+    {
+        $parser = new class extends AbstractParser {};
+        /**
+         * @var static
+         * @phpstan-ignore-next-line
+         */
+        return $parser->hydrate($data, static::class);
+    }
+
     public function set(string $key, mixed $value): static
     {
         $this->data->$key = $value;

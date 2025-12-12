@@ -10,12 +10,13 @@ use OpenRTB\Common\Resources\SeatBid as CommonSeatBid;
 class Seatbid extends CommonSeatBid
 {
     /**
-     * @return array<string, string|int>
+     * @return array<string, string|int|array<class-string>>
      */
     protected static function getBaseSchema(): array
     {
         return [
             'package' => 'int',
+            'bid' => [Bid::class], // Override to use v3 Bid instead of Common Bid
         ];
     }
 

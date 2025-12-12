@@ -295,7 +295,7 @@ class NativeRequest implements JsonSerializable
      */
     public static function fromArray(array $data): static
     {
-        $request = new static();
+        $request = new self();
 
         if (isset($data['ver'])) {
             $request->setVer($data['ver']);
@@ -347,6 +347,7 @@ class NativeRequest implements JsonSerializable
             $request->setExt($data['ext']);
         }
 
+        /** @var static */
         return $request;
     }
 }

@@ -668,6 +668,51 @@ final class NativeObjectsTest extends TestCase
         $this->assertCount(1, $data['assets']);
     }
 
+    public function testNativeRequestToJsonWithDefaultOptions(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+        $request->addAsset(new TitleAsset(1, 90, true));
+
+        $json = $request->toJson();
+
+        $this->assertJson($json);
+
+        $decoded = json_decode($json, true);
+        $this->assertEquals('1.2', $decoded['ver']);
+        $this->assertEquals(1, $decoded['context']);
+        $this->assertCount(1, $decoded['assets']);
+    }
+
+    public function testNativeRequestToJsonWithPrettyPrint(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+
+        $json = $request->toJson(JSON_PRETTY_PRINT);
+
+        $this->assertJson($json);
+        // Pretty print should contain newlines and indentation
+        $this->assertStringContainsString("\n", $json);
+        $this->assertStringContainsString('    ', $json);
+    }
+
+    public function testNativeRequestToJsonWithMultipleOptions(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+
+        $json = $request->toJson(JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+        $this->assertJson($json);
+
+        $decoded = json_decode($json, true);
+        $this->assertEquals('1.2', $decoded['ver']);
+    }
+
     public function testNativeRequestFromArrayWithAllFields(): void
     {
         $data = [

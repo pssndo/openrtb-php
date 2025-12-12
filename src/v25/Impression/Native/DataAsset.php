@@ -74,7 +74,7 @@ class DataAsset extends NativeAsset
     {
         $dataData = $data['data'] ?? [];
 
-        $asset = new static(
+        $asset = new self(
             $data['id'],
             $dataData['type'] ?? self::TYPE_DESC,
             $dataData['len'] ?? null,
@@ -85,6 +85,7 @@ class DataAsset extends NativeAsset
             $asset->setExt($data['ext']);
         }
 
+        /** @var static */
         return $asset;
     }
 }
