@@ -160,4 +160,98 @@ final class SiteTest extends TestCase
         $site->setExt($ext);
         $this->assertSame($ext, $site->getExt());
     }
+
+    public function testSetSectioncat(): void
+    {
+        $site = new Site();
+        $sectioncat = ['IAB1', 'IAB12'];
+        $site->setSectioncat($sectioncat);
+        $this->assertEquals($sectioncat, $site->getSectioncat());
+    }
+
+    public function testGetSectioncat(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getSectioncat());
+        $site->setSectioncat(['IAB1']);
+        $this->assertEquals(['IAB1'], $site->getSectioncat());
+    }
+
+    public function testSetPagecat(): void
+    {
+        $site = new Site();
+        $pagecat = ['IAB1-1', 'IAB12-2'];
+        $site->setPagecat($pagecat);
+        $this->assertEquals($pagecat, $site->getPagecat());
+    }
+
+    public function testGetPagecat(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getPagecat());
+        $site->setPagecat(['IAB1-1']);
+        $this->assertEquals(['IAB1-1'], $site->getPagecat());
+    }
+
+    public function testSetPrivacypolicy(): void
+    {
+        $site = new Site();
+        $site->setPrivacypolicy(1);
+        $this->assertEquals(1, $site->getPrivacypolicy());
+    }
+
+    public function testGetPrivacypolicy(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getPrivacypolicy());
+        $site->setPrivacypolicy(0);
+        $this->assertEquals(0, $site->getPrivacypolicy());
+    }
+
+    public function testSetKeywords(): void
+    {
+        $site = new Site();
+        $keywords = 'news, politics, technology';
+        $site->setKeywords($keywords);
+        $this->assertEquals($keywords, $site->getKeywords());
+    }
+
+    public function testGetKeywords(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getKeywords());
+        $site->setKeywords('test keywords');
+        $this->assertEquals('test keywords', $site->getKeywords());
+    }
+
+    public function testSetSearch(): void
+    {
+        $site = new Site();
+        $search = 'election 2024';
+        $site->setSearch($search);
+        $this->assertEquals($search, $site->getSearch());
+    }
+
+    public function testGetSearch(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getSearch());
+        $site->setSearch('test search');
+        $this->assertEquals('test search', $site->getSearch());
+    }
+
+    public function testSetMobile(): void
+    {
+        $site = new Site();
+        $site->setMobile(1);
+        $this->assertEquals(1, $site->getMobile());
+    }
+
+    public function testGetMobile(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getMobile());
+        $site->setMobile(0);
+        $this->assertEquals(0, $site->getMobile());
+    }
 }

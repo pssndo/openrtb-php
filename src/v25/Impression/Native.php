@@ -8,8 +8,15 @@ use OpenRTB\Common\Collection;
 use OpenRTB\Common\HasData;
 use OpenRTB\Common\Resources\Ext;
 use OpenRTB\Interfaces\ObjectInterface;
+use OpenRTB\v25\Impression\Native\NativeRequest;
 
 /**
+ * Native Ad object for OpenRTB 2.5
+ *
+ * Supports both old-school (JSON string) and modern (object) approaches:
+ * - Old: setRequest(json_encode($array))
+ * - New: setRequest(new NativeRequest())
+ *
  * @see https://iabtechlab.com/wp-content/uploads/2016/03/OpenRTB-API-Specification-Version-2-5-FINAL.pdf#page=28
  */
 class Native implements ObjectInterface
@@ -35,14 +42,52 @@ class Native implements ObjectInterface
         return static::$schema;
     }
 
-    public function setRequest(string $request): static
+    /**
+     * Set native request
+     *
+     * Accepts either:
+     * - string: JSON-encoded native request (old approach)
+     * - NativeRequest: Object that auto-serializes (new approach)
+     *
+     * @param string|NativeRequest $request
+     */
+    public function setRequest(string|NativeRequest $request): static
     {
+        if ($request instanceof NativeRequest) {
+            // Auto-serialize to JSON string for OpenRTB 2.5 compatibility
+            return $this->set('request', $request->toJson());
+        }
+
         return $this->set('request', $request);
     }
 
+    /**
+     * Get native request as string
+     *
+     * @return string|null JSON-encoded native request
+     */
     public function getRequest(): ?string
     {
         return $this->get('request');
+    }
+
+    /**
+     * Get native request as object
+     *
+     * @return NativeRequest|null
+     */
+    public function getRequestObject(): ?NativeRequest
+    {
+        $request = $this->getRequest();
+        if ($request === null) {
+            return null;
+        }
+
+        try {
+            return NativeRequest::fromJson($request);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function setVer(string $ver): static
