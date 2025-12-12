@@ -13,12 +13,18 @@ use OpenRTB\Common\Resources\Site as CommonSite;
 class Site extends CommonSite
 {
     /**
-     * @return array<string, class-string|array<string>>
+     * @return array<string, string|class-string|array<string>|int>
      */
     protected static function getBaseSchema(): array
     {
         return [
             'cat' => ['string'],
+            'sectioncat' => ['string'],
+            'pagecat' => ['string'],
+            'privacypolicy' => 'int',
+            'keywords' => 'string',
+            'search' => 'string',
+            'mobile' => 'int',
             'ext' => Ext::class,
         ];
     }
@@ -38,6 +44,70 @@ class Site extends CommonSite
     public function getCat(): ?array
     {
         return $this->get('cat');
+    }
+
+    /** @param array<string> $sectioncat */
+    public function setSectioncat(array $sectioncat): static
+    {
+        return $this->set('sectioncat', $sectioncat);
+    }
+
+    /** @return list<string>|null */
+    public function getSectioncat(): ?array
+    {
+        return $this->get('sectioncat');
+    }
+
+    /** @param array<string> $pagecat */
+    public function setPagecat(array $pagecat): static
+    {
+        return $this->set('pagecat', $pagecat);
+    }
+
+    /** @return list<string>|null */
+    public function getPagecat(): ?array
+    {
+        return $this->get('pagecat');
+    }
+
+    public function setPrivacypolicy(int $privacypolicy): static
+    {
+        return $this->set('privacypolicy', $privacypolicy);
+    }
+
+    public function getPrivacypolicy(): ?int
+    {
+        return $this->get('privacypolicy');
+    }
+
+    public function setKeywords(string $keywords): static
+    {
+        return $this->set('keywords', $keywords);
+    }
+
+    public function getKeywords(): ?string
+    {
+        return $this->get('keywords');
+    }
+
+    public function setSearch(string $search): static
+    {
+        return $this->set('search', $search);
+    }
+
+    public function getSearch(): ?string
+    {
+        return $this->get('search');
+    }
+
+    public function setMobile(int $mobile): static
+    {
+        return $this->set('mobile', $mobile);
+    }
+
+    public function getMobile(): ?int
+    {
+        return $this->get('mobile');
     }
 
     public function setExt(Ext $ext): static

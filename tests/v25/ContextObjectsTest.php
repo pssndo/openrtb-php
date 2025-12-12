@@ -293,6 +293,78 @@ class ContextObjectsTest extends TestCase
         $this->assertNull($site->getExt());
     }
 
+    public function testSiteSetSectioncat(): void
+    {
+        $site = (new Site())->setSectioncat(['IAB1', 'IAB12']);
+        $this->assertEquals(['IAB1', 'IAB12'], $site->getSectioncat());
+    }
+
+    public function testSiteGetSectioncat(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getSectioncat());
+    }
+
+    public function testSiteSetPagecat(): void
+    {
+        $site = (new Site())->setPagecat(['IAB1-1', 'IAB12-2']);
+        $this->assertEquals(['IAB1-1', 'IAB12-2'], $site->getPagecat());
+    }
+
+    public function testSiteGetPagecat(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getPagecat());
+    }
+
+    public function testSiteSetPrivacypolicy(): void
+    {
+        $site = (new Site())->setPrivacypolicy(1);
+        $this->assertEquals(1, $site->getPrivacypolicy());
+    }
+
+    public function testSiteGetPrivacypolicy(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getPrivacypolicy());
+    }
+
+    public function testSiteSetKeywords(): void
+    {
+        $site = (new Site())->setKeywords('news, politics, technology');
+        $this->assertEquals('news, politics, technology', $site->getKeywords());
+    }
+
+    public function testSiteGetKeywords(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getKeywords());
+    }
+
+    public function testSiteSetSearch(): void
+    {
+        $site = (new Site())->setSearch('election 2024');
+        $this->assertEquals('election 2024', $site->getSearch());
+    }
+
+    public function testSiteGetSearch(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getSearch());
+    }
+
+    public function testSiteSetMobile(): void
+    {
+        $site = (new Site())->setMobile(1);
+        $this->assertEquals(1, $site->getMobile());
+    }
+
+    public function testSiteGetMobile(): void
+    {
+        $site = new Site();
+        $this->assertNull($site->getMobile());
+    }
+
     public function testAppGetSchema(): void
     {
         $schema = App::getSchema();
