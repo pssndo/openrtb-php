@@ -19,7 +19,7 @@ $responseJson = '{
             "price": 1.25,
             "adid": "ad-123",
             "crid": "creative-456",
-            "adm": "<a href=\"%%CLICK_URL_ESC%%https://advertiser.com\"><img alt="" src=\"https://cdn.example.com/banner.jpg\" width=\"300\" height=\"250\"/></a>",
+            "adm": "<a href=\\"%%CLICK_URL_ESC%%https://advertiser.com\\"><img alt="" src=\\"https://cdn.example.com/banner.jpg\\" width=\\"300\\" height=\\"250\\"/></a>",
             "w": 300,
             "h": 250,
             "burl": "https://dsp.example.com/win?id=${AUCTION_ID}&price=${AUCTION_PRICE}",

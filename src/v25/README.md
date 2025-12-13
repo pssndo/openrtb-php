@@ -100,69 +100,6 @@ foreach ($response->getSeatbid() as $seatbid) {
 }
 ```
 
-#### Alternative: Direct Hydration from Array
-
-```php
-<?php
-use OpenRTB\v25\BidResponse;
-
-// If you already have an array
-$rawData = json_decode($jsonResponse, true);
-$response = BidResponse::fromArray($rawData);
-```
-
-#### Method 2: Using Manual Construction
-
-For building responses from scratch:
-
-```php
-<?php
-use OpenRTB\v25\BidResponse;
-use OpenRTB\v25\Response\Bid;
-use OpenRTB\v25\Response\SeatBid;
-
-// Create a bid
-$bid = (new Bid())
-    ->setId('bid-1')
-    ->setImpid('imp-1')
-    ->setPrice(2.50)
-    ->setAdm('<div>Your ad markup here</div>')
-    ->setAdomain(['advertiser.com'])
-    ->setCrid('creative-123')
-    ->setW(300)
-    ->setH(250);
-
-// Create a seat bid
-$seatBid = (new SeatBid())
-    ->setSeat('seat-1')
-    ->setBid([$bid]);
-
-// Build the bid response
-$response = new BidResponse();
-$response->setId('request-123')
-    ->setBidid('bid-response-456')
-    ->setCur('USD')
-    ->setSeatbid([$seatBid]);
-
-// Convert to JSON
-$json = $response->toJson();
-echo $json;
-```
-
-#### Method 3: Hybrid - fromArray() with Modifications
-
-You can also hydrate from an array and then modify:
-
-```php
-<?php
-use OpenRTB\v25\BidResponse;
-
-// Start with provider data
-$response = BidResponse::fromArray($rawProviderData);
-
-// Modify as needed
-$response->setCur('EUR'); // Override currency
-```
 
 ---
 
@@ -237,43 +174,17 @@ echo $response->toJson();
 
 ## Parsing JSON
 
-### Option 1: Using fromArray() (Recommended)
-
-The modern approach uses automatic hydration:
+Use the Factory's parser to convert JSON strings into strongly-typed PHP objects:
 
 ```php
 <?php
-use OpenRTB\v25\BidResponse;
+use OpenRTB\Factory\OpenRTBFactory;
 
-// Parse JSON to array first
-$jsonResponse = '{"id":"req-1","seatbid":[{"bid":[{"id":"bid-1","impid":"imp-1","price":2.5}]}]}';
-$rawData = json_decode($jsonResponse, true);
-
-// Automatic hydration - all nested objects created automatically
-$response = BidResponse::fromArray($rawData);
-
-echo $response->getId(); // "req-1"
-$seatbids = $response->getSeatbid();
-foreach ($seatbids as $seatbid) {
-    foreach ($seatbid->getBid() as $bid) {
-        echo $bid->getPrice(); // 2.5
-    }
-}
-```
-
-### Option 2: Using the Parser
-
-Use the Parser to convert JSON strings into strongly-typed PHP objects:
-
-```php
-<?php
-use OpenRTB\v25\Util\Parser;
-
-$parser = new Parser();
+$factory = new OpenRTBFactory('2.5');
 
 // Parse a bid request
 $json = '{"id":"req-1","imp":[{"id":"imp-1","banner":{"w":300,"h":250}}]}';
-$request = $parser->parseBidRequest($json);
+$request = $factory->createParser()->parseBidRequest($json);
 
 echo $request->getId(); // "req-1"
 $imps = $request->getImp();
@@ -281,7 +192,7 @@ echo count($imps); // 1
 
 // Parse a bid response
 $responseJson = '{"id":"req-1","seatbid":[{"bid":[{"id":"bid-1","impid":"imp-1","price":2.5}]}]}';
-$response = $parser->parseBidResponse($responseJson);
+$response = $factory->createParser()->parseBidResponse($responseJson);
 
 echo $response->getId(); // "req-1"
 ```
@@ -294,26 +205,24 @@ Validate bid requests to ensure they meet OpenRTB requirements:
 
 ```php
 <?php
-use OpenRTB\v25\BidRequest;
+use OpenRTB\Factory\OpenRTBFactory;
 use OpenRTB\v25\Impression\Imp;
 use OpenRTB\v25\Impression\Banner;
-use OpenRTB\v25\Util\Validator;
 
-$request = new BidRequest();
-$request->setId('req-1');
+$factory = new OpenRTBFactory('2.5');
 
-$imp = (new Imp())
-    ->setId('imp-1')
-    ->setBanner(new Banner());
+$request = $factory
+    ->createRequestBuilder()
+    ->setId('req-1')
+    ->addImp((new Imp())
+        ->setId('imp-1')
+        ->setBanner(new Banner()))();
 
-$request->addImp($imp);
+$validator = $factory->createValidator();
+$validator->validateBidRequest($request);
 
-$validator = new Validator();
-$isValid = $validator->validateBidRequest($request);
-
-if (!$isValid) {
-    $errors = $validator->getErrors();
-    foreach ($errors as $error) {
+if ($validator->hasErrors()) {
+    foreach ($validator->getErrors() as $error) {
         echo "Validation error: $error\n";
     }
 }

@@ -340,22 +340,19 @@ echo $request->toJson();
 
 ---
 
-## Creating a Bid Response
+## Parsing Bid Responses
 
-### Method 1: Using fromArray() (Recommended for Provider Responses)
-
-If you're receiving a response from a provider, use the automatic hydration method:
+Use the Factory's parser for clean, typed response handling:
 
 ```php
 <?php
-use OpenRTB\v3\BidResponse;
+use OpenRTB\Factory\OpenRTBFactory;
+
+$factory = new OpenRTBFactory('3.0');
 
 // Receive response from provider
 $jsonResponse = file_get_contents('php://input');
-$rawData = json_decode($jsonResponse, true);
-
-// Automatic hydration - creates all nested objects automatically
-$response = BidResponse::fromArray($rawData);
+$response = $factory->createParser()->parseBidResponse($jsonResponse);
 
 // Access with full type safety
 $seatbids = $response->getSeatbid();
@@ -475,44 +472,17 @@ echo $response->toJson();
 
 ## Parsing JSON
 
-### Option 1: Using fromArray() (Recommended)
-
-The modern approach uses automatic hydration:
+Use the Factory's parser to convert JSON strings into strongly-typed PHP objects:
 
 ```php
 <?php
-use OpenRTB\v3\BidResponse;
+use OpenRTB\Factory\OpenRTBFactory;
 
-// Parse JSON to array first
-$jsonResponse = '{"id":"req-1","seatbid":[{"bid":[{"id":"bid-1","item":"item-1","price":2.5}]}]}';
-$rawData = json_decode($jsonResponse, true);
-
-// Automatic hydration - all nested objects created automatically
-$response = BidResponse::fromArray($rawData);
-
-echo $response->getId(); // "req-1"
-$seatbids = $response->getSeatbid();
-foreach ($seatbids as $seatbid) {
-    foreach ($seatbid->getBid() as $bid) {
-        echo $bid->getPrice(); // 2.5
-        echo $bid->getItem(); // "item-1"
-    }
-}
-```
-
-### Option 2: Using the Parser
-
-Use the Parser to convert JSON strings into strongly-typed PHP objects:
-
-```php
-<?php
-use OpenRTB\v3\Util\Parser;
-
-$parser = new Parser();
+$factory = new OpenRTBFactory('3.0');
 
 // Parse a bid request
 $json = '{"id":"req-1","item":[{"id":"item-1","spec":{"placement":{"display":{"w":300,"h":250}}}}]}';
-$request = $parser->parseBidRequest($json);
+$request = $factory->createParser()->parseBidRequest($json);
 
 echo $request->getId(); // "req-1"
 $items = $request->getItem();
@@ -520,7 +490,7 @@ echo count($items); // 1
 
 // Parse a bid response
 $responseJson = '{"id":"req-1","seatbid":[{"bid":[{"id":"bid-1","item":"item-1","price":2.5}]}]}';
-$response = $parser->parseBidResponse($responseJson);
+$response = $factory->createParser()->parseBidResponse($responseJson);
 
 echo $response->getId(); // "req-1"
 ```

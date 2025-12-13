@@ -4,53 +4,54 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use OpenRTB\v25\BidResponse as BidResponseV25;
-use OpenRTB\v26\BidResponse as BidResponseV26;
-use OpenRTB\v3\BidResponse as BidResponseV3;
+use OpenRTB\Factory\OpenRTBFactory;
 
-echo "=== OpenRTB Response Hydration Demo ===\n\n";
-echo "This demonstrates automatic object hydration from raw provider responses.\n";
-echo "No need to manually set each field - just pass the raw data!\n\n";
+echo "=== OpenRTB Response Parsing Demo ===\n\n";
+echo "This demonstrates automatic response parsing from raw provider JSON responses.\n";
+echo "Use the Factory pattern with parser for clean, version-agnostic code!\n\n";
 
 // ============================================================================
 // OpenRTB 2.5 Example
 // ============================================================================
-echo "--- OpenRTB 2.5 Response Hydration ---\n";
+echo "--- OpenRTB 2.5 Response Parsing ---\n";
 
-// Simulate a raw response from a provider (like from json_decode($response, true))
-$rawResponseV25 = [
-    'id' => 'bid-response-123',
-    'bidid' => 'bid-id-456',
-    'cur' => 'USD',
-    'seatbid' => [
-        [
-            'seat' => 'advertiser-1',
-            'bid' => [
-                [
-                    'id' => 'bid-1',
-                    'impid' => 'imp-1',
-                    'price' => 2.50,
-                    'adid' => 'ad-123',
-                    'nurl' => 'https://example.com/win',
-                    'adm' => '<div>Ad Creative</div>',
-                    'adomain' => ['example.com'],
-                    'cid' => 'campaign-1',
-                    'crid' => 'creative-1',
-                    'w' => 300,
-                    'h' => 250,
-                    'cat' => ['IAB1-1', 'IAB1-2'],
-                    'attr' => [1, 2, 3],
-                ],
-            ],
-        ],
+// Simulate a raw JSON response from a provider
+$jsonResponseV25 = <<<'JSON'
+{
+    "id": "bid-response-123",
+    "bidid": "bid-id-456",
+    "cur": "USD",
+    "seatbid": [
+        {
+            "seat": "advertiser-1",
+            "bid": [
+                {
+                    "id": "bid-1",
+                    "impid": "imp-1",
+                    "price": 2.50,
+                    "adid": "ad-123",
+                    "nurl": "https://example.com/win",
+                    "adm": "<div>Ad Creative</div>",
+                    "adomain": ["example.com"],
+                    "cid": "campaign-1",
+                    "crid": "creative-1",
+                    "w": 300,
+                    "h": 250,
+                    "cat": ["IAB1-1", "IAB1-2"],
+                    "attr": [1, 2, 3]
+                }
+            ]
+        }
     ],
-    'ext' => [
-        'custom_field' => 'custom_value',
-    ],
-];
+    "ext": {
+        "custom_field": "custom_value"
+    }
+}
+JSON;
 
-// Automatic hydration - all nested objects are created!
-$bidResponse25 = BidResponseV25::fromArray($rawResponseV25);
+// Parse using Factory pattern - all nested objects are created automatically!
+$factory25 = new OpenRTBFactory('2.5');
+$bidResponse25 = $factory25->createParser()->parseBidResponse($jsonResponseV25);
 
 echo "Response ID: " . $bidResponse25->getId() . "\n";
 echo "Bid ID: " . $bidResponse25->getBidid() . "\n";
@@ -83,31 +84,34 @@ echo json_encode($bidResponse25->toArray(), JSON_PRETTY_PRINT) . "\n\n";
 // ============================================================================
 // OpenRTB 2.6 Example
 // ============================================================================
-echo "--- OpenRTB 2.6 Response Hydration ---\n";
+echo "--- OpenRTB 2.6 Response Parsing ---\n";
 
-$rawResponseV26 = [
-    'id' => 'bid-response-v26',
-    'bidid' => 'bid-v26-123',
-    'cur' => 'EUR',
-    'seatbid' => [
-        [
-            'seat' => 'advertiser-2',
-            'bid' => [
-                [
-                    'id' => 'bid-2',
-                    'impid' => 'imp-2',
-                    'price' => 3.75,
-                    'adm' => '<vast>...</vast>',
-                    'crid' => 'creative-2',
-                    'w' => 640,
-                    'h' => 480,
-                ],
-            ],
-        ],
-    ],
-];
+$jsonResponseV26 = <<<'JSON'
+{
+    "id": "bid-response-v26",
+    "bidid": "bid-v26-123",
+    "cur": "EUR",
+    "seatbid": [
+        {
+            "seat": "advertiser-2",
+            "bid": [
+                {
+                    "id": "bid-2",
+                    "impid": "imp-2",
+                    "price": 3.75,
+                    "adm": "<vast>...</vast>",
+                    "crid": "creative-2",
+                    "w": 640,
+                    "h": 480
+                }
+            ]
+        }
+    ]
+}
+JSON;
 
-$bidResponse26 = BidResponseV26::fromArray($rawResponseV26);
+$factory26 = new OpenRTBFactory('2.6');
+$bidResponse26 = $factory26->createParser()->parseBidResponse($jsonResponseV26);
 
 echo "Response ID: " . $bidResponse26->getId() . "\n";
 echo "Currency: " . $bidResponse26->getCur() . "\n";
@@ -124,28 +128,31 @@ echo "\n";
 // ============================================================================
 // OpenRTB 3.0 Example with Enum
 // ============================================================================
-echo "--- OpenRTB 3.0 Response Hydration (with Enum) ---\n";
+echo "--- OpenRTB 3.0 Response Parsing (with Enum) ---\n";
 
-$rawResponseV3 = [
-    'id' => 'bid-response-v3',
-    'bidid' => 'bid-v3-456',
-    'cur' => 'GBP',
-    'seatbid' => [
-        [
-            'seat' => 'advertiser-3',
-            'bid' => [
-                [
-                    'id' => 'bid-3',
-                    'item' => 'item-1',
-                    'price' => 5.00,
-                    'deal' => 'deal-123',
-                ],
-            ],
-        ],
-    ],
-];
+$jsonResponseV3 = <<<'JSON'
+{
+    "id": "bid-response-v3",
+    "bidid": "bid-v3-456",
+    "cur": "GBP",
+    "seatbid": [
+        {
+            "seat": "advertiser-3",
+            "bid": [
+                {
+                    "id": "bid-3",
+                    "item": "item-1",
+                    "price": 5.00,
+                    "deal": "deal-123"
+                }
+            ]
+        }
+    ]
+}
+JSON;
 
-$bidResponse3 = BidResponseV3::fromArray($rawResponseV3);
+$factory3 = new OpenRTBFactory('3.0');
+$bidResponse3 = $factory3->createParser()->parseBidResponse($jsonResponseV3);
 
 echo "Response ID: " . $bidResponse3->getId() . "\n";
 echo "Currency: " . $bidResponse3->getCur() . "\n";
@@ -165,12 +172,14 @@ echo "\n";
 // ============================================================================
 echo "--- No-Bid Response (OpenRTB 3.0) ---\n";
 
-$rawNoBidResponse = [
-    'id' => 'no-bid-response',
-    'nbr' => 2, // NoBidReason enum value (e.g., 2 = Technical Error)
-];
+$noBidJson = <<<'JSON'
+{
+    "id": "no-bid-response",
+    "nbr": 2
+}
+JSON;
 
-$noBidResponse = BidResponseV3::fromArray($rawNoBidResponse);
+$noBidResponse = $factory3->createParser()->parseBidResponse($noBidJson);
 
 echo "Response ID: " . $noBidResponse->getId() . "\n";
 $nbr = $noBidResponse->getNbr();
@@ -184,10 +193,10 @@ echo "\n";
 // ============================================================================
 echo "=== Real-World Usage ===\n\n";
 echo "// Receive response from provider\n";
-echo "\$jsonResponse = file_get_contents('php://input');\n";
-echo "\$rawData = json_decode(\$jsonResponse, true);\n\n";
-echo "// Automatic hydration - that's it!\n";
-echo "\$bidResponse = BidResponseV25::fromArray(\$rawData);\n\n";
+echo "\$jsonResponse = file_get_contents('php://input');\n\n";
+echo "// Parse using Factory pattern\n";
+echo "\$factory = new OpenRTBFactory('2.5');\n";
+echo "\$bidResponse = \$factory->createParser()->parseBidResponse(\$jsonResponse);\n\n";
 echo "// Access all fields with full type safety\n";
 echo "\$seatbids = \$bidResponse->getSeatbid();\n";
 echo "foreach (\$seatbids as \$seatbid) {\n";
@@ -198,8 +207,9 @@ echo "    }\n";
 echo "}\n\n";
 
 echo "=== Benefits ===\n";
+echo "✓ Clean Factory pattern usage\n";
+echo "✓ Version-agnostic parsing\n";
 echo "✓ No manual object creation\n";
-echo "✓ No manual field setting\n";
 echo "✓ Automatic nested object hydration\n";
 echo "✓ Handles Collections automatically\n";
 echo "✓ Handles Enums automatically\n";
