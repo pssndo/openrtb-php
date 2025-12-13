@@ -27,7 +27,7 @@ composer require your-vendor/openrtb
 
 ---
 
-## Quick Start
+## Quick Start (Recommended: Factory Pattern)
 
 ### Creating a Bid Request
 
@@ -35,75 +35,80 @@ composer require your-vendor/openrtb
 <?php
 require_once 'vendor/autoload.php';
 
-use OpenRTB\v25\BidRequest;
+use OpenRTB\Factory\OpenRTBFactory;
 use OpenRTB\v25\Context\Site;
 use OpenRTB\v25\Context\Device;
 use OpenRTB\v25\Impression\Imp;
 use OpenRTB\v25\Impression\Banner;
+use OpenRTB\v25\Enums\AuctionType;
 
-// Create a banner impression
-$banner = (new Banner())
-    ->setW(300)
-    ->setH(250)
-    ->setPos(1);
+// Create factory for OpenRTB 2.5
+$factory = new OpenRTBFactory('2.5');
 
-$imp = (new Imp())
-    ->setId('imp-1')
-    ->setBanner($banner)
-    ->setBidfloor(1.50)
-    ->setBidfloorcur('USD');
-
-// Create site context
-$site = (new Site())
-    ->setId('site-123')
-    ->setDomain('example.com')
-    ->setPage('https://example.com/news');
-
-// Create device information
-$device = (new Device())
-    ->setUa('Mozilla/5.0...')
-    ->setIp('192.168.1.1')
-    ->setDevicetype(2); // Phone
-
-// Build the bid request
-$request = new BidRequest();
-$request->setId('request-123')
-    ->addImp($imp)
-    ->setSite($site)
-    ->setDevice($device)
+// Build bid request
+$request = $factory
+    ->createRequestBuilder()
+    ->setId(uniqid('', true))
     ->setTest(0)
-    ->setTmax(200);
+    ->setAt(AuctionType::FIRST_PRICE)
+    ->setTmax(250)
+    ->setCur(['USD'])
+    ->setBcat(['IAB25', 'IAB26'])
+    ->setSite((new Site())
+        ->setId('site-123')
+        ->setDomain('example.com')
+        ->setPage('https://example.com/news'))
+    ->setDevice((new Device())
+        ->setUa('Mozilla/5.0...')
+        ->setIp('192.168.1.1')
+        ->setDevicetype(2))
+    ->addImp((new Imp())
+        ->setId('imp-1')
+        ->setBanner((new Banner())
+            ->setW(300)
+            ->setH(250)
+            ->setPos(1))
+        ->setBidfloor(1.50)
+        ->setBidfloorcur('USD'))();
 
 // Convert to JSON
 $json = $request->toJson();
 echo $json;
 ```
 
-### Creating a Bid Response
+### Parsing Bid Responses
 
-#### Method 1: Using fromArray() (Recommended for Provider Responses)
+Use the Factory's parser for clean, typed response handling:
 
-If you're receiving a response from a provider, use the automatic hydration method:
+```php
+<?php
+use OpenRTB\Factory\OpenRTBFactory;
+
+// Create factory
+$factory = new OpenRTBFactory('2.5');
+
+// Parse response from provider/exchange
+$jsonResponse = file_get_contents('php://input');
+$response = $factory->createParser()->parseBidResponse($jsonResponse);
+
+// Access typed data
+foreach ($response->getSeatbid() as $seatbid) {
+    foreach ($seatbid->getBid() as $bid) {
+        echo "Price: " . $bid->getPrice() . "\n";
+        echo "Creative: " . $bid->getCrid() . "\n";
+    }
+}
+```
+
+#### Alternative: Direct Hydration from Array
 
 ```php
 <?php
 use OpenRTB\v25\BidResponse;
 
-// Receive response from provider
-$jsonResponse = file_get_contents('php://input');
+// If you already have an array
 $rawData = json_decode($jsonResponse, true);
-
-// Automatic hydration - creates all nested objects automatically
 $response = BidResponse::fromArray($rawData);
-
-// Access with full type safety
-$seatbids = $response->getSeatbid();
-foreach ($seatbids as $seatbid) {
-    foreach ($seatbid->getBid() as $bid) {
-        echo $bid->getPrice();
-        echo $bid->getCrid();
-    }
-}
 ```
 
 #### Method 2: Using Manual Construction

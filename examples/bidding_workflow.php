@@ -32,6 +32,7 @@ $registry->registerBatch([
     'appnexus' => '2.5', // Will map to 2.6
 ]);
 
+
 // ============================================================================
 // Step 2: Simulate incoming ad request from your client
 // ============================================================================
@@ -78,7 +79,7 @@ foreach ($clientExchanges as $exchange) {
         if ($version === '3.0') {
             $response = sendBidRequestV3($factory, $incomingAdRequest, $exchange);
         } else {
-            $response = sendBidRequestV26($factory, $incomingAdRequest, $exchange);
+            $response = sendBidRequestV26($factory, $exchange);
         }
 
         if ($response) {
@@ -179,7 +180,7 @@ function sendBidRequestV3(OpenRTBFactory $factory, array $adRequest, array $exch
 /**
  * Build and send OpenRTB 2.6 bid request
  */
-function sendBidRequestV26(OpenRTBFactory $factory, array $adRequest, array $exchange): ?array
+function sendBidRequestV26(OpenRTBFactory $factory, array $exchange): ?array
 {
     $builder = $factory->createRequestBuilder();
 

@@ -5,7 +5,7 @@
 ![Code Coverage](.github/badges/coverage.svg?v=2)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-A modern, PSR-4 compliant PHP library for the OpenRTB 2.4, 2.6, and 3.0 specifications. This library provides an intuitive, object-oriented interface for building and parsing OpenRTB requests and responses, complete with robust validation and a fluent API.
+A modern, PSR-4 compliant PHP library for the OpenRTB 2.5, 2.6, and 3.0 specifications. This library provides an intuitive, object-oriented interface for building and parsing OpenRTB requests and responses, complete with robust validation and a fluent API.
 
 ## Key Features
 
@@ -27,32 +27,48 @@ composer require passendo/openrtb-php
 
 ## Usage
 
-The library is designed to be intuitive, allowing you to build and parse OpenRTB objects with ease.
+The library uses a Factory pattern for clean, version-agnostic code. This is the recommended approach.
 
 > **Note:** For more detailed and advanced use cases, please refer to the [Examples](#examples) section below.
 
-### Creating a Bid Request
+### Creating a Bid Request (Recommended: Factory Pattern)
 
-The `RequestBuilder` provides a fluent interface for constructing a `Request` object. You can chain methods to configure the request and add complex objects like `Item`, `Context`, and `Source`.
-
-**Simple Example:**
+Use `OpenRTBFactory` to automatically handle version-specific builders and parsers:
 
 ```php
-use OpenRTB\v3\Util\RequestBuilder;
-use OpenRTB\v3\Impression\Item;
+use OpenRTB\Factory\OpenRTBFactory;
+use OpenRTB\v25\Context\Site;
+use OpenRTB\v25\Context\Device;
+use OpenRTB\v25\Impression\Imp;
+use OpenRTB\v25\Impression\Banner;
+use OpenRTB\v25\Enums\AuctionType;
 
-// Create a new impression item
-$item = (new Item())->setId('imp-123');
+// Create factory for your OpenRTB version
+$factory = new OpenRTBFactory('2.5'); // or '2.6', '3.0'
 
-// Use the builder to construct the request
-$builder = new RequestBuilder();
-$request = $builder
-    ->setId('request-id-456')
-    ->setTest(true)
-    ->addItem($item)
-    ->build();
+// Build request using fluent API
+$request = $factory
+    ->createRequestBuilder()
+    ->setId(uniqid('', true))
+    ->setTest(0)
+    ->setAt(AuctionType::FIRST_PRICE)
+    ->setTmax(250)
+    ->setCur(['USD'])
+    ->setBcat(['IAB25', 'IAB26'])
+    ->setSite((new Site())
+        ->setId('site-123')
+        ->setDomain('example.com'))
+    ->setDevice((new Device())
+        ->setUa('Mozilla/5.0...')
+        ->setIp('192.168.1.1'))
+    ->addImp((new Imp())
+        ->setId('imp-1')
+        ->setBanner((new Banner())
+            ->setW(300)
+            ->setH(250))
+        ->setBidfloor(1.50))();  // Call __invoke() to get the request
 
-// Serialize the request to JSON
+// Serialize to JSON
 $jsonRequest = $request->toJson();
 echo $jsonRequest;
 ```
@@ -94,84 +110,58 @@ $request = $builder
 echo $request->toJson();
 ```
 
-### Creating a Bid Response
+### Parsing Bid Responses
 
-Similarly, the `ResponseBuilder` helps you construct a valid `Response`. You can create `Seatbid` objects, add `Bid`s, and associate them with `Ad` media.
-
-```php
-use OpenRTB\v3\Util\ResponseBuilder;
-use OpenRTB\v3\Bid\Seatbid;
-use OpenRTB\v3\Bid\Bid;
-use OpenRTB\v3\Bid\Media;
-use OpenRTB\v3\Bid\Ad;
-
-// Create an Ad and Media
-$ad = (new Ad())->setId('ad-123')->setAdomain(['advertiser.com']);
-$media = (new Media())->setAd($ad);
-
-// Create a Bid
-$bid = (new Bid())->setId('bid-456')->setPrice(1.50)->setMedia($media);
-
-// Create a Seatbid
-$seatbid = (new Seatbid())->setSeat('seat-789')->addBid($bid);
-
-// Use the builder to construct the response
-$builder = new ResponseBuilder('request-id-456');
-$response = $builder
-    ->setBidId('response-id-abc')
-    ->addSeatbid($seatbid)
-    ->build();
-
-echo $response->toJson();
-```
-
-### Parsing Requests and Responses
-
-The `Parser` utility deserializes a JSON string into a fully-hydrated PHP object (`Request` or `Response`), including all nested objects.
+Use the Factory's parser to convert JSON responses into typed objects:
 
 ```php
-use OpenRTB\v3\Util\Parser;
+// Parse response from exchange/SSP
+$responseJson = file_get_contents('php://input');
+$response = $factory->createParser()->parseBidResponse($responseJson);
 
-// Parse a request
-$jsonRequest = '{"id":"req-1","item":[{"id":"item-1"}]}';
-$request = Parser::parseRequest($jsonRequest);
-
-if ($request) {
-    echo "Request ID: " . $request->getId();
-}
-
-// Parse a response
-$jsonResponse = '{"id":"req-1","bidid":"resp-abc","seatbid":[]}';
-$response = Parser::parseResponse($jsonResponse);
-
-if ($response) {
-    echo "Response Bid ID: " . $response->getBidid();
+// Access typed data
+foreach ($response->getSeatbid() as $seatbid) {
+    foreach ($seatbid->getBid() as $bid) {
+        echo "Bid Price: " . $bid->getPrice() . "\n";
+        echo "Creative ID: " . $bid->getCrid() . "\n";
+    }
 }
 ```
 
-### Validating Objects
+### Version Detection by Provider
 
-Before sending a request, you can validate it against the OpenRTB specification using the `Validator` to catch common errors.
+Automatically use the correct OpenRTB version for your exchange:
 
 ```php
-use OpenRTB\v3\Util\Validator;
-use OpenRTB\v3\Request;
+// Automatically uses OpenRTB 3.0 for Epom
+$factory = OpenRTBFactory::forProvider('epom');
 
-$request = new Request(); // An invalid request with no ID or items
-$validator = new Validator();
+// Automatically uses OpenRTB 2.6 for Google
+$factory = OpenRTBFactory::forProvider('google');
 
-if (!$validator->validateRequest($request)) {
-    // Get a list of validation errors
+// Build request with the right version automatically
+$request = $factory
+    ->createRequestBuilder()
+    ->setId(uniqid('', true))
+    // ... your configuration
+    ();
+```
+
+### Validation
+
+Validate requests before sending:
+
+```php
+$validator = $factory->createValidator();
+
+if (!$validator->validateBidRequest($request)) {
     $errors = $validator->getErrors();
-    print_r($errors);
-    // Expected output:
-    // Array
-    // (
-    //     [0] => Request ID is required
-    //     [1] => Request must contain at least one Item
-    // )
+    foreach ($errors as $error) {
+        echo "Error: $error\n";
+    }
 }
 ```
+
 
 ## Examples
 
@@ -197,10 +187,11 @@ The `examples/v3` directory contains a variety of scripts demonstrating how to u
 
 The project is organized by OpenRTB specification version. All classes for a specific version are located within their own versioned namespace and directory.
 
--   `src/v3/`: Contains all classes for OpenRTB 3.0.
--   `src/v26/`: (Future) Will contain classes for OpenRTB 2.6.
--   `src/v24/`: (Future) Will contain classes for OpenRTB 2.4.
--   `tests/`: Contains the unit tests, mirroring the `src` directory structure.
+-   `src/v3/`: Contains all classes for OpenRTB 3.0
+-   `src/v26/`: Contains all classes for OpenRTB 2.6
+-   `src/v25/`: Contains all classes for OpenRTB 2.5
+-   `tests/`: Contains the unit tests, mirroring the `src` directory structure
+-   `examples/`: Contains comprehensive usage examples for all versions
 
 ## Running Tests
 
