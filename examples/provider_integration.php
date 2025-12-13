@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use OpenRTB\v25\BidResponse as BidResponseV25;
-use OpenRTB\v26\BidResponse as BidResponseV26;
-use OpenRTB\v3\BidResponse as BidResponseV3;
+use OpenRTB\Factory\OpenRTBFactory;
 
 echo "=== Real-World Provider Integration Examples ===\n\n";
 
@@ -44,13 +42,11 @@ $jsonResponseFromSSP = <<<'JSON'
 }
 JSON;
 
-// Step 1: Decode the JSON response
-$rawData = json_decode($jsonResponseFromSSP, true);
+// Parse using Factory pattern - clean and simple!
+$factory = new OpenRTBFactory('2.5');
+$bidResponse = $factory->createParser()->parseBidResponse($jsonResponseFromSSP);
 
-// Step 2: Automatic hydration - that's it! All nested objects created automatically
-$bidResponse = BidResponseV25::fromArray($rawData);
-
-// Step 3: Process the response with full type safety
+// Process the response with full type safety
 echo "Auction ID: " . $bidResponse->getId() . "\n";
 echo "Currency: " . $bidResponse->getCur() . "\n";
 
@@ -86,14 +82,9 @@ echo "--- Example 2: Supporting Multiple OpenRTB Versions ---\n\n";
 
 function processProviderResponse(string $jsonResponse, string $version): void
 {
-    $rawData = json_decode($jsonResponse, true);
-
-    $bidResponse = match($version) {
-        '2.5' => BidResponseV25::fromArray($rawData),
-        '2.6' => BidResponseV26::fromArray($rawData),
-        '3.0' => BidResponseV3::fromArray($rawData),
-        default => throw new \InvalidArgumentException("Unsupported version: $version"),
-    };
+    // Use Factory pattern for all versions
+    $factory = new OpenRTBFactory($version);
+    $bidResponse = $factory->createParser()->parseBidResponse($jsonResponse);
 
     echo "Version $version Response:\n";
     echo "  Response ID: " . $bidResponse->getId() . "\n";
@@ -126,9 +117,9 @@ processProviderResponse($v3Response, '3.0');
 // ============================================================================
 echo "--- Example 3: Handling No-Bid Responses ---\n\n";
 
-$noBidResponse = '{"id":"no-bid-123","nbr":2}';
-$rawNoBid = json_decode($noBidResponse, true);
-$noBidObj = BidResponseV3::fromArray($rawNoBid);
+$noBidJson = '{"id":"no-bid-123","nbr":2}';
+$factory3 = new OpenRTBFactory('3.0');
+$noBidObj = $factory3->createParser()->parseBidResponse($noBidJson);
 
 echo "No-Bid Response ID: " . $noBidObj->getId() . "\n";
 $nbr = $noBidObj->getNbr();
@@ -178,8 +169,7 @@ $responseWithExt = <<<'JSON'
 }
 JSON;
 
-$rawExtData = json_decode($responseWithExt, true);
-$responseWithExtensions = BidResponseV25::fromArray($rawExtData);
+$responseWithExtensions = $factory->createParser()->parseBidResponse($responseWithExt);
 
 echo "Response ID: " . $responseWithExtensions->getId() . "\n";
 
@@ -220,17 +210,14 @@ echo "--- Example 5: Typical DSP Endpoint Integration ---\n\n";
 
 echo "Typical DSP endpoint code:\n\n";
 echo "<?php\n";
+echo "use OpenRTB\\Factory\\OpenRTBFactory;\n\n";
 echo "// Receive bid response from upstream SSP\n";
-echo "\$jsonResponse = file_get_contents('php://input');\n";
-echo "\$rawData = json_decode(\$jsonResponse, true);\n\n";
+echo "\$jsonResponse = file_get_contents('php://input');\n\n";
 echo "// Detect version (you might have this in your routing/config)\n";
 echo "\$version = \$_SERVER['HTTP_X_OPENRTB_VERSION'] ?? '2.5';\n\n";
-echo "// Hydrate response automatically\n";
-echo "\$bidResponse = match(\$version) {\n";
-echo "    '2.5' => BidResponseV25::fromArray(\$rawData),\n";
-echo "    '2.6' => BidResponseV26::fromArray(\$rawData),\n";
-echo "    '3.0' => BidResponseV3::fromArray(\$rawData),\n";
-echo "};\n\n";
+echo "// Parse response using Factory pattern\n";
+echo "\$factory = new OpenRTBFactory(\$version);\n";
+echo "\$bidResponse = \$factory->createParser()->parseBidResponse(\$jsonResponse);\n\n";
 echo "// Process with full type safety\n";
 echo "\$seatbids = \$bidResponse->getSeatbid();\n";
 echo "foreach (\$seatbids as \$seatbid) {\n";
@@ -245,7 +232,7 @@ echo "        ]);\n";
 echo "        \n";
 echo "        // Send win notification if needed\n";
 echo "        if (\$shouldNotify) {\n";
-echo "            \$winUrl = str_replace('${AUCTION_PRICE}', \$bid->getPrice(), \$bid->getNurl());\n";
+echo "            \$winUrl = str_replace('\${AUCTION_PRICE}', \$bid->getPrice(), \$bid->getNurl());\n";
 echo "            file_get_contents(\$winUrl);\n";
 echo "        }\n";
 echo "    }\n";
@@ -253,10 +240,11 @@ echo "}\n";
 echo "\n";
 
 echo "=== Key Benefits ===\n";
-echo "✓ Single line hydration: BidResponse::fromArray(\$rawData)\n";
+echo "✓ Factory pattern: \$factory->createParser()->parseBidResponse(\$json)\n";
+echo "✓ Version-agnostic approach\n";
 echo "✓ No manual object instantiation needed\n";
 echo "✓ All nested objects automatically created\n";
 echo "✓ Full type safety for IDE autocomplete\n";
 echo "✓ Works identically across all versions (2.5, 2.6, 3.0)\n";
 echo "✓ Handles Collections, Enums, and Extensions automatically\n";
-echo "✓ Backward compatible - existing code still works\n";
+echo "✓ Clean, maintainable code\n";

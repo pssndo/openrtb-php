@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-/**
- * OpenRTB 3.0 PHP Library - Parsing and Validating a Request Example
- */
-
-// In a real project, you would include Composer's autoloader.
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use OpenRTB\v3\Util\{Validator};
-use OpenRTB\v3\Util\Parser;
+use OpenRTB\Factory\OpenRTBFactory;
 
-// Example JSON request body
-$jsonRequest = <<<'JSON'
-{
+$factory = new OpenRTBFactory('3.0');
+
+$jsonRequest = '{
   "id": "test-request-123",
   "at": 2,
   "tmax": 150,
@@ -28,40 +22,25 @@ $jsonRequest = <<<'JSON'
         "domain": "example.com"
     }
   }
-}
-JSON;
+}';
 
+$request = $factory->createParser()->parseBidRequest($jsonRequest);
 
-// 1. Parse the request
-$request = Parser::parseBidRequest($jsonRequest);
+$validator = $factory->createValidator();
+$validator->validateRequest($request);
 
-if ($request === null) {
-    echo "Failed to parse request\n";
-    // In a real application, you would likely return an HTTP 400 error.
-    exit;
-}
-
-// 2. Validate the request
-$validator = new Validator();
-if ($validator->validateRequest($request)) {
-    echo "Request is valid\n";
-    echo "Request ID: " . $request->getId() . "\n";
-
-    $items = $request->getItem();
-    echo "Number of items: " . count($items) . "\n";
-
-    $context = $request->getContext();
-    if ($context->getSite()) {
-        echo "Channel: Site\n";
-        echo "Domain: " . $context->getSite()->getDomain() . "\n";
-    } elseif ($context->getApp()) {
-        echo "Channel: App\n";
-        echo "Bundle: " . $context->getApp()->getBundle() . "\n";
-    }
+if ($validator->hasErrors()) {
+    $response = [
+        'valid' => false,
+        'errors' => $validator->getErrors()
+    ];
 } else {
-    echo "Request validation failed:\n";
-    foreach ($validator->getErrors() as $error) {
-        echo "- $error\n";
-    }
-    // In a real application, you would likely return an HTTP 400 error.
+    $response = [
+        'valid' => true,
+        'request_id' => $request->getId(),
+        'items_count' => count($request->getItem()),
+        'channel' => $request->getContext()->getSite() ? 'site' : 'app'
+    ];
 }
+
+echo json_encode($response, JSON_PRETTY_PRINT);
