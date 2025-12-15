@@ -51,6 +51,11 @@ trait HasData
         $result = [];
         // @phpstan-ignore-next-line - foreach on object is valid PHP
         foreach ($this->data as $key => $value) {
+            // Skip null values from output
+            if ($value === null) {
+                continue;
+            }
+
             $converted = match (true) {
                 $value instanceof ObjectInterface => $value->toArray(),
                 $value instanceof Collection => array_map($convertItem, $value->toArray()),
