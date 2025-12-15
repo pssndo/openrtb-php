@@ -51,13 +51,20 @@ trait HasData
         $result = [];
         // @phpstan-ignore-next-line - foreach on object is valid PHP
         foreach ($this->data as $key => $value) {
-            $result[$key] = match (true) {
+            $converted = match (true) {
                 $value instanceof ObjectInterface => $value->toArray(),
                 $value instanceof Collection => array_map($convertItem, $value->toArray()),
                 is_array($value) => array_map($convertItem, $value),
                 $value instanceof \BackedEnum => $value->value,
                 default => $value,
             };
+
+            // Skip empty Ext objects from output
+            if ($value instanceof \OpenRTB\Common\Resources\Ext && empty($converted)) {
+                continue;
+            }
+
+            $result[$key] = $converted;
         }
 
         return $result;

@@ -921,4 +921,167 @@ final class NativeObjectsTest extends TestCase
         $dataFalse = $assetFalse->jsonSerialize();
         $this->assertEquals(0, $dataFalse['required']);
     }
+
+    // ========================================================================
+    // Empty Ext Object Handling
+    // ========================================================================
+
+    public function testNativeRequestWithEmptyExtObject(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+        $request->addAsset(new TitleAsset(1, 90, true));
+
+        // Set an empty Ext object (common mistake)
+        $emptyExt = new \OpenRTB\Common\Resources\Ext();
+        $request->setExt($emptyExt);
+
+        $json = $request->toJson();
+        $decoded = json_decode($json, true);
+
+        // Empty ext should NOT appear in JSON
+        $this->assertArrayNotHasKey('ext', $decoded);
+        $this->assertEquals('1.2', $decoded['ver']);
+        $this->assertEquals(1, $decoded['context']);
+    }
+
+    public function testNativeRequestWithNonEmptyExtObject(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+
+        // Set a non-empty Ext object
+        $ext = new \OpenRTB\Common\Resources\Ext();
+        $ext->set('custom_field', 'custom_value');
+        $request->setExt($ext);
+
+        $json = $request->toJson();
+        $decoded = json_decode($json, true);
+
+        // Non-empty ext should appear in JSON
+        $this->assertArrayHasKey('ext', $decoded);
+        $this->assertEquals('custom_value', $decoded['ext']['custom_field']);
+    }
+
+    public function testNativeRequestWithArrayExt(): void
+    {
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+
+        // Set ext as array (backward compatibility)
+        $request->setExt(['vendor' => 'test']);
+
+        $json = $request->toJson();
+        $decoded = json_decode($json, true);
+
+        // Array ext should still work
+        $this->assertArrayHasKey('ext', $decoded);
+        $this->assertEquals('test', $decoded['ext']['vendor']);
+    }
+
+    public function testTitleAssetWithEmptyExtObject(): void
+    {
+        $asset = new TitleAsset(1, 90, true);
+
+        // Set an empty Ext object
+        $emptyExt = new \OpenRTB\Common\Resources\Ext();
+        $asset->setExt($emptyExt);
+
+        $data = $asset->jsonSerialize();
+
+        // Empty ext should NOT appear in serialized data
+        $this->assertArrayNotHasKey('ext', $data);
+        $this->assertEquals(1, $data['id']);
+        $this->assertEquals(90, $data['title']['len']);
+    }
+
+    public function testImageAssetWithEmptyExtObject(): void
+    {
+        $asset = new ImageAsset(2, ImageAsset::TYPE_MAIN, 300, 250, true);
+
+        // Set an empty Ext object
+        $emptyExt = new \OpenRTB\Common\Resources\Ext();
+        $asset->setExt($emptyExt);
+
+        $data = $asset->jsonSerialize();
+
+        // Empty ext should NOT appear
+        $this->assertArrayNotHasKey('ext', $data);
+    }
+
+    public function testDataAssetWithEmptyExtObject(): void
+    {
+        $asset = new DataAsset(3, DataAsset::TYPE_DESC, 140, false);
+
+        // Set an empty Ext object
+        $emptyExt = new \OpenRTB\Common\Resources\Ext();
+        $asset->setExt($emptyExt);
+
+        $data = $asset->jsonSerialize();
+
+        // Empty ext should NOT appear
+        $this->assertArrayNotHasKey('ext', $data);
+    }
+
+    public function testVideoAssetWithEmptyExtObject(): void
+    {
+        $asset = new VideoAsset(4, true);
+        $asset->setMimes(['video/mp4']);
+
+        // Set an empty Ext object
+        $emptyExt = new \OpenRTB\Common\Resources\Ext();
+        $asset->setExt($emptyExt);
+
+        $data = $asset->jsonSerialize();
+
+        // Empty ext should NOT appear
+        $this->assertArrayNotHasKey('ext', $data);
+    }
+
+    public function testAssetWithNonEmptyExtObject(): void
+    {
+        $asset = new TitleAsset(1, 90, true);
+
+        // Set a non-empty Ext object
+        $ext = new \OpenRTB\Common\Resources\Ext();
+        $ext->set('bidder_param', 'value123');
+        $asset->setExt($ext);
+
+        $data = $asset->jsonSerialize();
+
+        // Non-empty ext should appear
+        $this->assertArrayHasKey('ext', $data);
+        $this->assertEquals('value123', $data['ext']['bidder_param']);
+    }
+
+    public function testCompleteNativeWorkflowWithEmptyExt(): void
+    {
+        // Test a complete workflow with empty Ext objects everywhere
+        $request = new NativeRequest();
+        $request->setVer('1.2');
+        $request->setContext(1);
+        $request->setExt(new \OpenRTB\Common\Resources\Ext()); // Empty
+
+        $titleAsset = new TitleAsset(1, 90, true);
+        $titleAsset->setExt(new \OpenRTB\Common\Resources\Ext()); // Empty
+        $request->addAsset($titleAsset);
+
+        $imageAsset = new ImageAsset(2, ImageAsset::TYPE_MAIN, 300, 250, true);
+        $imageAsset->setExt(new \OpenRTB\Common\Resources\Ext()); // Empty
+        $request->addAsset($imageAsset);
+
+        $json = $request->toJson();
+        $decoded = json_decode($json, true);
+
+        // Verify no empty ext objects appear anywhere
+        $this->assertArrayNotHasKey('ext', $decoded);
+        $this->assertArrayNotHasKey('ext', $decoded['assets'][0]);
+        $this->assertArrayNotHasKey('ext', $decoded['assets'][1]);
+
+        // But the data is still correct
+        $this->assertEquals('1.2', $decoded['ver']);
+        $this->assertCount(2, $decoded['assets']);
+    }
 }

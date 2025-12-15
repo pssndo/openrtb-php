@@ -69,7 +69,15 @@ abstract class NativeAsset implements JsonSerializable
         ];
 
         if ($this->ext !== null) {
-            $data['ext'] = $this->ext;
+            // Skip empty Ext objects from output
+            if ($this->ext instanceof \OpenRTB\Common\Resources\Ext) {
+                $extArray = $this->ext->toArray();
+                if (!empty($extArray)) {
+                    $data['ext'] = $extArray;
+                }
+            } else {
+                $data['ext'] = $this->ext;
+            }
         }
 
         return $data;
